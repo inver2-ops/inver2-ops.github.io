@@ -3,129 +3,127 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>İNVER Water | Kyiv</title>
+    <title>İNVER Water | Premium Dashboard</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6765480393265982" crossorigin="anonymous"></script>
     <style>
-        :root { --p: #0077be; --s: #00d2ff; --bg: #f8fafc; --card: #ffffff; --text: #1e293b; }
-        * { box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        :root { --p: #0077be; --s: #00d2ff; --bg: #f0f4f8; --card: #ffffff; --text: #1e293b; --green: #10b981; --red: #ef4444; }
+        * { box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; transition: 0.3s ease; }
+        body { margin: 0; background: var(--bg); color: var(--text); padding-bottom: 40px; }
+
+        /* Modern Nav */
+        nav { background: rgba(255,255,255,0.9); backdrop-filter: blur(15px); padding: 15px 6%; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 20px rgba(0,0,0,0.04); }
+        .logo { font-weight: 800; color: var(--p); font-size: 1.5rem; display: flex; align-items: center; gap: 10px; }
+        .flags { display: flex; gap: 10px; }
+        .flag-btn { cursor: pointer; width: 35px; height: 35px; border-radius: 50%; object-fit: cover; border: 2px solid #fff; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .flag-btn:hover { transform: scale(1.15); }
+
+        /* Hero */
+        .hero { padding: 70px 6% 100px; text-align: center; background: linear-gradient(135deg, var(--p), var(--s)); color: white; border-bottom-left-radius: 50px; border-bottom-right-radius: 50px; }
+        .hero h1 { font-size: 2.8rem; font-weight: 900; margin-bottom: 10px; }
+        .hero p { font-size: 1.1rem; opacity: 0.9; margin-bottom: 25px; }
+        .play-btn { background: #000; color: #fff; padding: 14px 30px; border-radius: 14px; text-decoration: none; font-weight: 700; display: inline-flex; align-items: center; gap: 10px; box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
+
+        /* Dashboard Grid */
+        .main-container { padding: 0 6%; margin-top: -50px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
         
-        body { margin: 0; background: var(--bg); color: var(--text); padding-bottom: 50px; }
+        .card { background: var(--card); border-radius: 24px; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 1px solid rgba(255,255,255,0.7); }
+        .card-h { font-size: 0.75rem; font-weight: 800; color: #94a3b8; text-transform: uppercase; letter-spacing: 1.2px; margin-bottom: 20px; display: flex; align-items: center; gap: 8px; }
+        .card-h i { color: var(--p); font-size: 1rem; }
 
-        /* Navbar & Flags */
-        nav { background: rgba(255,255,255,0.8); backdrop-filter: blur(10px); padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 15px rgba(0,0,0,0.05); }
-        .logo { font-weight: 800; color: var(--p); font-size: 1.4rem; display: flex; align-items: center; gap: 8px; }
-        
-        .flag-container { display: flex; gap: 12px; }
-        .flag-item { cursor: pointer; filter: grayscale(0.3); transform: scale(1); }
-        .flag-item:hover { filter: grayscale(0); transform: scale(1.2); }
-        .flag-item img { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 2px solid #fff; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        /* Live Exchange Table */
+        .rate-table { width: 100%; border-collapse: separate; border-spacing: 0 10px; }
+        .rate-table th { text-align: left; font-size: 0.7rem; color: #64748b; padding-bottom: 5px; padding-left: 10px; }
+        .rate-row { background: #f8fafc; border-radius: 15px; }
+        .rate-row td { padding: 15px 10px; font-weight: 800; font-size: 1.1rem; }
+        .rate-row td:first-child { border-radius: 15px 0 0 15px; color: var(--p); }
+        .rate-row td:last-child { border-radius: 0 15px 15px 0; text-align: right; }
+        .buy { color: var(--green); font-size: 0.85rem; display: block; }
+        .sell { color: var(--red); font-size: 0.85rem; display: block; }
 
-        /* Hero v4 */
-        .hero { padding: 80px 5% 120px; text-align: center; background: radial-gradient(circle at top right, #00d2ff, #0077be); color: white; border-bottom-left-radius: 60px; border-bottom-right-radius: 60px; }
-        .hero h1 { font-size: 3rem; font-weight: 900; margin-bottom: 15px; letter-spacing: -1px; }
-        .hero p { font-size: 1.2rem; opacity: 0.9; max-width: 600px; margin: 0 auto 30px; }
-        .gp-btn { background: #0f172a; color: white; padding: 15px 35px; border-radius: 16px; text-decoration: none; font-weight: 700; display: inline-flex; align-items: center; gap: 10px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
+        /* Location Card */
+        .loc-card { display: flex; gap: 20px; align-items: center; }
+        .loc-icon { width: 60px; height: 60px; background: #e0f2fe; border-radius: 18px; display: flex; align-items: center; justify-content: center; color: var(--p); font-size: 1.8rem; flex-shrink: 0; }
+        .loc-text h3 { margin: 0; font-weight: 800; }
+        .loc-text p { margin: 5px 0; font-size: 0.85rem; color: #64748b; font-weight: 600; }
+        .map-btn { color: var(--p); font-weight: 800; text-decoration: none; font-size: 0.85rem; }
 
-        /* Square Dashboard Grid */
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; padding: 0 5%; margin-top: -60px; }
-        .sq-card { background: var(--card); border-radius: 28px; padding: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.04); border: 1px solid rgba(255,255,255,0.8); display: flex; flex-direction: column; align-items: center; text-align: center; }
-        .sq-card:hover { transform: translateY(-10px); box-shadow: 0 20px 40px rgba(0,0,0,0.08); }
-        
-        .icon-circle { width: 60px; height: 60px; background: #f0f9ff; border-radius: 20px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; color: var(--p); font-size: 1.5rem; }
-        .sq-title { font-size: 0.8rem; font-weight: 800; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; }
-        .sq-value { font-size: 2rem; font-weight: 900; color: var(--text); }
-        .sq-sub { font-size: 0.9rem; font-weight: 600; color: #64748b; margin-top: 5px; }
+        /* Purpose Section */
+        .purpose { margin-top: 40px; background: white; padding: 40px; border-radius: 30px; text-align: center; }
+        .purpose h2 { font-weight: 900; margin-bottom: 15px; color: var(--p); }
+        .purpose p { color: #475569; line-height: 1.7; max-width: 800px; margin: 0 auto; font-weight: 500; }
 
-        /* Currency Rows */
-        .rate-box { width: 100%; display: flex; justify-content: space-around; margin-top: 10px; }
-        .rate-item { display: flex; flex-direction: column; }
-        .rate-item span:first-child { color: var(--p); font-weight: 800; }
+        /* AdMob Banners */
+        .ad-box { margin: 30px auto; text-align: center; min-height: 50px; }
 
-        /* Ad Slot */
-        .ad-container { margin: 40px auto; text-align: center; }
-
-        /* New Modern Store Card */
-        .store-wide { background: var(--card); border-radius: 35px; padding: 40px; margin: 40px 5%; display: flex; align-items: center; justify-content: space-between; gap: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.03); }
-        .store-content h2 { font-weight: 900; margin: 0 0 10px 0; font-size: 2rem; }
-        .store-content p { color: #64748b; margin-bottom: 20px; }
-        .map-link { background: var(--p); color: white; padding: 12px 25px; border-radius: 12px; text-decoration: none; font-weight: 700; display: inline-block; }
-
-        @media (max-width: 768px) { 
-            .store-wide { flex-direction: column; text-align: center; } 
-            .hero h1 { font-size: 2rem; }
-        }
+        @media (max-width: 768px) { .hero h1 { font-size: 2rem; } .grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
 
 <nav>
     <div class="logo"><i class="fas fa-droplet"></i> İNVER Water</div>
-    <div class="flag-container">
-        <div class="flag-item" onclick="setL('tr')"><img src="https://flagcdn.com/w80/tr.png" alt="TR"></div>
-        <div class="flag-item" onclick="setL('ua')"><img src="https://flagcdn.com/w80/ua.png" alt="UA"></div>
-        <div class="flag-item" onclick="setL('en')"><img src="https://flagcdn.com/w80/gb.png" alt="EN"></div>
-        <div class="flag-item" onclick="setL('ru')"><img src="https://flagcdn.com/w80/ru.png" alt="RU"></div>
+    <div class="flags">
+        <img src="https://flagcdn.com/w80/tr.png" class="flag-btn" onclick="setL('tr')">
+        <img src="https://flagcdn.com/w80/ua.png" class="flag-btn" onclick="setL('ua')">
+        <img src="https://flagcdn.com/w80/gb.png" class="flag-btn" onclick="setL('en')">
+        <img src="https://flagcdn.com/w80/ru.png" class="flag-btn" onclick="setL('ru')">
     </div>
 </nav>
 
 <section class="hero">
     <h1 id="h-h1">Kyiv'in Taze Yaşam Kaynağı!</h1>
-    <p id="h-p">5 aşamalı Ters Ozmos saflığı. Şişeni getir doldur veya bizden taze şişe al.</p>
-    <a href="https://play.google.com/store/apps/details?id=com.inver.water" class="gp-btn">
+    <p id="h-p">5 aşamalı Ters Ozmos teknolojisiyle sağlığınız bizimle güvende.</p>
+    <a href="https://play.google.com/store/apps/details?id=com.inver.water" class="play-btn">
         <i class="fab fa-google-play"></i> Google Play Store
     </a>
 </section>
 
-<div class="grid">
-    <div class="sq-card">
-        <div class="icon-circle"><i class="fas fa-cloud-sun"></i></div>
-        <div class="sq-title" id="t-weather">KYIV HAVA DURUMU</div>
-        <div class="sq-value" id="w-temp">--°C</div>
-        <div class="sq-sub" id="w-desc">Yükleniyor...</div>
-    </div>
-
-    <div class="sq-card">
-        <div class="icon-circle"><i class="fas fa-coins"></i></div>
-        <div class="sq-title" id="t-rates">DÖVİZ KURLARI (NBU)</div>
-        <div class="rate-box">
-            <div class="rate-item"><span>USD</span><span class="sq-value" style="font-size: 1.4rem;" id="usd-r">--.--</span></div>
-            <div class="rate-item"><span>EUR</span><span class="sq-value" style="font-size: 1.4rem;" id="eur-r">--.--</span></div>
-        </div>
-    </div>
-
-    <div class="sq-card">
-        <div class="icon-circle"><i class="fas fa-wind"></i></div>
-        <div class="sq-title" id="t-aqi">HAVA KALİTESİ</div>
-        <div class="sq-value" id="aqi-val">--</div>
-        <div class="sq-sub" id="aqi-status">Ölçülüyor...</div>
-    </div>
-
-    <div class="sq-card">
-        <div class="icon-circle"><i class="fas fa-faucet-drip"></i></div>
-        <div class="sq-title" id="t-status">SU DURUMU</div>
-        <div class="sq-value" style="color: #10b981;" id="w-status">NORMAL</div>
-        <div class="sq-sub">Troieshchyna, Kyiv</div>
-    </div>
-</div>
-
-<div class="ad-container">
+<div class="ad-box">
     <ins class="adsbygoogle" style="display:inline-block;width:320px;height:50px" 
          data-ad-client="ca-app-pub-6765480393265982" data-ad-slot="7021006474"></ins>
     <script>(adsbygoogle = document.adsbygoogle || []).push({});</script>
 </div>
 
-<div class="store-wide">
-    <div class="store-content">
-        <h2 id="s-title">Mağazamıza Bekliyoruz</h2>
-        <p id="s-desc">Oleksandry Ekster St, 8, Kyiv adresinde taze ve arıtılmış suyun tek adresi.</p>
-        <a href="https://www.google.com/maps/search/?api=1&query=50.5234,30.6061" target="_blank" class="map-link" id="s-map">Haritada Aç</a>
+<div class="main-container">
+    <div class="grid">
+        <div class="card">
+            <div class="card-h"><i class="fas fa-money-bill-transfer"></i> <span id="t-rates">Canlı Döviz (PrivatBank)</span></div>
+            <table class="rate-table">
+                <thead><tr><th>DÖVİZ</th><th>ALIŞ</th><th>SATIŞ</th></tr></thead>
+                <tbody id="live-rates"></tbody>
+            </table>
+        </div>
+
+        <div class="card" style="display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;">
+            <div class="card-h" style="align-self: flex-start;"><i class="fas fa-cloud-bolt"></i> <span id="t-weather">Kyiv Hava Durumu</span></div>
+            <div id="w-icon"></div>
+            <div style="font-size: 3rem; font-weight: 900; line-height: 1;" id="w-temp">--°</div>
+            <div style="font-weight: 700; color: #64748b; margin-top: 10px; text-transform: capitalize;" id="w-desc">Yükleniyor...</div>
+        </div>
+
+        <div class="card">
+            <div class="card-h"><i class="fas fa-map-location-dot"></i> <span id="t-store">Dükkan Konumu</span></div>
+            <div class="loc-card">
+                <div class="loc-icon"><i class="fas fa-store"></i></div>
+                <div class="loc-text">
+                    <h3>ИНVER Water</h3>
+                    <p>Oleksandry Ekster St, 8, Kyiv</p>
+                    <a href="https://www.google.com/maps/search/?api=1&query=Oleksandry+Ekster+St+8+Kyiv" target="_blank" class="map-link" id="s-map">Haritada Yol Tarifi Al →</a>
+                </div>
+            </div>
+        </div>
     </div>
-    <div style="font-size: 5rem; color: #f1f5f9;"><i class="fas fa-store"></i></div>
+
+    <div class="purpose">
+        <h2 id="p-title">Amacımız</h2>
+        <p id="p-desc">İNVER Water olarak temel amacımız, Kyiv halkına, özellikle de Troieshchyna bölgesine, en ileri teknoloji olan 5 aşamalı Ters Ozmos (Reverse Osmosis) sistemiyle arıtılmış, sağlıklı ve taze içme suyunu ulaştırmaktır. Mobil uygulamamız sayesinde size en yakın su otomatlarını bulabilir veya kapınıza kadar hızlı teslimat siparişi verebilirsiniz. Fabrika şişelemesi değil, her zaman taze ve saf su!</p>
+    </div>
 </div>
 
-<div class="ad-container">
+<div class="ad-box">
     <ins class="adsbygoogle" style="display:inline-block;width:320px;height:50px" 
          data-ad-client="ca-app-pub-6765480393265982" data-ad-slot="4394843132"></ins>
     <script>(adsbygoogle = document.adsbygoogle || []).push({});</script>
@@ -133,48 +131,49 @@
 
 <script>
 const lang = {
-    tr: { h1: "Kyiv'in Taze Yaşam Kaynağı!", p: "5 aşamalı Ters Ozmos saflığı. Şişeni getir doldur veya bizden al.", tW: "HAVA DURUMU", tR: "DÖVİZ KURLARI", tA: "HAVA KALİTESİ", tS: "SU DURUMU", sT: "Mağazamıza Bekliyoruz", sD: "Oleksandry Ekster St, 8, Kyiv adresinde taze suyun adresi.", sM: "Haritada Aç" },
-    ua: { h1: "Джерело свіжої води у Києві!", p: "5-ступеневий зворотний осмос. Принось пляшку або купуй у нас.", tW: "ПОГОДА", tR: "КУРС ВАЛЮТ", tA: "ЯКІСТЬ ПОВІТРЯ", tS: "СТАН ВОДИ", sT: "Чекаємо на вас", sD: "вулиця Олександри Екстер, 8, Київ - ваша свіжа вода.", sM: "Відкрити на карті" },
-    en: { h1: "Kyiv's Fresh Life Source!", p: "5-stage Reverse Osmosis purity. Refill your bottle or buy a fresh one.", tW: "WEATHER", tR: "EXCHANGE RATES", tA: "AIR QUALITY", tS: "WATER STATUS", sT: "Visit Our Store", sD: "Oleksandry Ekster St, 8, Kyiv - Your destination for fresh water.", sM: "Open Maps" },
-    ru: { h1: "Источник свежей воды в Киеве!", p: "5-ступенчатый обратный осмос. Приноси бутылку или покупай у нас.", tW: "ПОГОДА", tR: "КУРС ВАЛЮТ", tA: "КАЧЕСТВО ВОЗДУХА", tS: "СТАТУС ВОДЫ", sT: "Ждем вас", sD: "ул. Александры Экстер, 8, Киев - свежая вода здесь.", sM: "Открыть на карте" }
+    tr: { h1: "Kyiv'in Taze Yaşam Kaynağı!", p: "5 aşamalı Ters Ozmos saflığıyla sağlığınızı koruyun.", rates: "Canlı Döviz (PrivatBank)", weather: "Kyiv Hava Durumu", store: "Dükkan Konumu", pT: "Amacımız", pD: "Amacımız, Kyiv Troieshchyna bölgesine 5 aşamalı arıtma teknolojisiyle taze ve sağlıklı su ulaştırmaktır. Uygulamamızla en yakın su noktasına ulaşın veya kapınıza sipariş verin.", sM: "Haritada Yol Tarifi Al →" },
+    ua: { h1: "Джерело свіжої води у Києві!", p: "Захистіть своє здоров'я за допомогою 5-ступеневого осмосу.", rates: "Курс валют (ПриватБанк)", weather: "Погода у Києві", store: "Місцезнаходження", pT: "Наша Мета", pD: "Наша мета - забезпечити мешканців Троєщини свіжою та здоровою водою. За допомогою додатка знайдіть найближчий автомат або замовте доставку до дверей.", sM: "Маршрут на карті →" },
+    en: { h1: "Kyiv's Fresh Life Source!", p: "Protect your health with 5-stage reverse osmosis purity.", rates: "Live Rates (PrivatBank)", weather: "Kyiv Weather", store: "Store Location", pT: "Our Purpose", pD: "Our mission is to provide fresh and healthy water to Kyiv's Troieshchyna area. Find the nearest water point or order home delivery via our app.", sM: "Get Directions on Map →" },
+    ru: { h1: "Источник свежей воды в Киеве!", p: "Защитите свое здоровье с помощью 5-ступенчатого осмоса.", rates: "Курс валют (ПриватБанк)", weather: "Погода в Киеве", store: "Местоположение", pT: "Наша Цель", pD: "Наша цель - обеспечить жителей Троещины свежей и здоровой водой. С помощью приложения найдите ближайший автомат или закажите доставку на дом.", sM: "Маршрут на карте →" }
 };
 
 let curL = 'tr';
 
-async function updateData() {
+async function updateLive() {
     try {
-        const resEx = await fetch('https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json');
+        // PrivatBank Live API (CORS hatası almamak için proxy veya direkt çekim)
+        const resEx = await fetch('https://api.privatbank.ua/p24api/pubinfo?exchange&json&coursid=11');
         const dataEx = await resEx.json();
-        document.getElementById('usd-r').innerText = dataEx.find(i => i.cc === 'USD').rate.toFixed(2);
-        document.getElementById('eur-r').innerText = dataEx.find(i => i.cc === 'EUR').rate.toFixed(2);
+        const container = document.getElementById('live-rates');
+        container.innerHTML = dataEx.filter(c => ['USD', 'EUR'].includes(c.ccy)).map(c => `
+            <tr class="rate-row">
+                <td>${c.ccy === 'USD' ? '🇺🇸 USD' : '🇪🇺 EUR'}</td>
+                <td><span class="buy">${parseFloat(c.buy).toFixed(2)} ₴</span></td>
+                <td><span class="sell">${parseFloat(c.sale).toFixed(2)} ₴</span></td>
+            </tr>
+        `).join('');
 
+        // Weather
         const key = '932e2d60c135c8cdb547ce78923a7ba8';
         const resW = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=Kyiv&units=metric&lang=${curL}&appid=${key}`);
         const dataW = await resW.json();
-        document.getElementById('w-temp').innerText = Math.round(dataW.main.temp) + '°C';
+        document.getElementById('w-temp').innerText = Math.round(dataW.main.temp) + '°';
         document.getElementById('w-desc').innerText = dataW.weather[0].description;
-
-        const resA = await fetch(`https://api.openweathermap.org/data/2.5/air_pollution?lat=50.45&lon=30.52&appid=${key}`);
-        const dataA = await resA.json();
-        const aqi = dataA.list[0].main.aqi;
-        document.getElementById('aqi-val').innerText = aqi;
-        const aqiTexts = ["-", "Mükemmel", "İyi", "Orta", "Zayıf", "Kötü"];
-        document.getElementById('aqi-status').innerText = aqiTexts[aqi];
-    } catch (e) { console.error("API Error"); }
+        document.getElementById('w-icon').innerHTML = `<img src="https://openweathermap.org/img/wn/${dataW.weather[0].icon}@2x.png" width="80">`;
+    } catch (e) { console.error("API Connection Error"); }
 }
 
 function setL(l) {
     curL = l;
     document.getElementById('h-h1').innerText = lang[l].h1;
     document.getElementById('h-p').innerText = lang[l].p;
-    document.getElementById('t-weather').innerText = lang[l].tW;
-    document.getElementById('t-rates').innerText = lang[l].tR;
-    document.getElementById('t-aqi').innerText = lang[l].tA;
-    document.getElementById('t-status').innerText = lang[l].tS;
-    document.getElementById('s-title').innerText = lang[l].sT;
-    document.getElementById('s-desc').innerText = lang[l].sD;
+    document.getElementById('t-rates').innerText = lang[l].rates;
+    document.getElementById('t-weather').innerText = lang[l].weather;
+    document.getElementById('t-store').innerText = lang[l].store;
+    document.getElementById('p-title').innerText = lang[l].pT;
+    document.getElementById('p-desc').innerText = lang[l].pD;
     document.getElementById('s-map').innerText = lang[l].sM;
-    updateData();
+    updateLive();
 }
 
 setL('tr');
