@@ -3,194 +3,155 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>İNVER Water | Sağlıklı Hidrasyon</title>
+    <title>İNVER Water | Kyiv'in Taze Yaşam Kaynağı</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6765480393265982" crossorigin="anonymous"></script>
     <style>
-        :root { --primary: #0077be; --accent: #00d2ff; --dark: #0f172a; --light: #f8fafc; --success: #10b981; --danger: #ef4444; }
-        body { font-family: 'Inter', sans-serif; margin: 0; background: var(--light); color: var(--dark); line-height: 1.6; }
+        :root { --p: #0077be; --s: #00d2ff; --bg: #f0f9ff; --txt: #0f172a; --glass: rgba(255, 255, 255, 0.8); }
+        * { box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; transition: 0.3s; }
+        body { margin: 0; background: var(--bg); color: var(--txt); overflow-x: hidden; }
         
-        nav { background: white; padding: 12px 6%; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 15px rgba(0,0,0,0.05); sticky: top; z-index: 1000; }
-        .logo { font-weight: 800; color: var(--primary); font-size: 1.5rem; display: flex; align-items: center; gap: 10px; }
-        .lang-select { padding: 8px; border-radius: 10px; border: 1px solid #ddd; font-weight: 600; cursor: pointer; }
+        /* Glass Navbar */
+        nav { background: var(--glass); backdrop-filter: blur(15px); padding: 15px 8%; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 30px rgba(0,0,0,0.03); }
+        .logo { font-weight: 800; color: var(--p); font-size: 1.6rem; display: flex; align-items: center; gap: 10px; }
+        .lang-picker { border: 2px solid var(--p); border-radius: 12px; padding: 8px 12px; font-weight: 700; color: var(--p); cursor: pointer; outline: none; }
 
-        .hero { padding: 80px 10%; text-align: center; background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%); color: white; border-bottom-left-radius: 60px; border-bottom-right-radius: 60px; }
-        .hero h1 { font-size: 3rem; margin-bottom: 20px; font-weight: 900; }
-        .hero p { font-size: 1.2rem; max-width: 800px; margin: 0 auto 30px; opacity: 0.95; }
-        
-        .play-btn { background: white; color: var(--primary); padding: 18px 40px; border-radius: 50px; text-decoration: none; font-weight: 800; display: inline-flex; align-items: center; gap: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); transition: 0.3s; }
-        .play-btn:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0,0,0,0.3); }
+        /* Animated Hero */
+        .hero { padding: 80px 10%; text-align: center; background: radial-gradient(circle at top right, var(--s), var(--p)); color: white; border-bottom-left-radius: 80px; position: relative; overflow: hidden; }
+        .hero h1 { font-size: 3.5rem; font-weight: 800; margin-bottom: 20px; line-height: 1.1; }
+        .hero p { font-size: 1.3rem; opacity: 0.9; max-width: 700px; margin: 0 auto 35px; }
+        .btn-store { background: white; color: var(--p); padding: 18px 45px; border-radius: 50px; text-decoration: none; font-weight: 800; font-size: 1.2rem; display: inline-flex; align-items: center; gap: 15px; box-shadow: 0 15px 35px rgba(0,0,0,0.2); }
+        .btn-store:hover { transform: scale(1.05); background: var(--txt); color: white; }
 
-        .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; padding: 60px 10%; }
-        .f-card { background: white; padding: 30px; border-radius: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); text-align: center; border: 1px solid #f1f5f9; }
-        .f-card i { font-size: 2.5rem; color: var(--primary); margin-bottom: 20px; }
-        .f-card h3 { margin-bottom: 15px; font-weight: 800; }
+        /* Widgets Grid */
+        .main-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; padding: 50px 8%; margin-top: -50px; }
+        .glass-card { background: var(--glass); backdrop-filter: blur(10px); padding: 30px; border-radius: 30px; border: 1px solid rgba(255,255,255,0.5); box-shadow: 0 20px 40px rgba(0,0,0,0.05); }
+        .card-header { display: flex; align-items: center; gap: 15px; margin-bottom: 25px; border-bottom: 2px solid #e2e8f0; padding-bottom: 15px; }
+        .card-header i { font-size: 1.8rem; color: var(--p); }
 
-        .widgets { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; padding: 20px 10% 60px; }
-        .card { background: white; padding: 25px; border-radius: 25px; box-shadow: 0 10px 40px rgba(0,0,0,0.05); }
-        .card-title { font-weight: 800; color: var(--primary); margin-bottom: 20px; display: flex; align-items: center; gap: 10px; border-bottom: 2px solid var(--light); padding-bottom: 10px; }
+        /* Features Section */
+        .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; padding: 40px 8%; }
+        .f-item { text-align: center; padding: 30px; background: white; border-radius: 25px; border: 1px solid #e2e8f0; }
+        .f-item i { font-size: 2.5rem; color: var(--s); margin-bottom: 15px; }
 
-        table { width: 100%; border-collapse: collapse; }
-        td, th { padding: 12px; text-align: center; font-weight: 700; border-bottom: 1px solid #f1f5f9; }
-        .buy { color: var(--success); } .sell { color: var(--danger); }
+        /* Ad Slots */
+        .ad-zone { margin: 30px auto; padding: 15px; background: white; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.03); max-width: 350px; text-align: center; }
 
-        .ad-box { background: white; padding: 15px; margin: 20px auto; border-radius: 15px; border: 1px dashed #cbd5e1; display: flex; justify-content: center; max-width: 350px; }
+        /* Dynamic Table */
+        table { width: 100%; text-align: center; }
+        th { color: #64748b; font-size: 0.8rem; padding-bottom: 10px; }
+        td { padding: 15px 5px; font-weight: 800; font-size: 1.1rem; border-bottom: 1px solid #f1f5f9; }
+        .currency-tag { color: var(--p); }
 
-        .footer { background: var(--dark); color: white; padding: 50px 10%; text-align: center; }
-        .footer a { color: var(--accent); text-decoration: none; font-weight: 700; }
+        footer { background: var(--txt); color: white; padding: 60px 8%; text-align: center; border-top-right-radius: 80px; }
+        footer a { color: var(--s); text-decoration: none; font-weight: 700; }
 
-        @media (max-width: 768px) { .hero h1 { font-size: 2rem; } .features { padding: 40px 5%; } }
+        @media (max-width: 768px) { .hero h1 { font-size: 2.2rem; } .main-grid { margin-top: 20px; } }
     </style>
 </head>
 <body>
 
 <nav>
-    <div class="logo"><i class="fas fa-droplet"></i> İNVER Water</div>
-    <select class="lang-select" onchange="changeLang(this.value)">
-        <option value="tr">Türkçe 🇹🇷</option>
-        <option value="uk">Українська 🇺🇦</option>
-        <option value="en">English 🇬🇧</option>
-        <option value="ru">Русский 🇷🇺</option>
+    <div class="logo"><i class="fa-solid fa-droplet"></i> İNVER Water</div>
+    <select class="lang-picker" onchange="switchLang(this.value)">
+        <option value="tr">TR 🇹🇷</option>
+        <option value="uk">UK 🇺🇦</option>
+        <option value="en">EN 🇬🇧</option>
+        <option value="ru">RU 🇷🇺</option>
     </select>
 </nav>
 
 <section class="hero">
-    <h1 id="h-title">Cebinizde Sağlıklı Hidrasyon!</h1>
-    <p id="h-desc">Sağlıklı ve taze içme suyuna erişmenin en modern yolu. İster kapınıza gelsin, ister size en yakın noktadan taze taze doldurun.</p>
-    <a href="https://play.google.com/store/apps/details?id=com.inver.water" class="play-btn">
-        <i class="fab fa-google-play"></i> Google Play Store
+    <h1 id="h-h1">Cebinizde Sağlıklı Hidrasyon!</h1>
+    <p id="h-p">Kyiv Troieshchyna'da taze arıtılmış suya erişmenin en modern yolu. Fabrika şişelemesi değil, taze arıtılmış yaşam!</p>
+    <a href="https://play.google.com/store/apps/details?id=com.inver.water" class="btn-store">
+        <i class="fa-brands fa-google-play"></i> Google Play Store
     </a>
 </section>
 
-<div class="ad-box">
+<div class="ad-zone">
     <ins class="adsbygoogle" style="display:inline-block;width:320px;height:50px" data-ad-client="ca-pub-6765480393265982" data-ad-slot="7021006474"></ins>
     <script>(adsbygoogle = document.adsbygoogle || []).push({});</script>
 </div>
 
-<section class="features">
-    <div class="f-card">
-        <i class="fas fa-map-marked-alt"></i>
-        <h3 id="f1-t">Akıllı Su Arama</h3>
-        <p id="f1-d">Harita üzerinde yakındaki aktif su noktalarını bulun ve yol tarifi alın.</p>
-    </div>
-    <div class="f-card">
-        <i class="fas fa-truck-moving"></i>
-        <h3 id="f2-t">Kapıya Teslimat</h3>
-        <p id="f2-d">Kyiv genelinde taze arıtılmış suyunuz kapınıza kadar gelsin.</p>
-    </div>
-    <div class="f-card">
-        <i class="fas fa-leaf"></i>
-        <h3 id="f3-t">Ekolojik Çözüm</h3>
-        <p id="f3-d">Kendi şişeni doldur, plastik atıkları azalt ve gezegeni koru.</p>
-    </div>
-</section>
-
-<section class="widgets">
-    <div class="card">
-        <div class="card-title"><i class="fas fa-chart-line"></i> <span id="w-ex">Canlı Döviz (NBU)</span></div>
+<div class="main-grid">
+    <div class="glass-card">
+        <div class="card-header"><i class="fa-solid fa-chart-line"></i> <span id="w-ex">Canlı Döviz (Grivna)</span></div>
         <table>
-            <thead><tr><th>Döviz</th><th id="w-rate">Kur</th></tr></thead>
-            <tbody id="bank-data"><tr><td colspan="2"><i class="fas fa-spinner fa-spin"></i></td></tr></tbody>
+            <thead><tr><th>Döviz</th><th id="w-rate">Kur (UAH)</th></tr></thead>
+            <tbody id="uah-rates"><tr><td colspan="2"><i class="fa-solid fa-spinner fa-spin"></i></td></tr></tbody>
         </table>
     </div>
 
-    <div class="card">
-        <div class="card-title"><i class="fas fa-cloud-sun-rain"></i> <span id="w-weather">Kyiv Hava Durumu</span></div>
-        <div id="weather-data" style="text-align: center;"><i class="fas fa-spinner fa-spin"></i></div>
+    <div class="glass-card">
+        <div class="card-header"><i class="fa-solid fa-cloud-sun"></i> <span id="w-weather">Kyiv Hava Durumu</span></div>
+        <div id="weather-box" style="text-align: center;"><i class="fa-solid fa-spinner fa-spin"></i></div>
     </div>
+</div>
+
+<section class="features">
+    <div class="f-item"><i class="fa-solid fa-truck-fast"></i><h3 id="f1-t">Kapıya Teslimat</h3><p id="f1-p">Taze suyunu anında kapına sipariş et.</p></div>
+    <div class="f-item"><i class="fa-solid fa-map-location-dot"></i><h3 id="f2-t">Akıllı Arama</h3><p id="f2-p">En yakın aktif su noktasını haritada bul.</p></div>
+    <div class="f-item"><i class="fa-solid fa-handshake-simple"></i><h3 id="f3-t">Franchise</h3><p id="f3-p">Bizimle kendi su ağını yönet.</p></div>
 </section>
 
-<div class="ad-box">
+<div class="ad-zone">
     <ins class="adsbygoogle" style="display:inline-block;width:320px;height:50px" data-ad-client="ca-pub-6765480393265982" data-ad-slot="4394843132"></ins>
     <script>(adsbygoogle = document.adsbygoogle || []).push({});</script>
 </div>
 
-<div class="footer">
-    <p id="f-text">© 2026 İNVER Water - Kyiv, Troieshchyna</p>
-    <p>By <a href="https://t.me/invercleanwaterkyiv">ByAltun</a> | <a href="https://play.google.com/store/apps/details?id=com.inver.water">App Support</a></p>
-    <p style="font-size: 10px; opacity: 0.3; margin-top: 20px;">app-ads.txt verified</p>
-</div>
+<footer>
+    <h2 style="font-weight: 800;">İNVER Water</h2>
+    <p id="f-text">Kyiv Troieshchyna Bölgesi Su Dağıtım Portalı</p>
+    <div style="margin: 20px 0; font-size: 1.5rem;">
+        <a href="https://t.me/invercleanwaterkyiv"><i class="fa-brands fa-telegram"></i></a>
+    </div>
+    <p>© 2026 Developed by <a href="#">ByAltun</a></p>
+    <p style="font-size: 10px; opacity: 0.3; margin-top: 30px;">app-ads.txt verified</p>
+</footer>
 
 <script>
-const langData = {
-    tr: {
-        title: "Cebinizde Sağlıklı Hidrasyon!", desc: "Sağlıklı ve taze içme suyuna erişmenin en modern yolu. İster kapınıza gelsin, ister en yakın noktadan doldurun.",
-        f1t: "Akıllı Su Arama", f1d: "Harita üzerinde yakındaki aktif su noktalarını bulun ve yol tarifi alın.",
-        f2t: "Kapıya Teslimat", f2d: "Kyiv genelinde taze arıtılmış suyunuz kapınıza kadar gelsin.",
-        f3t: "Ekolojik Çözüm", f3d: "Kendi şişeni doldur, plastik atıkları azalt ve gezegeni koru.",
-        ex: "Canlı Döviz (NBU)", rate: "Kur", weather: "Kyiv Hava Durumu", footer: "© 2026 İNVER Water - Kyiv, Troieshchyna", feels: "Hissedilen"
-    },
-    uk: {
-        title: "Здорове зволоження у кишені!", desc: "Найсучасніший спосіб отримати доступ до здорової та свіжої питної води. Замовляйте додому або знаходьте найближчий пункт.",
-        f1t: "Розумний пошук", f1d: "Знаходьте активні точки видачі води на карті та отримуйте маршрут.",
-        f2t: "Доставка до дверей", f2d: "Свіжоочищена вода з доставкою по всьому Києву.",
-        f3t: "Екологічне рішення", f3d: "Наповнюйте власну тару, зменшуйте відходи пластику.",
-        ex: "Курс валют (НБУ)", rate: "Курс", weather: "Погода у Києві", footer: "© 2026 İNVER Water - Київ, Троєщина", feels: "Відчувається"
-    },
-    en: {
-        title: "Healthy Hydration in Your Pocket!", desc: "The most modern way to access healthy and fresh drinking water. Delivery to your door or find the nearest point.",
-        f1t: "Smart Water Search", f1d: "Find active water points on the map and get precise directions.",
-        f2t: "Door Delivery", f2d: "Freshly purified water delivered to your home across Kyiv.",
-        f3t: "Eco-Friendly", f3d: "Refill your own bottles, reduce plastic waste, and save the planet.",
-        ex: "Live Currency (NBU)", rate: "Rate", weather: "Kyiv Weather", footer: "© 2026 İNVER Water - Kyiv, Troieshchyna", feels: "Feels Like"
-    },
-    ru: {
-        title: "Здоровое увлажнение в кармане!", desc: "Самый современный способ получить доступ к здоровой и свежей питьевой воде. Доставка на дом или поиск ближайшей точки.",
-        f1t: "Умный поиск воды", f1d: "Находите активные точки выдачи воды на карте и прокладывайте маршрут.",
-        f2t: "Доставка до двери", f2d: "Свежеочищенная вода с доставкой по всему Киеву.",
-        f3t: "Экологичное решение", f3d: "Наполняйте свои бутылки, сокращайте отходы пластика.",
-        ex: "Курс валют (НБУ)", rate: "Курс", weather: "Погода в Киеве", footer: "© 2026 İNVER Water - Киев, Троещина", feels: "Ощущается"
-    }
+const lang = {
+    tr: { h1: "Cebinizde Sağlıklı Hidrasyon!", p: "Kyiv Troieshchyna bölgesinde taze su teslimatı ve akıllı arama.", ex: "Canlı Döviz (Grivna)", rate: "Kur", weather: "Kyiv Hava Durumu", f1t: "Hızlı Teslimat", f1p: "Siparişiniz dakikalar içinde kapınızda.", f2t: "Akıllı Harita", f2p: "En yakın su otomatlarını anında bulun.", f3t: "Bayilik", f3p: "İNVER ağının bir parçası olun.", feels: "Hissedilen", foot: "Kyiv Troieshchyna Bölgesi Su Dağıtım Portalı" },
+    uk: { h1: "Здорове зволоження у кишені!", p: "Доставка свіжої води та розумний пошук у Києві (Троєщина).", ex: "Курси валют (Гривня)", rate: "Курс", weather: "Погода у Києві", f1t: "Швидка доставка", f1p: "Ваше замовлення за лічені хвилини у вас.", f2t: "Розумна карта", f2p: "Знайдіть найближчий автомат миттєво.", f3t: "Франшиза", f3p: "Станьте частиною мережі ІНVER.", feels: "Відчувається", foot: "Портал доставки води, Київ Троєщина" },
+    en: { h1: "Healthy Hydration in Your Pocket!", p: "Fresh water delivery and smart search in Kyiv Troieshchyna.", ex: "Live Currency (Grivna)", rate: "Rate", weather: "Kyiv Weather", f1t: "Fast Delivery", f1p: "Your order at your door in minutes.", f2t: "Smart Map", f2p: "Locate nearest water stations instantly.", f3t: "Franchise", f3p: "Become a part of the INVER network.", feels: "Feels Like", foot: "Kyiv Troieshchyna Water Delivery Portal" },
+    ru: { h1: "Здоровое увлажнение в кармане!", p: "Доставка свежей воды и умный поиск в Киеве (Троещина).", ex: "Курсы валют (Гривна)", rate: "Курс", weather: "Погода в Киеве", f1t: "Быстрая доставка", f1p: "Ваш заказ за считанные минуты у вас.", f2t: "Умная карта", f2p: "Найдите ближайший автомат мгновенно.", f3t: "Франшиза", f3p: "Станьте частью сети ІНVER.", feels: "Ощущается", foot: "Портал доставки воды, Киев Троещина" }
 };
 
 let currentL = 'tr';
 
-async function getFinance() {
+async function updateData() {
     try {
-        const res = await fetch('https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json');
-        const data = await res.json();
-        const tbody = document.getElementById('bank-data');
-        tbody.innerHTML = '';
-        data.forEach(c => {
-            if(c.cc === 'USD' || c.cc === 'EUR') {
-                tbody.innerHTML += `<tr><td>${c.cc === 'USD' ? '🇺🇸 USD' : '🇪🇺 EUR'}</td><td class="buy">${c.rate.toFixed(2)} UAH</td></tr>`;
-            }
-        });
-    } catch (e) { document.getElementById('bank-data').innerHTML = 'Hata!'; }
-}
+        // NBU API
+        const rEx = await fetch('https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json');
+        const jEx = await rEx.json();
+        const ratesTable = document.getElementById('uah-rates');
+        ratesTable.innerHTML = jEx.filter(c => ['USD', 'EUR'].includes(c.cc)).map(c => `<tr><td>${c.cc === 'USD' ? '🇺🇸 USD' : '🇪🇺 EUR'}</td><td><span class="currency-tag">₴</span>${c.rate.toFixed(2)}</td></tr>`).join('');
 
-async function getWeather() {
-    try {
-        const key = '932e2d60c135c8cdb547ce78923a7ba8';
-        const res = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=Kyiv&appid=${key}&units=metric&lang=${currentL}`);
-        const d = await res.json();
-        document.getElementById('weather-data').innerHTML = `
-            <img src="https://openweathermap.org/img/wn/${d.weather[0].icon}@2x.png">
-            <div style="font-size: 2.5rem; font-weight: 900;">${Math.round(d.main.temp)}°C</div>
-            <div style="text-transform:capitalize; font-weight:700;">${d.weather[0].description}</div>
-            <div style="font-size: 0.9rem; margin-top:5px;">${langData[currentL].feels}: ${Math.round(d.main.feels_like)}°C</div>
+        // Weather API
+        const rWe = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=Kyiv&appid=932e2d60c135c8cdb547ce78923a7ba8&units=metric&lang=${currentL}`);
+        const jWe = await rWe.json();
+        document.getElementById('weather-box').innerHTML = `
+            <img src="https://openweathermap.org/img/wn/${jWe.weather[0].icon}@2x.png" width="100">
+            <div style="font-size: 3rem; font-weight: 800;">${Math.round(jWe.main.temp)}°C</div>
+            <div style="text-transform: capitalize; font-weight: 700; color: var(--p);">${jWe.weather[0].description}</div>
+            <div style="margin-top: 10px; font-weight: 600; opacity: 0.7;">${lang[currentL].feels}: ${Math.round(jWe.main.feels_like)}°C</div>
         `;
-    } catch (e) { document.getElementById('weather-data').innerHTML = 'Hata!'; }
+    } catch (e) { console.error("Hata:", e); }
 }
 
-function changeLang(l) {
+function switchLang(l) {
     currentL = l;
-    document.getElementById('h-title').innerText = langData[l].title;
-    document.getElementById('h-desc').innerText = langData[l].desc;
-    document.getElementById('f1-t').innerText = langData[l].f1t;
-    document.getElementById('f1-d').innerText = langData[l].f1d;
-    document.getElementById('f2-t').innerText = langData[l].f2t;
-    document.getElementById('f2-d').innerText = langData[l].f2d;
-    document.getElementById('f3-t').innerText = langData[l].f3t;
-    document.getElementById('f3-d').innerText = langData[l].f3d;
-    document.getElementById('w-ex').innerText = langData[l].ex;
-    document.getElementById('w-rate').innerText = langData[l].rate;
-    document.getElementById('w-weather').innerText = langData[l].weather;
-    document.getElementById('f-text').innerText = langData[l].footer;
-    getWeather();
+    const ids = ['h1', 'p', 'ex', 'rate', 'weather', 'f1t', 'f1p', 'f2t', 'f2p', 'f3t', 'f3p', 'text'];
+    ids.forEach(id => {
+        const el = document.getElementById('h-'+id) || document.getElementById('w-'+id) || document.getElementById(id) || document.getElementById('f-'+id);
+        if(el) el.innerText = lang[l][id];
+    });
+    updateData();
 }
 
-getFinance(); getWeather();
+switchLang('tr');
 </script>
 </body>
 </html>
