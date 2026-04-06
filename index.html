@@ -15,238 +15,241 @@
             --text: #0f172a; --green: #10b981; --red: #ef4444; --accent: #f59e0b;
         }
         * { box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-        body { background: var(--bg); color: var(--text); line-height: 1.6; }
+        body { background: var(--bg); color: var(--text); line-height: 1.6; padding-bottom: 20px; }
 
-        /* Header & Animasyonlar */
         header { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 15px rgba(0,0,0,0.03); position: sticky; top: 0; z-index: 1000; }
         .logo-box { display: flex; align-items: center; gap: 8px; }
         .logo-text { font-weight: 800; font-size: 1.2rem; color: var(--p); letter-spacing: -0.5px; }
-        .lang-flags { display: flex; gap: 6px; }
-        .f-icon { width: 28px; height: 28px; cursor: pointer; border-radius: 50%; border: 2px solid transparent; transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-        .f-icon.active { border-color: var(--p); transform: scale(1.15); }
+        .lang-flags { display: flex; gap: 8px; }
+        .f-icon { width: 30px; height: 30px; cursor: pointer; border-radius: 50%; border: 2px solid transparent; transition: 0.3s; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .f-icon.active { border-color: var(--p); transform: scale(1.1); }
 
-        /* Hero Bölümü */
-        .hero-banner { background: linear-gradient(135deg, #0077be 0%, #00d2ff 100%); color: white; padding: 35px 20px; text-align: center; border-bottom-left-radius: 35px; border-bottom-right-radius: 35px; margin-bottom: 15px; position: relative; overflow: hidden; }
-        .hero-banner::after { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%); pointer-events: none; }
-        .hero-banner h1 { font-size: 1.6rem; font-weight: 800; margin-bottom: 5px; text-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-        .greet { font-size: 0.9rem; font-weight: 600; opacity: 0.9; margin-bottom: 10px; }
+        .hero-banner { background: linear-gradient(135deg, #0077be 0%, #00d2ff 100%); color: white; padding: 40px 20px; text-align: center; border-bottom-left-radius: 40px; border-bottom-right-radius: 40px; margin-bottom: 20px; position: relative; }
+        .hero-banner h1 { font-size: 1.7rem; font-weight: 800; margin-bottom: 8px; text-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .greet { font-size: 1rem; font-weight: 600; opacity: 0.9; }
 
         .container { padding: 0 15px; max-width: 600px; margin: 0 auto; }
 
-        /* Reklam Alanları */
-        .ad-area { margin: 15px 0; text-align: center; background: #fff; border-radius: 15px; padding: 5px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); min-height: 60px; }
+        /* REKLAM ALANI STİLİ */
+        .ad-slot-container { margin: 15px 0; background: #fff; border-radius: 16px; padding: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.04); min-height: 100px; display: flex; align-items: center; justify-content: center; overflow: hidden; border: 1px dashed #cbd5e1; }
 
-        /* Kartlar */
-        .dash-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
-        .card { background: white; border-radius: 22px; padding: 18px; box-shadow: 0 8px 25px rgba(0,0,0,0.02); border: 1px solid rgba(0,0,0,0.02); transition: 0.3s; }
-        .card:active { transform: scale(0.98); }
+        .dash-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+        .card { background: white; border-radius: 24px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.02); border: 1px solid rgba(0,0,0,0.03); }
         .card-full { grid-column: span 2; }
-        
-        .c-label { font-size: 0.7rem; font-weight: 800; color: #94a3b8; text-transform: uppercase; margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
+        .c-label { font-size: 0.75rem; font-weight: 800; color: #94a3b8; text-transform: uppercase; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
         .c-label i { color: var(--p); }
 
-        /* Kur Tablosu */
         .rate-table { width: 100%; border-collapse: collapse; }
-        .rate-table td { padding: 12px 0; font-weight: 800; font-size: 1rem; border-top: 1px solid #f8fafc; }
-        .currency-name { font-size: 0.85rem; color: #64748b; font-weight: 600; }
-        .buy { color: var(--green); text-align: right; }
-        .sell { color: var(--red); text-align: right; }
+        .rate-table td { padding: 12px 0; font-weight: 800; font-size: 1.1rem; border-top: 1px solid #f8fafc; }
+        .cur-name { font-size: 0.9rem; color: #64748b; }
+        .val-up { color: var(--green); text-align: right; }
+        .val-down { color: var(--red); text-align: right; }
 
-        /* İstatistikler */
-        .big-val { font-size: 2rem; font-weight: 900; color: var(--text); letter-spacing: -1px; }
-        .sub-text { font-size: 0.8rem; font-weight: 600; color: #64748b; }
+        .big-val { font-size: 2.2rem; font-weight: 900; color: var(--text); letter-spacing: -1px; }
+        .sub-info { font-size: 0.85rem; font-weight: 700; color: #64748b; }
 
-        /* Su Hesaplayıcı (User Engagement) */
-        .water-calc { background: #eef2ff; border: 1.5px solid #e0e7ff; }
-        .calc-input { width: 100%; padding: 12px; border-radius: 12px; border: 1px solid #c7d2fe; margin-top: 10px; font-weight: 700; text-align: center; }
+        .water-tool { background: #f0f7ff; border: 2px solid #e0f2fe; }
+        .calc-box { width: 100%; padding: 14px; border-radius: 15px; border: 2px solid #bae6fd; margin-top: 12px; font-size: 1.1rem; font-weight: 800; text-align: center; color: var(--p); outline: none; }
 
-        /* Mağaza & Buton */
-        .store-card { background: white; margin-top: 20px; border: 2px solid var(--p); }
-        .map-btn { background: var(--p); color: white; padding: 16px; border-radius: 16px; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 10px; font-weight: 800; margin-top: 15px; box-shadow: 0 4px 15px rgba(0,119,190,0.3); }
+        .store-info { border: 2px solid var(--p); margin-top: 20px; }
+        .map-link-btn { background: var(--p); color: white; padding: 18px; border-radius: 18px; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 10px; font-weight: 800; margin-top: 15px; transition: 0.3s; }
+        .map-link-btn:active { transform: scale(0.96); }
 
-        footer { text-align: center; padding: 40px 20px; font-size: 0.7rem; color: #94a3b8; font-weight: 600; }
-
-        .badge { padding: 4px 12px; border-radius: 50px; font-size: 0.65rem; font-weight: 800; margin-top: 8px; display: inline-block; }
-        .bg-low { background: #dcfce7; color: #166534; }
-        .bg-mid { background: #fef9c3; color: #854d0e; }
+        footer { text-align: center; padding: 40px 20px; font-size: 0.75rem; color: #94a3b8; font-weight: 700; }
+        .badge { padding: 5px 14px; border-radius: 12px; font-size: 0.7rem; font-weight: 800; margin-top: 10px; display: inline-block; }
+        .status-ok { background: #dcfce7; color: #166534; }
     </style>
 </head>
 <body>
 
 <header>
     <div class="logo-box">
-        <i class="fas fa-droplet pulse"></i>
+        <i class="fas fa-droplet fa-lg" style="color: var(--p);"></i>
         <span class="logo-text">İNVER WATER</span>
     </div>
     <div class="lang-flags">
-        <img src="https://flagcdn.com/w80/tr.png" class="f-icon active" id="f-tr" onclick="changeL('tr')">
-        <img src="https://flagcdn.com/w80/ua.png" class="f-icon" id="f-ua" onclick="changeL('ua')">
-        <img src="https://flagcdn.com/w80/gb.png" class="f-icon" id="f-en" onclick="changeL('en')">
+        <img src="https://flagcdn.com/w80/tr.png" class="f-icon active" id="btn-tr" onclick="changeL('tr')">
+        <img src="https://flagcdn.com/w80/ua.png" class="f-icon" id="btn-ua" onclick="changeL('ua')">
+        <img src="https://flagcdn.com/w80/gb.png" class="f-icon" id="btn-en" onclick="changeL('en')">
     </div>
 </header>
 
 <div class="hero-banner">
     <div class="greet" id="greeting">Gününüz Aydın Olsun!</div>
     <h1 id="h-title">Kyiv'in Sağlık Pınarı</h1>
-    <div style="font-size: 0.6rem; font-weight: 800; letter-spacing: 2px; margin-top: 10px;">TROIESHCHYNA DISTRICT | KYIV</div>
+    <div style="font-size: 0.65rem; font-weight: 800; letter-spacing: 2px; text-transform: uppercase;">Troieshchyna District | Kyiv</div>
 </div>
 
 <div class="container">
-    
-    <div class="ad-area">
-        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-app-pub-6765480393265982" data-ad-slot="5556894291" data-ad-format="horizontal" data-full-width-responsive="true"></ins>
+
+    <div class="ad-slot-container">
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="ca-app-pub-6765480393265982"
+             data-ad-slot="3687506983"
+             data-ad-format="horizontal"
+             data-full-width-responsive="true"></ins>
         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
 
     <div class="dash-grid">
         <div class="card card-full">
-            <div class="c-label"><i class="fas fa-coins"></i> <span id="l-rates">DÖVİZ KURU (UAH ₴)</span></div>
+            <div class="c-label"><i class="fas fa-money-bill-trend-up"></i> <span id="l-rates">DÖVİZ KURU (UAH ₴)</span></div>
             <table class="rate-table">
                 <tr>
-                    <td class="currency-name">🇺🇸 USD</td>
-                    <td class="buy" id="usd-b">--.--</td>
-                    <td class="sell" id="usd-s">--.--</td>
+                    <td class="cur-name">🇺🇸 DOLLAR (USD)</td>
+                    <td class="val-up" id="u-buy">--.--</td>
+                    <td class="val-down" id="u-sell">--.--</td>
                 </tr>
                 <tr>
-                    <td class="currency-name">🇪🇺 EUR</td>
-                    <td class="buy" id="eur-b">--.--</td>
-                    <td class="sell" id="eur-s">--.--</td>
+                    <td class="cur-name">🇪🇺 EURO (EUR)</td>
+                    <td class="val-up" id="e-buy">--.--</td>
+                    <td class="val-down" id="e-sell">--.--</td>
                 </tr>
             </table>
         </div>
 
-        <div class="card card-full" style="padding:0; overflow:hidden; border:none; background:transparent;">
-            <ins class="adsbygoogle" style="display:block" data-ad-client="ca-app-pub-6765480393265982" data-ad-slot="3832749084" data-ad-format="auto" data-full-width-responsive="true"></ins>
+        <div class="card card-full" style="padding:5px; border:none; background:transparent;">
+            <ins class="adsbygoogle"
+                 style="display:block"
+                 data-ad-client="ca-app-pub-6765480393265982"
+                 data-ad-slot="3687506983"
+                 data-ad-format="auto"
+                 data-full-width-responsive="true"></ins>
             <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
         </div>
 
         <div class="card">
-            <div class="c-label"><i class="fas fa-temperature-half"></i> <span id="l-weather">HAVA</span></div>
+            <div class="c-label"><i class="fas fa-cloud-sun"></i> <span id="l-weather">HAVA</span></div>
             <div class="big-val" id="w-temp">--°</div>
-            <div class="sub-text" id="w-desc">Yükleniyor...</div>
+            <div class="sub-info" id="w-desc">Kyiv, UA</div>
         </div>
 
         <div class="card">
-            <div class="c-label"><i class="fas fa-wind"></i> <span id="l-aqi">AQI İNDEKSİ</span></div>
-            <div class="big-val" id="aqi-val">--</div>
-            <div class="badge bg-low" id="aqi-status">ANALİZ EDİLİYOR</div>
+            <div class="c-label"><i class="fas fa-leaf"></i> <span id="l-aqi">HAVA KALİTESİ</span></div>
+            <div class="big-val" id="aqi-num">--</div>
+            <div class="badge status-ok" id="aqi-txt">İYİ</div>
         </div>
 
-        <div class="card card-full water-calc">
-            <div class="c-label"><i class="fas fa-glass-water"></i> <span id="l-calc">SU İHTİYACI HESAPLA</span></div>
-            <div class="sub-text" id="l-kg-label">Kilonuzu girin, günlük su ihtiyacınızı öğrenin:</div>
-            <input type="number" id="weight-input" class="calc-input" placeholder="Örn: 75" oninput="calcWater()">
-            <div id="calc-res" style="margin-top:10px; font-weight:800; color:var(--p); font-size:1.1rem; display:none;"></div>
+        <div class="card card-full water-tool">
+            <div class="c-label"><i class="fas fa-faucet-drip"></i> <span id="l-calc">GÜNLÜK SU İHTİYACI</span></div>
+            <div class="sub-info" id="l-kg">Kilonuzu girin:</div>
+            <input type="number" id="weight" class="calc-box" placeholder="KG" oninput="runCalc()">
+            <div id="res-val" style="margin-top:12px; font-weight:900; color:var(--p); font-size:1.2rem; display:none;"></div>
         </div>
     </div>
 
-    <div class="ad-area">
-        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-app-pub-6765480393265982" data-ad-slot="1762991074" data-ad-format="auto" data-full-width-responsive="true"></ins>
+    <div class="ad-slot-container">
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="ca-app-pub-6765480393265982"
+             data-ad-slot="3687506983"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
 
-    <div class="card card-full store-card">
-        <div class="c-label"><i class="fas fa-location-dot"></i> <span id="l-store">RESMİ SATIŞ NOKTASI</span></div>
-        <div style="font-weight:900; font-size:1.1rem;">İNVER WATER - Kyiv 02138</div>
-        <div class="sub-text" style="margin-top:5px;">Oleksandry Ekster St, 8, Troieshchyna District</div>
-        <a href="https://www.google.com/maps/dir/?api=1&destination=50.5186,30.6025" target="_blank" class="map-btn" id="btn-map">
-            <i class="fas fa-route"></i> <span id="txt-map">Yol Tarifi Al</span>
+    <div class="card card-full store-info">
+        <div class="c-label"><i class="fas fa-shop"></i> <span id="l-store">SATIŞ NOKTASI</span></div>
+        <div style="font-weight:900; font-size:1.2rem; color:var(--p);">İNVER WATER - Oleksandry Ekster St, 8</div>
+        <div class="sub-info" style="margin-top:5px;">Troieshchyna, Kyiv, Ukraine</div>
+        <a href="https://www.google.com/maps/search/?api=1&query=50.5283,30.6033" target="_blank" class="map-link-btn" id="btn-map">
+            <i class="fas fa-map-location-dot"></i> <span id="txt-map">Haritada Aç</span>
         </a>
     </div>
 
 </div>
 
 <footer>
-    <div style="margin-bottom: 15px;">
-        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-app-pub-6765480393265982" data-ad-slot="5281562128" data-ad-format="horizontal" data-full-width-responsive="true"></ins>
+    <div style="margin-bottom: 20px;">
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="ca-app-pub-6765480393265982"
+             data-ad-slot="3687506983"
+             data-ad-format="horizontal"
+             data-full-width-responsive="true"></ins>
         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
-    <p>İNVER WATER © 2026 | KYIV BY ALTUN</p>
+    <p>İNVER WATER © 2026 | BY ALTUN SOLUTIONS</p>
+    <p style="margin-top:5px; opacity:0.6;">Kyiv Premium Hydration Service</p>
 </footer>
 
 <script>
-const langData = {
-    tr: { greet: "Gününüz Aydın Olsun!", title: "Kyiv'in Sağlık Pınarı", rates: "DÖVİZ KURU (UAH ₴)", weather: "HAVA", aqi: "AQI İNDEKSİ", store: "RESMİ SATIŞ NOKTASI", map: "Yol Tarifi Al", calc: "SU İHTİYACI HESAPLA", kglbl: "Kilonuzu girin, günlük su ihtiyacınızı öğrenin:", drink: "İçmeniz gereken:" },
-    ua: { greet: "Доброго ранку!", title: "Джерело здоров'я Києва", rates: "КУРС ВАЛЮТ (UAH ₴)", weather: "ПОГОДА", aqi: "ІНДЕКС AQI", store: "ТОЧКА ПРОДАЖУ", map: "Маршрут", calc: "РОЗРАХУНОК ВОДИ", kglbl: "Введіть вагу, щоб дізнатися норму:", drink: "Треба пити:" },
-    en: { greet: "Welcome to Kyiv!", title: "Kyiv's Health Source", rates: "EXCHANGE RATE (UAH ₴)", weather: "WEATHER", aqi: "AIR QUALITY", store: "STORE INFO", map: "Get Directions", calc: "WATER CALCULATOR", kglbl: "Enter weight to learn daily need:", drink: "You should drink:" }
+const uiStrings = {
+    tr: { greet: "Gününüz Aydın Olsun!", title: "Kyiv'in Sağlık Pınarı", rates: "DÖVİZ KURU (UAH ₴)", weather: "HAVA", aqi: "HAVA KALİTESİ", store: "SATIŞ NOKTASI", map: "Haritada Aç", calc: "GÜNLÜK SU İHTİYACI", kg: "Kilonuzu girin:", drink: "İçmeniz gereken:" },
+    ua: { greet: "Доброго ранку!", title: "Джерело здоров'я Києва", rates: "КУРС ВАЛЮТ (UAH ₴)", weather: "ПОГОДА", aqi: "ЯКІСТЬ ПОВІТРЯ", store: "МАГАЗИН", map: "Відкрити карту", calc: "НОРМА ВОДИ", kg: "Введіть вагу:", drink: "Треба пити:" },
+    en: { greet: "Have a Great Day!", title: "Kyiv's Health Spring", rates: "EXCHANGE RATES (UAH ₴)", weather: "WEATHER", aqi: "AIR QUALITY", store: "STORE INFO", map: "Open Maps", calc: "DAILY WATER NEED", kg: "Enter weight:", drink: "You should drink:" }
 };
 
-let curL = 'tr';
+let activeLang = 'tr';
 
-async function fetchData() {
-    const key = '932e2d60c135c8cdb547ce78923a7ba8';
+async function updateAllData() {
+    const api_key = '932e2d60c135c8cdb547ce78923a7ba8';
     try {
-        // NBU Kur Verisi
+        // NBU Kur Çekme
         const exRes = await fetch('https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json');
         const exData = await exRes.json();
-        const u = exData.find(i => i.cc === 'USD').rate;
-        const e = exData.find(i => i.cc === 'EUR').rate;
+        const usd = exData.find(c => c.cc === 'USD').rate;
+        const eur = exData.find(c => c.cc === 'EUR').rate;
         
-        document.getElementById('usd-b').innerText = (u * 0.992).toFixed(2);
-        document.getElementById('usd-s').innerText = (u * 1.008).toFixed(2);
-        document.getElementById('eur-b').innerText = (e * 0.991).toFixed(2);
-        document.getElementById('eur-s').innerText = (e * 1.009).toFixed(2);
+        document.getElementById('u-buy').innerText = (usd * 0.993).toFixed(2);
+        document.getElementById('u-sell').innerText = (usd * 1.007).toFixed(2);
+        document.getElementById('e-buy').innerText = (eur * 0.992).toFixed(2);
+        document.getElementById('e-sell').innerText = (eur * 1.008).toFixed(2);
 
         // Hava Durumu
-        const wRes = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=Kyiv&units=metric&lang=${curL}&appid=${key}`);
+        const wRes = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=Kyiv&units=metric&lang=${activeLang}&appid=${api_key}`);
         const wData = await wRes.json();
         document.getElementById('w-temp').innerText = Math.round(wData.main.temp) + '°';
         document.getElementById('w-desc').innerText = wData.weather[0].description;
 
-        // AQI
-        const aRes = await fetch(`https://api.openweathermap.org/data/2.5/air_pollution?lat=50.45&lon=30.52&appid=${key}`);
+        // AQI Verisi
+        const aRes = await fetch(`https://api.openweathermap.org/data/2.5/air_pollution?lat=50.45&lon=30.52&appid=${api_key}`);
         const aData = await aRes.json();
-        const aqi = aData.list[0].main.aqi;
-        const statusMap = {
-            1: {t: "Mükemmel", c: "bg-low"},
-            2: {t: "İyi", c: "bg-low"},
-            3: {t: "Orta", c: "bg-mid"},
-            4: {t: "Zayıf", c: "bg-mid"},
-            5: {t: "Tehlikeli", c: "bg-mid"}
-        };
-        document.getElementById('aqi-val').innerText = aqi;
-        document.getElementById('aqi-status').innerText = statusMap[aqi].t;
-        document.getElementById('aqi-status').className = `badge ${statusMap[aqi].c}`;
-    } catch (err) { console.log("Hata:", err); }
+        const aqiVal = aData.list[0].main.aqi;
+        const aqiLabels = { 1: "Çok İyi", 2: "İyi", 3: "Orta", 4: "Kötü", 5: "Tehlikeli" };
+        document.getElementById('aqi-num').innerText = aqiVal;
+        document.getElementById('aqi-txt').innerText = aqiLabels[aqiVal] || "Analiz ediliyor";
+    } catch (err) { console.error("Veri hatası:", err); }
 }
 
-function calcWater() {
-    const w = document.getElementById('weight-input').value;
-    const res = document.getElementById('calc-res');
-    if(w > 20) {
-        const amount = (w * 0.035).toFixed(1);
-        res.innerText = `${langData[curL].drink} ${amount} Litre 💧`;
+function runCalc() {
+    const w = document.getElementById('weight').value;
+    const res = document.getElementById('res-val');
+    if(w > 25) {
+        const lit = (w * 0.033).toFixed(1);
+        res.innerText = `${uiStrings[activeLang].drink} ${lit} L 💧`;
         res.style.display = 'block';
     } else { res.style.display = 'none'; }
 }
 
 function changeL(l) {
-    curL = l;
-    document.querySelectorAll('.f-icon').forEach(i => i.classList.remove('active'));
-    document.getElementById(`f-${l}`).classList.add('active');
+    activeLang = l;
+    document.querySelectorAll('.f-icon').forEach(img => img.classList.remove('active'));
+    document.getElementById(`btn-${l}`).classList.add('active');
     
-    const d = langData[l];
-    document.getElementById('greeting').innerText = d.greet;
-    document.getElementById('h-title').innerText = d.title;
-    document.getElementById('l-rates').innerText = d.rates;
-    document.getElementById('l-weather').innerText = d.weather;
-    document.getElementById('l-aqi').innerText = d.aqi;
-    document.getElementById('l-store').innerText = d.store;
-    document.getElementById('txt-map').innerText = d.map;
-    document.getElementById('l-calc').innerText = d.calc;
-    document.getElementById('l-kg-label').innerText = d.kglbl;
+    const s = uiStrings[l];
+    document.getElementById('greeting').innerText = s.greet;
+    document.getElementById('h-title').innerText = s.title;
+    document.getElementById('l-rates').innerText = s.rates;
+    document.getElementById('l-weather').innerText = s.weather;
+    document.getElementById('l-aqi').innerText = s.aqi;
+    document.getElementById('l-store').innerText = s.store;
+    document.getElementById('txt-map').innerText = s.map;
+    document.getElementById('l-calc').innerText = s.calc;
+    document.getElementById('l-kg').innerText = s.kg;
     
-    fetchData();
+    updateAllData();
 }
 
-// Dinamik Karşılama
-const hr = new Date().getHours();
-if(hr < 12) { /* Günaydın */ } 
-else if(hr < 18) { langData.tr.greet = "İyi Günler Kyiv!"; langData.ua.greet = "Добрий день!"; }
-else { langData.tr.greet = "İyi Akşamlar Kyiv!"; langData.ua.greet = "Добрий вечір!"; }
+// Saat bazlı selamlama
+const hour = new Date().getHours();
+if (hour >= 18) { uiStrings.tr.greet = "İyi Akşamlar Kyiv!"; uiStrings.ua.greet = "Добрий вечір!"; }
+else if (hour >= 12) { uiStrings.tr.greet = "İyi Günler Kyiv!"; uiStrings.ua.greet = "Добрий день!"; }
 
+// Başlat
 changeL('tr');
-setInterval(fetchData, 300000); // 5 dk bir güncelle
+setInterval(updateAllData, 600000); // 10 dk bir yenile
 </script>
 
 </body>
