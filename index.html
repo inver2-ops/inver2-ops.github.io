@@ -84,20 +84,52 @@
             letter-spacing: -0.5px;
         }
 
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .user-info {
+            text-align: right;
+            font-size: 0.8rem;
+        }
+
+        .user-name {
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .user-phone {
+            color: #64748b;
+            font-size: 0.75rem;
+        }
+
+        .logout-btn {
+            background: var(--red);
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 0.75rem;
+        }
+
         .lang-flags {
             display: flex;
             gap: 6px;
         }
 
         .f-icon {
-            width: 32px;
-            height: 32px;
+            width: 36px;
+            height: 36px;
             cursor: pointer;
             border-radius: 50%;
             border: 2px solid transparent;
             transition: 0.3s;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            font-size: 1.2rem;
+            font-size: 1.4rem;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -170,6 +202,83 @@
             padding: 0 15px;
             max-width: 600px;
             margin: 0 auto;
+        }
+
+        /* AUTH MODAL */
+        .auth-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            z-index: 3000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .auth-overlay.active {
+            display: flex;
+        }
+
+        .auth-box {
+            background: white;
+            border-radius: 24px;
+            padding: 30px;
+            max-width: 400px;
+            width: 90%;
+            animation: slideUp 0.3s ease;
+        }
+
+        .auth-title {
+            font-size: 1.4rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+
+        .auth-input {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-family: inherit;
+            font-weight: 600;
+            margin-bottom: 14px;
+            transition: 0.3s;
+        }
+
+        .auth-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(10, 126, 200, 0.1);
+        }
+
+        .auth-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 800;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: 0.3s;
+        }
+
+        .auth-btn:active {
+            transform: scale(0.96);
+        }
+
+        .auth-step {
+            display: none;
+        }
+
+        .auth-step.active {
+            display: block;
         }
 
         /* TABS */
@@ -437,6 +546,11 @@
             to { opacity: 1; }
         }
 
+        @keyframes slideUp {
+            from { transform: translateY(30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
         .modal-content {
             background: white;
             border-radius: 24px;
@@ -446,11 +560,6 @@
             max-height: 90vh;
             overflow-y: auto;
             animation: slideUp 0.3s ease;
-        }
-
-        @keyframes slideUp {
-            from { transform: translateY(30px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
         }
 
         .modal-header {
@@ -509,6 +618,37 @@
             outline: none;
             border-color: var(--primary);
             box-shadow: 0 0 0 3px rgba(10, 126, 200, 0.1);
+        }
+
+        /* LITER SELECTOR */
+        .liter-selector {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 12px;
+        }
+
+        .liter-btn {
+            padding: 14px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            background: white;
+            font-weight: 800;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.3s;
+            color: var(--text-light);
+        }
+
+        .liter-btn.active {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            border-color: var(--primary);
+            box-shadow: 0 4px 12px rgba(10, 126, 200, 0.3);
+        }
+
+        .liter-btn:active {
+            transform: scale(0.96);
         }
 
         .calc-summary {
@@ -595,21 +735,6 @@
             animation: fadeIn 0.3s ease;
         }
 
-        /* LOADING */
-        .spinner {
-            display: inline-block;
-            width: 16px;
-            height: 16px;
-            border: 3px solid #e2e8f0;
-            border-top-color: var(--primary);
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
         /* RESPONSIVE */
         @media (max-width: 480px) {
             .hero-banner h1 {
@@ -627,21 +752,67 @@
             .card-full {
                 grid-column: span 1;
             }
+            .header-right {
+                flex-direction: column;
+                gap: 6px;
+            }
+            .user-info {
+                text-align: right;
+            }
         }
     </style>
 </head>
 <body>
+
+<div id="authOverlay" class="auth-overlay">
+    <div class="auth-box">
+        <!-- STEP 1: PHONE -->
+        <div id="authStep1" class="auth-step active">
+            <div class="auth-title">📱 Telefon Doğrula</div>
+            <input type="tel" id="phoneInput" class="auth-input" placeholder="+380 (XX) XXXX-XXXX" maxlength="20">
+            <button class="auth-btn" onclick="verifyPhone()">Doğrula</button>
+        </div>
+
+        <!-- STEP 2: NAME -->
+        <div id="authStep2" class="auth-step">
+            <div class="auth-title">👤 Adınız</div>
+            <input type="text" id="nameInput" class="auth-input" placeholder="Ad Soyad">
+            <button class="auth-btn" onclick="verifyName()">Devam Et</button>
+        </div>
+
+        <!-- STEP 3: CONFIRM -->
+        <div id="authStep3" class="auth-step">
+            <div class="auth-title">✅ Onayla</div>
+            <div style="background: #f0f7ff; padding: 14px; border-radius: 12px; margin-bottom: 14px;">
+                <div style="font-size: 0.85rem; color: #64748b; margin-bottom: 6px;">
+                    <div><strong>Telefon:</strong> <span id="confirmPhone"></span></div>
+                    <div><strong>Ad:</strong> <span id="confirmName"></span></div>
+                </div>
+            </div>
+            <button class="auth-btn" onclick="completeAuth()">Giriş Yap</button>
+        </div>
+    </div>
+</div>
 
 <header>
     <div class="logo-box" onclick="handleLogoTap()">
         <div class="logo-icon">💧</div>
         <span class="logo-text">İNVER WATER</span>
     </div>
-    <div class="lang-flags">
-        <div class="f-icon active" id="btn-tr" onclick="changeL('tr')" title="Türkçe">🇹🇷</div>
-        <div class="f-icon" id="btn-ua" onclick="changeL('ua')" title="Українська">🇺🇦</div>
-        <div class="f-icon" id="btn-en" onclick="changeL('en')" title="English">🇬🇧</div>
-        <div class="f-icon" id="btn-ru" onclick="changeL('ru')" title="Русский">🇷🇺</div>
+    <div class="header-right">
+        <div id="userSection" style="display: none;">
+            <div class="user-info">
+                <div class="user-name" id="headerUserName">-</div>
+                <div class="user-phone" id="headerUserPhone">-</div>
+            </div>
+            <button class="logout-btn" onclick="logout()">Çıkış</button>
+        </div>
+        <div class="lang-flags">
+            <div class="f-icon active" id="btn-tr" onclick="changeL('tr')" title="Türkçe">🇹🇷</div>
+            <div class="f-icon" id="btn-ua" onclick="changeL('ua')" title="Українська">🇺🇦</div>
+            <div class="f-icon" id="btn-en" onclick="changeL('en')" title="English">🇬🇧</div>
+            <div class="f-icon" id="btn-ru" onclick="changeL('ru')" title="Русский">🇷🇺</div>
+        </div>
     </div>
 </header>
 
@@ -668,9 +839,6 @@
         </button>
         <button class="tab-btn" onclick="switchTab('vending')" id="tab-vending">
             <i class="fas fa-water"></i> <span id="tab-vending-label">Otomatlar</span>
-        </button>
-        <button class="tab-btn" onclick="switchTab('orders')" id="tab-orders">
-            <i class="fas fa-history"></i> <span id="tab-orders-label">Geçmiş</span>
         </button>
     </div>
 
@@ -748,11 +916,6 @@
         <div id="machines-container" class="machines-grid"></div>
     </div>
 
-    <!-- ORDER HISTORY TAB -->
-    <div id="tab-orders-content" class="tab-content">
-        <div id="orders-list"></div>
-    </div>
-
 </div>
 
 <!-- ORDER MODAL -->
@@ -763,14 +926,6 @@
             <button class="modal-close" onclick="closeOrderModal()">×</button>
         </div>
         <form onsubmit="submitOrder(event)">
-            <div class="form-group">
-                <label id="label-name">Ad Soyad</label>
-                <input type="text" id="order-name" required>
-            </div>
-            <div class="form-group">
-                <label id="label-phone">Telefon</label>
-                <input type="tel" id="order-phone" required>
-            </div>
             <div class="form-group">
                 <label id="label-city">Şehir</label>
                 <input type="text" id="order-city" required>
@@ -787,10 +942,17 @@
                 <label id="label-flat">Daire</label>
                 <input type="text" id="order-flat">
             </div>
+
             <div class="form-group">
-                <label id="label-liters">Litre (L)</label>
-                <input type="number" id="order-liters" min="10" max="100" value="20" required oninput="calculateOrder()">
+                <label id="label-liters">Litre Seç</label>
+                <div class="liter-selector">
+                    <button type="button" class="liter-btn active" data-liters="5" onclick="selectLiters(5, this)">5L</button>
+                    <button type="button" class="liter-btn" data-liters="10" onclick="selectLiters(10, this)">10L</button>
+                    <button type="button" class="liter-btn" data-liters="19" onclick="selectLiters(19, this)">19L</button>
+                </div>
+                <input type="hidden" id="order-liters" value="5">
             </div>
+
             <div class="form-group">
                 <label id="label-deposits">Depozito Şişe</label>
                 <input type="number" id="order-deposits" min="0" max="20" value="0" oninput="calculateOrder()">
@@ -803,7 +965,7 @@
             <div class="calc-summary">
                 <div class="calc-line">
                     <span id="calc-liters-label">Litre:</span>
-                    <span id="calc-liters">20 L × 1.50 = 30 UAH</span>
+                    <span id="calc-liters">5 L × 1.50 = 7.50 UAH</span>
                 </div>
                 <div class="calc-line">
                     <span id="calc-deposits-label">Depozito:</span>
@@ -819,7 +981,7 @@
                 </div>
                 <div class="calc-total">
                     <span id="total-label">TOPLAM:</span>
-                    <span id="total-price">80 UAH</span>
+                    <span id="total-price">57.50 UAH</span>
                 </div>
             </div>
 
@@ -860,15 +1022,12 @@ const uiStrings = {
         unhealthy: "KÖTÜ",
         home: "Ana Sayfa",
         vending: "Otomatlar",
-        orders: "Geçmiş",
         orderTitle: "SU SİPARİŞ ET",
-        name: "Ad Soyad",
-        phone: "Telefon",
         city: "Şehir",
         street: "Sokak",
         building: "Bina",
         flat: "Daire",
-        liters: "Litre (L)",
+        liters: "Litre Seç",
         deposits: "Depozito Şişe",
         discount: "İndirim Kodu",
         placeOrder: "SİPARİŞ VER",
@@ -898,15 +1057,12 @@ const uiStrings = {
         unhealthy: "Погано",
         home: "Головна",
         vending: "Автомати",
-        orders: "Історія",
         orderTitle: "ЗАМОВИТИ ВОДУ",
-        name: "Ім'я Прізвище",
-        phone: "Телефон",
         city: "Місто",
         street: "Вулиця",
         building: "Будинок",
         flat: "Квартира",
-        liters: "Літри (L)",
+        liters: "Виберіть літри",
         deposits: "Депозит",
         discount: "Код знижки",
         placeOrder: "ЗАМОВИТИ",
@@ -936,15 +1092,12 @@ const uiStrings = {
         unhealthy: "Unhealthy",
         home: "Home",
         vending: "Vending",
-        orders: "History",
         orderTitle: "ORDER WATER",
-        name: "Full Name",
-        phone: "Phone",
         city: "City",
         street: "Street",
         building: "Building",
         flat: "Flat",
-        liters: "Liters (L)",
+        liters: "Select Liters",
         deposits: "Deposit Bottles",
         discount: "Discount Code",
         placeOrder: "PLACE ORDER",
@@ -974,15 +1127,12 @@ const uiStrings = {
         unhealthy: "Плохо",
         home: "Главная",
         vending: "Автоматы",
-        orders: "История",
         orderTitle: "ЗАКАЗАТЬ ВОДУ",
-        name: "ФИО",
-        phone: "Телефон",
         city: "Город",
         street: "Улица",
         building: "Дом",
         flat: "Квартира",
-        liters: "Литры (L)",
+        liters: "Выберите литры",
         deposits: "Депозит",
         discount: "Код скидки",
         placeOrder: "ЗАКАЗАТЬ",
@@ -1002,10 +1152,70 @@ let activeLang = 'tr';
 let logoTapCount = 0;
 let logoTapTimer = null;
 let appConfig = null;
-let orderHistory = JSON.parse(localStorage.getItem('orderHistory') || '[]');
+let currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
 
 const WORKER_URL = 'https://inver2.inver2.workers.dev';
 const API_KEY = '932e2d60c135c8cdb547ce78923a7ba8';
+
+// Auth System
+function verifyPhone() {
+    const phone = document.getElementById('phoneInput').value.trim();
+    if (!phone || phone.length < 10) {
+        alert(activeLang === 'tr' ? 'Geçerli telefon numarası girin' : 'Enter valid phone');
+        return;
+    }
+    document.getElementById('authStep1').classList.remove('active');
+    document.getElementById('authStep2').classList.add('active');
+    document.getElementById('nameInput').focus();
+}
+
+function verifyName() {
+    const name = document.getElementById('nameInput').value.trim();
+    if (!name || name.length < 2) {
+        alert(activeLang === 'tr' ? 'Adınızı girin' : 'Enter your name');
+        return;
+    }
+    document.getElementById('confirmPhone').innerText = document.getElementById('phoneInput').value;
+    document.getElementById('confirmName').innerText = name;
+    document.getElementById('authStep2').classList.remove('active');
+    document.getElementById('authStep3').classList.add('active');
+}
+
+function completeAuth() {
+    const phone = document.getElementById('phoneInput').value;
+    const name = document.getElementById('nameInput').value;
+    currentUser = { phone, name };
+    localStorage.setItem('currentUser', JSON.stringify(currentUser));
+    document.getElementById('authOverlay').classList.remove('active');
+    updateUserUI();
+}
+
+function logout() {
+    currentUser = null;
+    localStorage.removeItem('currentUser');
+    document.getElementById('authOverlay').classList.add('active');
+    resetAuthForm();
+    updateUserUI();
+}
+
+function resetAuthForm() {
+    document.getElementById('phoneInput').value = '';
+    document.getElementById('nameInput').value = '';
+    document.getElementById('authStep1').classList.add('active');
+    document.getElementById('authStep2').classList.remove('active');
+    document.getElementById('authStep3').classList.remove('active');
+}
+
+function updateUserUI() {
+    const userSection = document.getElementById('userSection');
+    if (currentUser) {
+        userSection.style.display = 'flex';
+        document.getElementById('headerUserName').innerText = currentUser.name;
+        document.getElementById('headerUserPhone').innerText = currentUser.phone;
+    } else {
+        userSection.style.display = 'none';
+    }
+}
 
 // Fetch config from Worker
 async function fetchConfig() {
@@ -1042,33 +1252,6 @@ function loadVendingMachines() {
             </button>
         `;
         container.appendChild(card);
-    });
-}
-
-function loadOrderHistory() {
-    const container = document.getElementById('orders-list');
-    container.innerHTML = '';
-    
-    if (orderHistory.length === 0) {
-        container.innerHTML = '<p style="text-align: center; color: #94a3b8; padding: 20px;">Sipariş geçmişi boş</p>';
-        return;
-    }
-    
-    orderHistory.forEach(order => {
-        const item = document.createElement('div');
-        item.style.cssText = 'background: #f8fafc; padding: 12px; border-radius: 12px; margin-bottom: 10px; border-left: 4px solid var(--primary);';
-        item.innerHTML = `
-            <div style="display: flex; justify-content: space-between; font-weight: 700; margin-bottom: 6px;">
-                <span>#${order.id}</span>
-                <span>${new Date(order.date).toLocaleDateString()}</span>
-            </div>
-            <div style="font-size: 0.85rem; color: #64748b;">
-                <div>👤 ${order.name} | 📞 ${order.phone}</div>
-                <div>📍 ${order.street}, ${order.city}</div>
-                <div>💧 ${order.liters}L + ${order.deposits} Depozito = ${order.total} UAH</div>
-            </div>
-        `;
-        container.appendChild(item);
     });
 }
 
@@ -1136,11 +1319,8 @@ function changeL(l) {
     
     document.getElementById('tab-home-label').innerText = s.home;
     document.getElementById('tab-vending-label').innerText = s.vending;
-    document.getElementById('tab-orders-label').innerText = s.orders;
     
     document.getElementById('order-modal-title').innerText = s.orderTitle;
-    document.getElementById('label-name').innerText = s.name;
-    document.getElementById('label-phone').innerText = s.phone;
     document.getElementById('label-city').innerText = s.city;
     document.getElementById('label-street').innerText = s.street;
     document.getElementById('label-building').innerText = s.building;
@@ -1167,14 +1347,23 @@ function switchTab(tab) {
     document.getElementById(`tab-${tab}-content`).classList.add('active');
     document.getElementById(`tab-${tab}`).classList.add('active');
     
-    if (tab === 'orders') {
-        loadOrderHistory();
-    } else if (tab === 'vending') {
+    if (tab === 'vending') {
         loadVendingMachines();
     }
 }
 
+function selectLiters(liters, btn) {
+    document.querySelectorAll('.liter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('order-liters').value = liters;
+    calculateOrder();
+}
+
 function openOrderModal() {
+    if (!currentUser) {
+        document.getElementById('authOverlay').classList.add('active');
+        return;
+    }
     document.getElementById('orderModal').classList.add('active');
     calculateOrder();
 }
@@ -1189,7 +1378,7 @@ function openMaps(coords) {
 }
 
 function calculateOrder() {
-    const liters = parseInt(document.getElementById('order-liters').value) || 20;
+    const liters = parseInt(document.getElementById('order-liters').value) || 5;
     const deposits = parseInt(document.getElementById('order-deposits').value) || 0;
     const litrPrice = appConfig?.litrPrice || 1.5;
     const depositPrice = appConfig?.depositPrice || 150;
@@ -1199,7 +1388,7 @@ function calculateOrder() {
     const depositsTotal = deposits * depositPrice;
     let total = litersTotal + depositsTotal + deliveryFee;
     
-    document.getElementById('calc-liters').innerText = `${liters} L × ${litrPrice} = ${litersTotal.toFixed(0)} UAH`;
+    document.getElementById('calc-liters').innerText = `${liters} L × ${litrPrice} = ${litersTotal.toFixed(2)} UAH`;
     document.getElementById('calc-deposits').innerText = `${deposits} × ${depositPrice} = ${depositsTotal} UAH`;
     document.getElementById('calc-delivery').innerText = `${deliveryFee} UAH`;
     
@@ -1210,7 +1399,7 @@ function calculateOrder() {
             const discount = code.type === 'percent' ? (total * code.value / 100) : code.value;
             total -= discount;
             document.getElementById('calc-discount').style.display = 'flex';
-            document.getElementById('calc-discount-value').innerText = `-${discount.toFixed(0)} UAH`;
+            document.getElementById('calc-discount-value').innerText = `-${discount.toFixed(2)} UAH`;
         } else {
             document.getElementById('calc-discount').style.display = 'none';
         }
@@ -1218,17 +1407,22 @@ function calculateOrder() {
         document.getElementById('calc-discount').style.display = 'none';
     }
     
-    document.getElementById('total-price').innerText = `${total.toFixed(0)} UAH`;
+    document.getElementById('total-price').innerText = `${total.toFixed(2)} UAH`;
 }
 
 function submitOrder(event) {
     event.preventDefault();
     
+    if (!currentUser) {
+        alert(activeLang === 'tr' ? 'Lütfen giriş yapın' : 'Please login');
+        return;
+    }
+    
     const order = {
         id: 'ORD-' + Date.now(),
         date: new Date().toISOString(),
-        name: document.getElementById('order-name').value,
-        phone: document.getElementById('order-phone').value,
+        name: currentUser.name,
+        phone: currentUser.phone,
         city: document.getElementById('order-city').value,
         street: document.getElementById('order-street').value,
         building: document.getElementById('order-building').value,
@@ -1237,9 +1431,6 @@ function submitOrder(event) {
         deposits: parseInt(document.getElementById('order-deposits').value),
         total: parseFloat(document.getElementById('total-price').innerText)
     };
-    
-    orderHistory.unshift(order);
-    localStorage.setItem('orderHistory', JSON.stringify(orderHistory));
     
     // Send to Worker
     fetch(WORKER_URL + '/place-order', {
@@ -1251,6 +1442,8 @@ function submitOrder(event) {
     alert(activeLang === 'tr' ? 'Sipariş başarıyla alındı!' : activeLang === 'ua' ? 'Замовлення прийнято!' : activeLang === 'en' ? 'Order placed successfully!' : 'Заказ принят!');
     closeOrderModal();
     document.querySelector('form').reset();
+    document.querySelectorAll('.liter-btn').forEach(b => b.classList.remove('active'));
+    document.querySelector('.liter-btn').classList.add('active');
 }
 
 function handleLogoTap() {
@@ -1279,6 +1472,12 @@ if (hour >= 18) {
 // Initialize
 changeL('tr');
 fetchConfig();
+updateUserUI();
+
+if (!currentUser) {
+    document.getElementById('authOverlay').classList.add('active');
+}
+
 setInterval(updateAllData, 600000); // 10 minutes
 setInterval(fetchConfig, 60000); // 1 minute - sync with Worker
 </script>
