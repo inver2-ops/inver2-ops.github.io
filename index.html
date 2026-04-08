@@ -6,9 +6,8 @@
     <title>İNVER WATER | Kyiv Premium</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6765480393265982" crossorigin="anonymous"></script>
-
+    
     <style>
         :root { 
             --p: #0077be; --s: #00d2ff; --bg: #f8fafc; --card: #ffffff; 
@@ -18,7 +17,7 @@
         body { background: var(--bg); color: var(--text); line-height: 1.6; padding-bottom: 20px; }
 
         header { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 15px rgba(0,0,0,0.03); position: sticky; top: 0; z-index: 1000; }
-        .logo-box { display: flex; align-items: center; gap: 8px; }
+        .logo-box { display: flex; align-items: center; gap: 8px; cursor: pointer; }
         .logo-text { font-weight: 800; font-size: 1.2rem; color: var(--p); letter-spacing: -0.5px; }
         .lang-flags { display: flex; gap: 8px; }
         .f-icon { width: 30px; height: 30px; cursor: pointer; border-radius: 50%; border: 2px solid transparent; transition: 0.3s; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
@@ -30,7 +29,6 @@
 
         .container { padding: 0 15px; max-width: 600px; margin: 0 auto; }
 
-        /* REKLAM ALANI STİLİ */
         .ad-slot-container { margin: 15px 0; background: #fff; border-radius: 16px; padding: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.04); min-height: 100px; display: flex; align-items: center; justify-content: center; overflow: hidden; border: 1px dashed #cbd5e1; }
 
         .dash-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
@@ -52,18 +50,67 @@
         .calc-box { width: 100%; padding: 14px; border-radius: 15px; border: 2px solid #bae6fd; margin-top: 12px; font-size: 1.1rem; font-weight: 800; text-align: center; color: var(--p); outline: none; }
 
         .store-info { border: 2px solid var(--p); margin-top: 20px; }
-        .map-link-btn { background: var(--p); color: white; padding: 18px; border-radius: 18px; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 10px; font-weight: 800; margin-top: 15px; transition: 0.3s; }
+        .map-link-btn { background: var(--p); color: white; padding: 18px; border-radius: 18px; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 10px; font-weight: 800; margin-top: 15px; transition: 0.3s; border: none; cursor: pointer; }
         .map-link-btn:active { transform: scale(0.96); }
 
-        footer { text-align: center; padding: 40px 20px; font-size: 0.75rem; color: #94a3b8; font-weight: 700; }
         .badge { padding: 5px 14px; border-radius: 12px; font-size: 0.7rem; font-weight: 800; margin-top: 10px; display: inline-block; }
         .status-ok { background: #dcfce7; color: #166534; }
+
+        /* MODAL STİLLERİ */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 2000; align-items: center; justify-content: center; }
+        .modal.active { display: flex; }
+        .modal-content { background: white; border-radius: 24px; padding: 24px; max-width: 500px; width: 90%; max-height: 90vh; overflow-y: auto; }
+        .modal-header { font-size: 1.3rem; font-weight: 800; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; }
+        .modal-close { background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #94a3b8; }
+        .form-group { margin-bottom: 14px; }
+        .form-group label { display: block; font-size: 0.75rem; font-weight: 800; color: #64748b; text-transform: uppercase; margin-bottom: 6px; }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 12px; border: 2px solid #e2e8f0; border-radius: 12px; font-size: 1rem; font-family: inherit; }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: var(--p); }
+        .btn { padding: 14px 20px; border-radius: 12px; border: none; font-weight: 800; cursor: pointer; transition: 0.3s; font-size: 1rem; }
+        .btn-primary { background: var(--p); color: white; }
+        .btn-primary:hover { background: #0060a0; }
+        .btn-secondary { background: #e2e8f0; color: #0f172a; }
+        .btn-secondary:hover { background: #cbd5e1; }
+        .btn-danger { background: var(--red); color: white; }
+        .btn-danger:hover { background: #dc2626; }
+
+        /* OTOMAT KARTLARI */
+        .machines-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; margin-top: 20px; }
+        .machine-card { background: white; border-radius: 20px; padding: 16px; border: 2px solid #e2e8f0; }
+        .machine-status { display: inline-block; padding: 6px 12px; border-radius: 8px; font-size: 0.7rem; font-weight: 800; margin-top: 8px; }
+        .status-active { background: #dcfce7; color: #166534; }
+        .status-maintenance { background: #fef3c7; color: #92400e; }
+
+        /* ADMIN PANEL */
+        .admin-tabs { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+        .admin-tab { padding: 10px 16px; border-radius: 10px; border: none; cursor: pointer; font-weight: 700; background: #e2e8f0; color: #0f172a; transition: 0.3s; }
+        .admin-tab.active { background: var(--p); color: white; }
+
+        /* SIPARIŞ GEÇMİŞİ */
+        .order-item { background: #f8fafc; padding: 12px; border-radius: 12px; margin-bottom: 10px; border-left: 4px solid var(--p); }
+        .order-item-header { display: flex; justify-content: space-between; font-weight: 700; margin-bottom: 6px; }
+        .order-item-details { font-size: 0.85rem; color: #64748b; }
+
+        footer { text-align: center; padding: 40px 20px; font-size: 0.75rem; color: #94a3b8; font-weight: 700; }
+
+        /* RESPONSIVE */
+        @media (max-width: 480px) {
+            .hero-banner h1 { font-size: 1.4rem; }
+            .big-val { font-size: 1.8rem; }
+            .modal-content { width: 95%; }
+        }
+
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+
+        .spinner { display: inline-block; width: 16px; height: 16px; border: 3px solid #e2e8f0; border-top-color: var(--p); border-radius: 50%; animation: spin 0.8s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
 
 <header>
-    <div class="logo-box">
+    <div class="logo-box" onclick="handleLogoTap()">
         <i class="fas fa-droplet fa-lg" style="color: var(--p);"></i>
         <span class="logo-text">İNVER WATER</span>
     </div>
@@ -71,6 +118,7 @@
         <img src="https://flagcdn.com/w80/tr.png" class="f-icon active" id="btn-tr" onclick="changeL('tr')">
         <img src="https://flagcdn.com/w80/ua.png" class="f-icon" id="btn-ua" onclick="changeL('ua')">
         <img src="https://flagcdn.com/w80/gb.png" class="f-icon" id="btn-en" onclick="changeL('en')">
+        <img src="https://flagcdn.com/w80/ru.png" class="f-icon" id="btn-ru" onclick="changeL('ru')">
     </div>
 </header>
 
@@ -83,91 +131,184 @@
 <div class="container">
 
     <div class="ad-slot-container">
-        <ins class="adsbygoogle"
-             style="display:block"
-             data-ad-client="ca-app-pub-6765480393265982"
-             data-ad-slot="3687506983"
-             data-ad-format="horizontal"
-             data-full-width-responsive="true"></ins>
+        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-app-pub-6765480393265982" data-ad-slot="3687506983" data-ad-format="horizontal" data-full-width-responsive="true"></ins>
         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
 
-    <div class="dash-grid">
-        <div class="card card-full">
-            <div class="c-label"><i class="fas fa-money-bill-trend-up"></i> <span id="l-rates">DÖVİZ KURU (UAH ₴)</span></div>
-            <table class="rate-table">
-                <tr>
-                    <td class="cur-name">🇺🇸 DOLLAR (USD)</td>
-                    <td class="val-up" id="u-buy">--.--</td>
-                    <td class="val-down" id="u-sell">--.--</td>
-                </tr>
-                <tr>
-                    <td class="cur-name">🇪🇺 EURO (EUR)</td>
-                    <td class="val-up" id="e-buy">--.--</td>
-                    <td class="val-down" id="e-sell">--.--</td>
-                </tr>
-            </table>
+    <!-- TAB NAVIGATION -->
+    <div style="display: flex; gap: 8px; margin: 20px 0; flex-wrap: wrap;">
+        <button class="admin-tab active" onclick="switchTab('home')" id="tab-home">
+            <i class="fas fa-home"></i> <span id="tab-home-label">Ana Sayfa</span>
+        </button>
+        <button class="admin-tab" onclick="switchTab('vending')" id="tab-vending">
+            <i class="fas fa-water"></i> <span id="tab-vending-label">Otomatlar</span>
+        </button>
+        <button class="admin-tab" onclick="switchTab('orders')" id="tab-orders">
+            <i class="fas fa-history"></i> <span id="tab-orders-label">Geçmiş</span>
+        </button>
+    </div>
+
+    <!-- HOME TAB -->
+    <div id="tab-home-content" class="tab-content active">
+        <div class="dash-grid">
+            <div class="card card-full">
+                <div class="c-label"><i class="fas fa-money-bill-trend-up"></i> <span id="l-rates">DÖVİZ KURU (UAH ₴)</span></div>
+                <table class="rate-table">
+                    <tr>
+                        <td class="cur-name">🇺🇸 DOLLAR (USD)</td>
+                        <td class="val-up" id="u-buy">--.--</td>
+                        <td class="val-down" id="u-sell">--.--</td>
+                    </tr>
+                    <tr>
+                        <td class="cur-name">🇪🇺 EURO (EUR)</td>
+                        <td class="val-up" id="e-buy">--.--</td>
+                        <td class="val-down" id="e-sell">--.--</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="card card-full" style="padding:5px; border:none; background:transparent;">
+                <ins class="adsbygoogle" style="display:block" data-ad-client="ca-app-pub-6765480393265982" data-ad-slot="3687506983" data-ad-format="auto" data-full-width-responsive="true"></ins>
+                <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+            </div>
+
+            <div class="card">
+                <div class="c-label"><i class="fas fa-cloud-sun"></i> <span id="l-weather">HAVA</span></div>
+                <div class="big-val" id="w-temp">--°</div>
+                <div class="sub-info" id="w-desc">Kyiv, UA</div>
+            </div>
+
+            <div class="card">
+                <div class="c-label"><i class="fas fa-leaf"></i> <span id="l-aqi">HAVA KALİTESİ</span></div>
+                <div class="big-val" id="aqi-num">--</div>
+                <div class="badge status-ok" id="aqi-txt">İYİ</div>
+            </div>
+
+            <div class="card card-full water-tool">
+                <div class="c-label"><i class="fas fa-faucet-drip"></i> <span id="l-calc">GÜNLÜK SU İHTİYACI</span></div>
+                <div class="sub-info" id="l-kg">Kilonuzu girin:</div>
+                <input type="number" id="weight" class="calc-box" placeholder="KG" oninput="runCalc()">
+                <div id="res-val" style="margin-top:12px; font-weight:900; color:var(--p); font-size:1.2rem; display:none;"></div>
+            </div>
         </div>
 
-        <div class="card card-full" style="padding:5px; border:none; background:transparent;">
-            <ins class="adsbygoogle"
-                 style="display:block"
-                 data-ad-client="ca-app-pub-6765480393265982"
-                 data-ad-slot="3687506983"
-                 data-ad-format="auto"
-                 data-full-width-responsive="true"></ins>
+        <div class="ad-slot-container">
+            <ins class="adsbygoogle" style="display:block" data-ad-client="ca-app-pub-6765480393265982" data-ad-slot="3687506983" data-ad-format="auto" data-full-width-responsive="true"></ins>
             <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
         </div>
 
-        <div class="card">
-            <div class="c-label"><i class="fas fa-cloud-sun"></i> <span id="l-weather">HAVA</span></div>
-            <div class="big-val" id="w-temp">--°</div>
-            <div class="sub-info" id="w-desc">Kyiv, UA</div>
-        </div>
-
-        <div class="card">
-            <div class="c-label"><i class="fas fa-leaf"></i> <span id="l-aqi">HAVA KALİTESİ</span></div>
-            <div class="big-val" id="aqi-num">--</div>
-            <div class="badge status-ok" id="aqi-txt">İYİ</div>
-        </div>
-
-        <div class="card card-full water-tool">
-            <div class="c-label"><i class="fas fa-faucet-drip"></i> <span id="l-calc">GÜNLÜK SU İHTİYACI</span></div>
-            <div class="sub-info" id="l-kg">Kilonuzu girin:</div>
-            <input type="number" id="weight" class="calc-box" placeholder="KG" oninput="runCalc()">
-            <div id="res-val" style="margin-top:12px; font-weight:900; color:var(--p); font-size:1.2rem; display:none;"></div>
+        <div class="card card-full store-info">
+            <div class="c-label"><i class="fas fa-shop"></i> <span id="l-store">SATIŞ NOKTASI</span></div>
+            <div style="font-weight:900; font-size:1.2rem; color:var(--p);">İNVER WATER - Oleksandry Ekster St, 8</div>
+            <div class="sub-info" style="margin-top:5px;">Troieshchyna, Kyiv, Ukraine</div>
+            <button class="map-link-btn" onclick="openMaps('50.5283,30.6033')">
+                <i class="fas fa-map-location-dot"></i> <span id="txt-map">Haritada Aç</span>
+            </button>
+            <button class="map-link-btn" style="background: var(--green); margin-top: 10px;" onclick="openOrderModal()">
+                <i class="fas fa-shopping-cart"></i> <span id="order-btn">SU SİPARİŞ ET</span>
+            </button>
         </div>
     </div>
 
-    <div class="ad-slot-container">
-        <ins class="adsbygoogle"
-             style="display:block"
-             data-ad-client="ca-app-pub-6765480393265982"
-             data-ad-slot="3687506983"
-             data-ad-format="auto"
-             data-full-width-responsive="true"></ins>
-        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    <!-- VENDING MACHINES TAB -->
+    <div id="tab-vending-content" class="tab-content">
+        <div id="machines-container" class="machines-grid"></div>
     </div>
 
-    <div class="card card-full store-info">
-        <div class="c-label"><i class="fas fa-shop"></i> <span id="l-store">SATIŞ NOKTASI</span></div>
-        <div style="font-weight:900; font-size:1.2rem; color:var(--p);">İNVER WATER - Oleksandry Ekster St, 8</div>
-        <div class="sub-info" style="margin-top:5px;">Troieshchyna, Kyiv, Ukraine</div>
-        <a href="https://www.google.com/maps/search/?api=1&query=50.5283,30.6033" target="_blank" class="map-link-btn" id="btn-map">
-            <i class="fas fa-map-location-dot"></i> <span id="txt-map">Haritada Aç</span>
-        </a>
+    <!-- ORDER HISTORY TAB -->
+    <div id="tab-orders-content" class="tab-content">
+        <div id="orders-list"></div>
     </div>
 
 </div>
 
+<!-- ORDER MODAL -->
+<div id="orderModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <span id="order-modal-title">SU SİPARİŞ ET</span>
+            <button class="modal-close" onclick="closeOrderModal()">×</button>
+        </div>
+        <form onsubmit="submitOrder(event)">
+            <div class="form-group">
+                <label id="label-name">Ad Soyad</label>
+                <input type="text" id="order-name" required>
+            </div>
+            <div class="form-group">
+                <label id="label-phone">Telefon</label>
+                <input type="tel" id="order-phone" required>
+            </div>
+            <div class="form-group">
+                <label id="label-city">Şehir</label>
+                <input type="text" id="order-city" required>
+            </div>
+            <div class="form-group">
+                <label id="label-street">Sokak</label>
+                <input type="text" id="order-street" required>
+            </div>
+            <div class="form-group">
+                <label id="label-building">Bina</label>
+                <input type="text" id="order-building" required>
+            </div>
+            <div class="form-group">
+                <label id="label-flat">Daire</label>
+                <input type="text" id="order-flat">
+            </div>
+            <div class="form-group">
+                <label id="label-liters">Litre (L)</label>
+                <input type="number" id="order-liters" min="10" max="100" value="20" required>
+            </div>
+            <div class="form-group">
+                <label id="label-deposits">Depozito Şişe</label>
+                <input type="number" id="order-deposits" min="0" max="20" value="0">
+            </div>
+            <div class="form-group">
+                <label id="label-discount">İndirim Kodu (Opsiyonel)</label>
+                <input type="text" id="order-discount" placeholder="INVER10">
+            </div>
+            <div style="background: #f0f7ff; padding: 12px; border-radius: 12px; margin-bottom: 14px;">
+                <div style="font-size: 0.85rem; color: #64748b; margin-bottom: 8px;">
+                    <span id="calc-liters">Litre: 20 L × 1.50 = 30 UAH</span><br>
+                    <span id="calc-deposits">Depozito: 0 × 150 = 0 UAH</span><br>
+                    <span id="calc-delivery">Teslimat: 50 UAH</span><br>
+                    <span id="calc-discount" style="color: var(--green); display: none;">İndirim: -0 UAH</span>
+                </div>
+                <div style="font-weight: 900; font-size: 1.3rem; color: var(--p);">
+                    <span id="total-price">TOPLAM: 80 UAH</span>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary" style="width: 100%; margin-bottom: 10px;">
+                <i class="fas fa-check"></i> <span id="btn-place-order">SİPARİŞ VER</span>
+            </button>
+            <button type="button" class="btn btn-secondary" style="width: 100%;" onclick="closeOrderModal()">
+                <span id="btn-cancel">İPTAL</span>
+            </button>
+        </form>
+    </div>
+</div>
+
+<!-- ADMIN PANEL MODAL -->
+<div id="adminModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <span id="admin-title">YÖNETİCİ PANELİ</span>
+            <button class="modal-close" onclick="closeAdmin()">×</button>
+        </div>
+        <div id="admin-content">
+            <div class="form-group">
+                <label id="admin-password-label">Şifre</label>
+                <input type="password" id="admin-password-input" placeholder="Şifreyi girin">
+            </div>
+            <button class="btn btn-primary" style="width: 100%;" onclick="checkAdminPassword()">
+                <span id="admin-unlock">KİLİDİ AÇ</span>
+            </button>
+        </div>
+    </div>
+</div>
+
 <footer>
     <div style="margin-bottom: 20px;">
-        <ins class="adsbygoogle"
-             style="display:block"
-             data-ad-client="ca-app-pub-6765480393265982"
-             data-ad-slot="3687506983"
-             data-ad-format="horizontal"
-             data-full-width-responsive="true"></ins>
+        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-app-pub-6765480393265982" data-ad-slot="3687506983" data-ad-format="horizontal" data-full-width-responsive="true"></ins>
         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
     <p>İNVER WATER © 2026 | BY ALTUN SOLUTIONS</p>
@@ -176,17 +317,230 @@
 
 <script>
 const uiStrings = {
-    tr: { greet: "Gününüz Aydın Olsun!", title: "Kyiv'in Sağlık Pınarı", rates: "DÖVİZ KURU (UAH ₴)", weather: "HAVA", aqi: "HAVA KALİTESİ", store: "SATIŞ NOKTASI", map: "Haritada Aç", calc: "GÜNLÜK SU İHTİYACI", kg: "Kilonuzu girin:", drink: "İçmeniz gereken:" },
-    ua: { greet: "Доброго ранку!", title: "Джерело здоров'я Києва", rates: "КУРС ВАЛЮТ (UAH ₴)", weather: "ПОГОДА", aqi: "ЯКІСТЬ ПОВІТРЯ", store: "МАГАЗИН", map: "Відкрити карту", calc: "НОРМА ВОДИ", kg: "Введіть вагу:", drink: "Треба пити:" },
-    en: { greet: "Have a Great Day!", title: "Kyiv's Health Spring", rates: "EXCHANGE RATES (UAH ₴)", weather: "WEATHER", aqi: "AIR QUALITY", store: "STORE INFO", map: "Open Maps", calc: "DAILY WATER NEED", kg: "Enter weight:", drink: "You should drink:" }
+    tr: {
+        greet: "Gününüz Aydın Olsun!",
+        title: "Kyiv'in Sağlık Pınarı",
+        rates: "DÖVİZ KURU (UAH ₴)",
+        weather: "HAVA",
+        aqi: "HAVA KALİTESİ",
+        store: "SATIŞ NOKTASI",
+        map: "Haritada Aç",
+        calc: "GÜNLÜK SU İHTİYACI",
+        kg: "Kilonuzu girin:",
+        drink: "İçmeniz gereken:",
+        good: "İYİ",
+        moderate: "ORTA",
+        unhealthy: "KÖTÜ",
+        home: "Ana Sayfa",
+        vending: "Otomatlar",
+        orders: "Geçmiş",
+        orderTitle: "SU SİPARİŞ ET",
+        name: "Ad Soyad",
+        phone: "Telefon",
+        city: "Şehir",
+        street: "Sokak",
+        building: "Bina",
+        flat: "Daire",
+        liters: "Litre (L)",
+        deposits: "Depozito Şişe",
+        discount: "İndirim Kodu",
+        placeOrder: "SİPARİŞ VER",
+        cancel: "İPTAL",
+        adminTitle: "YÖNETİCİ PANELİ",
+        adminPassword: "Şifre",
+        adminUnlock: "KİLİDİ AÇ",
+        active: "Aktif",
+        maintenance: "Bakım",
+        orderBtn: "SU SİPARİŞ ET"
+    },
+    ua: {
+        greet: "Доброго ранку!",
+        title: "Джерело здоров'я Києва",
+        rates: "КУРС ВАЛЮТ (UAH ₴)",
+        weather: "ПОГОДА",
+        aqi: "ЯКІСТЬ ПОВІТРЯ",
+        store: "МАГАЗИН",
+        map: "Відкрити карту",
+        calc: "НОРМА ВОДИ",
+        kg: "Введіть вагу:",
+        drink: "Треба пити:",
+        good: "Добре",
+        moderate: "Помірно",
+        unhealthy: "Погано",
+        home: "Головна",
+        vending: "Автомати",
+        orders: "Історія",
+        orderTitle: "ЗАМОВИТИ ВОДУ",
+        name: "Ім'я Прізвище",
+        phone: "Телефон",
+        city: "Місто",
+        street: "Вулиця",
+        building: "Будинок",
+        flat: "Квартира",
+        liters: "Літри (L)",
+        deposits: "Депозит",
+        discount: "Код знижки",
+        placeOrder: "ЗАМОВИТИ",
+        cancel: "СКАСУВАТИ",
+        adminTitle: "АДМІН ПАНЕЛЬ",
+        adminPassword: "Пароль",
+        adminUnlock: "РОЗБЛОКУВАТИ",
+        active: "Активний",
+        maintenance: "Обслуговування",
+        orderBtn: "ЗАМОВИТИ ВОДУ"
+    },
+    en: {
+        greet: "Have a Great Day!",
+        title: "Kyiv's Health Spring",
+        rates: "EXCHANGE RATES (UAH ₴)",
+        weather: "WEATHER",
+        aqi: "AIR QUALITY",
+        store: "STORE INFO",
+        map: "Open Maps",
+        calc: "DAILY WATER NEED",
+        kg: "Enter weight:",
+        drink: "You should drink:",
+        good: "Good",
+        moderate: "Moderate",
+        unhealthy: "Unhealthy",
+        home: "Home",
+        vending: "Vending",
+        orders: "History",
+        orderTitle: "ORDER WATER",
+        name: "Full Name",
+        phone: "Phone",
+        city: "City",
+        street: "Street",
+        building: "Building",
+        flat: "Flat",
+        liters: "Liters (L)",
+        deposits: "Deposit Bottles",
+        discount: "Discount Code",
+        placeOrder: "PLACE ORDER",
+        cancel: "CANCEL",
+        adminTitle: "ADMIN PANEL",
+        adminPassword: "Password",
+        adminUnlock: "UNLOCK",
+        active: "Active",
+        maintenance: "Maintenance",
+        orderBtn: "ORDER WATER"
+    },
+    ru: {
+        greet: "Доброго утра!",
+        title: "Источник здоровья Киева",
+        rates: "КУРС ВАЛЮТ (UAH ₴)",
+        weather: "ПОГОДА",
+        aqi: "КАЧЕСТВО ВОЗДУХА",
+        store: "МАГАЗИН",
+        map: "Открыть карту",
+        calc: "НОРМА ВОДЫ",
+        kg: "Введите вес:",
+        drink: "Нужно пить:",
+        good: "Хорошо",
+        moderate: "Умеренно",
+        unhealthy: "Плохо",
+        home: "Главная",
+        vending: "Автоматы",
+        orders: "История",
+        orderTitle: "ЗАКАЗАТЬ ВОДУ",
+        name: "ФИО",
+        phone: "Телефон",
+        city: "Город",
+        street: "Улица",
+        building: "Дом",
+        flat: "Квартира",
+        liters: "Литры (L)",
+        deposits: "Депозит",
+        discount: "Код скидки",
+        placeOrder: "ЗАКАЗАТЬ",
+        cancel: "ОТМЕНА",
+        adminTitle: "АДМИН ПАНЕЛЬ",
+        adminPassword: "Пароль",
+        adminUnlock: "РАЗБЛОКИРОВАТЬ",
+        active: "Активный",
+        maintenance: "Обслуживание",
+        orderBtn: "ЗАКАЗАТЬ ВОДУ"
+    }
 };
 
 let activeLang = 'tr';
+let logoTapCount = 0;
+let logoTapTimer = null;
+let appConfig = null;
+let orderHistory = JSON.parse(localStorage.getItem('orderHistory') || '[]');
+let adminAuthenticated = false;
+
+const WORKER_URL = 'https://inver2.inver2.workers.dev';
+const ADMIN_PASSWORD = 'admin123';
+
+// Fetch config from Worker
+async function fetchConfig() {
+    try {
+        const response = await fetch(WORKER_URL + '/get-data');
+        if (response.ok) {
+            appConfig = await response.json();
+            loadVendingMachines();
+        }
+    } catch (error) {
+        console.error('Config fetch error:', error);
+    }
+}
+
+function loadVendingMachines() {
+    if (!appConfig || !appConfig.vendingMachines) return;
+    
+    const container = document.getElementById('machines-container');
+    container.innerHTML = '';
+    
+    appConfig.vendingMachines.forEach(machine => {
+        const card = document.createElement('div');
+        card.className = 'machine-card';
+        card.innerHTML = `
+            <div style="font-weight: 800; color: var(--p); margin-bottom: 8px;">${machine.name}</div>
+            <div class="sub-info">${machine.address}</div>
+            <div class="sub-info">💰 ${machine.literPrice} UAH/L</div>
+            <div class="machine-status ${machine.status === 'active' ? 'status-active' : 'status-maintenance'}">
+                ${machine.status === 'active' ? '✓ ' + uiStrings[activeLang].active : '⚙ ' + uiStrings[activeLang].maintenance}
+            </div>
+            <button class="btn btn-primary" style="width: 100%; margin-top: 12px;" onclick="openMaps('${machine.lat},${machine.lng}')">
+                <i class="fas fa-directions"></i> Yol Tarifi
+            </button>
+        `;
+        container.appendChild(card);
+    });
+}
+
+function loadOrderHistory() {
+    const container = document.getElementById('orders-list');
+    container.innerHTML = '';
+    
+    if (orderHistory.length === 0) {
+        container.innerHTML = '<p style="text-align: center; color: #94a3b8; padding: 20px;">Sipariş geçmişi boş</p>';
+        return;
+    }
+    
+    orderHistory.forEach(order => {
+        const item = document.createElement('div');
+        item.className = 'order-item';
+        item.innerHTML = `
+            <div class="order-item-header">
+                <span>#${order.id}</span>
+                <span>${new Date(order.date).toLocaleDateString()}</span>
+            </div>
+            <div class="order-item-details">
+                <div>👤 ${order.name} | 📞 ${order.phone}</div>
+                <div>📍 ${order.street}, ${order.city}</div>
+                <div>💧 ${order.liters}L + ${order.deposits} Depozito = ${order.total} UAH</div>
+            </div>
+        `;
+        container.appendChild(item);
+    });
+}
 
 async function updateAllData() {
     const api_key = '932e2d60c135c8cdb547ce78923a7ba8';
     try {
-        // NBU Kur Çekme
+        // Currency
         const exRes = await fetch('https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json');
         const exData = await exRes.json();
         const usd = exData.find(c => c.cc === 'USD').rate;
@@ -197,20 +551,20 @@ async function updateAllData() {
         document.getElementById('e-buy').innerText = (eur * 0.992).toFixed(2);
         document.getElementById('e-sell').innerText = (eur * 1.008).toFixed(2);
 
-        // Hava Durumu
+        // Weather
         const wRes = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=Kyiv&units=metric&lang=${activeLang}&appid=${api_key}`);
         const wData = await wRes.json();
         document.getElementById('w-temp').innerText = Math.round(wData.main.temp) + '°';
         document.getElementById('w-desc').innerText = wData.weather[0].description;
 
-        // AQI Verisi
+        // AQI
         const aRes = await fetch(`https://api.openweathermap.org/data/2.5/air_pollution?lat=50.45&lon=30.52&appid=${api_key}`);
         const aData = await aRes.json();
         const aqiVal = aData.list[0].main.aqi;
-        const aqiLabels = { 1: "Çok İyi", 2: "İyi", 3: "Orta", 4: "Kötü", 5: "Tehlikeli" };
+        const aqiLabels = { 1: uiStrings[activeLang].good, 2: uiStrings[activeLang].good, 3: uiStrings[activeLang].moderate, 4: uiStrings[activeLang].unhealthy, 5: uiStrings[activeLang].unhealthy };
         document.getElementById('aqi-num').innerText = aqiVal;
-        document.getElementById('aqi-txt').innerText = aqiLabels[aqiVal] || "Analiz ediliyor";
-    } catch (err) { console.error("Veri hatası:", err); }
+        document.getElementById('aqi-txt').innerText = aqiLabels[aqiVal] || 'Analiz ediliyor';
+    } catch (err) { console.error("Data error:", err); }
 }
 
 function runCalc() {
@@ -238,18 +592,175 @@ function changeL(l) {
     document.getElementById('txt-map').innerText = s.map;
     document.getElementById('l-calc').innerText = s.calc;
     document.getElementById('l-kg').innerText = s.kg;
+    document.getElementById('order-btn').innerText = s.orderBtn;
+    
+    // Update tab labels
+    document.getElementById('tab-home-label').innerText = s.home;
+    document.getElementById('tab-vending-label').innerText = s.vending;
+    document.getElementById('tab-orders-label').innerText = s.orders;
+    
+    // Update modal labels
+    document.getElementById('order-modal-title').innerText = s.orderTitle;
+    document.getElementById('label-name').innerText = s.name;
+    document.getElementById('label-phone').innerText = s.phone;
+    document.getElementById('label-city').innerText = s.city;
+    document.getElementById('label-street').innerText = s.street;
+    document.getElementById('label-building').innerText = s.building;
+    document.getElementById('label-flat').innerText = s.flat;
+    document.getElementById('label-liters').innerText = s.liters;
+    document.getElementById('label-deposits').innerText = s.deposits;
+    document.getElementById('label-discount').innerText = s.discount;
+    document.getElementById('btn-place-order').innerText = s.placeOrder;
+    document.getElementById('btn-cancel').innerText = s.cancel;
+    document.getElementById('admin-title').innerText = s.adminTitle;
+    document.getElementById('admin-password-label').innerText = s.adminPassword;
+    document.getElementById('admin-unlock').innerText = s.adminUnlock;
     
     updateAllData();
 }
 
-// Saat bazlı selamlama
-const hour = new Date().getHours();
-if (hour >= 18) { uiStrings.tr.greet = "İyi Akşamlar Kyiv!"; uiStrings.ua.greet = "Добрий вечір!"; }
-else if (hour >= 12) { uiStrings.tr.greet = "İyi Günler Kyiv!"; uiStrings.ua.greet = "Добрий день!"; }
+function switchTab(tab) {
+    document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
+    
+    document.getElementById(`tab-${tab}-content`).classList.add('active');
+    document.getElementById(`tab-${tab}`).classList.add('active');
+    
+    if (tab === 'orders') {
+        loadOrderHistory();
+    }
+}
 
-// Başlat
+function openOrderModal() {
+    document.getElementById('orderModal').classList.add('active');
+}
+
+function closeOrderModal() {
+    document.getElementById('orderModal').classList.remove('active');
+}
+
+function openMaps(coords) {
+    const [lat, lng] = coords.split(',');
+    window.open(`https://maps.google.com/?q=${lat},${lng}`, '_blank');
+}
+
+function calculateOrder() {
+    const liters = parseInt(document.getElementById('order-liters').value) || 20;
+    const deposits = parseInt(document.getElementById('order-deposits').value) || 0;
+    const litrPrice = appConfig?.litrPrice || 1.5;
+    const depositPrice = appConfig?.depositPrice || 150;
+    const deliveryFee = appConfig?.deliveryFee || 50;
+    
+    const litersTotal = liters * litrPrice;
+    const depositsTotal = deposits * depositPrice;
+    let total = litersTotal + depositsTotal + deliveryFee;
+    
+    document.getElementById('calc-liters').innerText = `Litre: ${liters} L × ${litrPrice} = ${litersTotal.toFixed(0)} UAH`;
+    document.getElementById('calc-deposits').innerText = `Depozito: ${deposits} × ${depositPrice} = ${depositsTotal} UAH`;
+    document.getElementById('calc-delivery').innerText = `Teslimat: ${deliveryFee} UAH`;
+    
+    // Discount code check
+    const discountCode = document.getElementById('order-discount').value;
+    if (discountCode && appConfig?.discountCodes) {
+        const code = appConfig.discountCodes.find(c => c.code === discountCode && c.active);
+        if (code) {
+            const discount = code.type === 'percent' ? (total * code.value / 100) : code.value;
+            total -= discount;
+            document.getElementById('calc-discount').style.display = 'block';
+            document.getElementById('calc-discount').innerText = `İndirim: -${discount.toFixed(0)} UAH`;
+        } else {
+            document.getElementById('calc-discount').style.display = 'none';
+        }
+    } else {
+        document.getElementById('calc-discount').style.display = 'none';
+    }
+    
+    document.getElementById('total-price').innerText = `TOPLAM: ${total.toFixed(0)} UAH`;
+}
+
+document.getElementById('order-liters').addEventListener('change', calculateOrder);
+document.getElementById('order-deposits').addEventListener('change', calculateOrder);
+document.getElementById('order-discount').addEventListener('change', calculateOrder);
+
+function submitOrder(event) {
+    event.preventDefault();
+    
+    const order = {
+        id: 'ORD-' + Date.now(),
+        date: new Date().toISOString(),
+        name: document.getElementById('order-name').value,
+        phone: document.getElementById('order-phone').value,
+        city: document.getElementById('order-city').value,
+        street: document.getElementById('order-street').value,
+        building: document.getElementById('order-building').value,
+        flat: document.getElementById('order-flat').value,
+        liters: parseInt(document.getElementById('order-liters').value),
+        deposits: parseInt(document.getElementById('order-deposits').value),
+        total: parseFloat(document.getElementById('total-price').innerText.match(/\d+/)[0])
+    };
+    
+    orderHistory.unshift(order);
+    localStorage.setItem('orderHistory', JSON.stringify(orderHistory));
+    
+    // Send to Worker
+    fetch(WORKER_URL + '/place-order', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(order)
+    }).catch(e => console.error('Order send error:', e));
+    
+    alert(activeLang === 'tr' ? 'Sipariş başarıyla alındı!' : activeLang === 'ua' ? 'Замовлення прийнято!' : 'Order placed successfully!');
+    closeOrderModal();
+    document.getElementById('order-form').reset();
+}
+
+function handleLogoTap() {
+    logoTapCount++;
+    if (logoTapTimer) clearTimeout(logoTapTimer);
+    
+    if (logoTapCount === 4) {
+        document.getElementById('adminModal').classList.add('active');
+        logoTapCount = 0;
+    }
+    
+    logoTapTimer = setTimeout(() => {
+        logoTapCount = 0;
+    }, 1000);
+}
+
+function checkAdminPassword() {
+    const password = document.getElementById('admin-password-input').value;
+    if (password === ADMIN_PASSWORD) {
+        adminAuthenticated = true;
+        document.getElementById('admin-password-input').value = '';
+        alert('Admin paneli açıldı!');
+    } else {
+        alert('Yanlış şifre!');
+    }
+}
+
+function closeAdmin() {
+    document.getElementById('adminModal').classList.remove('active');
+}
+
+// Time-based greeting
+const hour = new Date().getHours();
+if (hour >= 18) { 
+    uiStrings.tr.greet = "İyi Akşamlar Kyiv!"; 
+    uiStrings.ua.greet = "Добрий вечір!"; 
+    uiStrings.en.greet = "Good Evening!";
+    uiStrings.ru.greet = "Добрый вечер!";
+} else if (hour >= 12) { 
+    uiStrings.tr.greet = "İyi Günler Kyiv!"; 
+    uiStrings.ua.greet = "Добрий день!"; 
+    uiStrings.en.greet = "Good Afternoon!";
+    uiStrings.ru.greet = "Добрый день!";
+}
+
+// Initialize
 changeL('tr');
-setInterval(updateAllData, 600000); // 10 dk bir yenile
+fetchConfig();
+setInterval(updateAllData, 600000); // 10 minutes
 </script>
 
 </body>
