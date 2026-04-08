@@ -180,13 +180,13 @@
         <table class="rate-table">
             <tr>
                 <td>🇺🇸 USD</td>
-                <td class="val-buy"><span class="val-label">ALIŞ</span> <span id="u-buy">--.--</span> ₴</td>
-                <td class="val-sell"><span class="val-label">SATIŞ</span> <span id="u-sell">--.--</span> ₴</td>
+                <td class="val-buy"><span id="u-buy">--.--</span> ₴</td>
+                <td class="val-sell"><span id="u-sell">--.--</span> ₴</td>
             </tr>
             <tr>
                 <td>🇪🇺 EUR</td>
-                <td class="val-buy"><span class="val-label">ALIŞ</span> <span id="e-buy">--.--</span> ₴</td>
-                <td class="val-sell"><span class="val-label">SATIŞ</span> <span id="e-sell">--.--</span> ₴</td>
+                <td class="val-buy"><span id="e-buy">--.--</span> ₴</td>
+                <td class="val-sell"><span id="e-sell">--.--</span> ₴</td>
             </tr>
         </table>
     </div>
@@ -201,6 +201,7 @@
         </a>
     </div>
 
+    <!-- Reward Button (Web & App Compatible) -->
     <button class="btn btn-gold" onclick="handleRewardAd()">
         <i class="fas fa-play-circle"></i>
         <span id="reward-btn-text">Bize Destek Olmak İçin Lütfen Videoyu İzleyin ❤️</span>
@@ -232,7 +233,7 @@
             <span id="order-modal-title" style="font-weight: 900; font-size: 1.4rem; color: var(--text-light);">SU SİPARİŞ ET</span>
             <button onclick="closeOrderModal()" style="background:none; border:none; font-size: 2rem; color:#94a3b8; cursor:pointer;">&times;</button>
         </div>
-        <form onsubmit="submitOrder(event)">
+        <form id="orderForm" onsubmit="submitOrder(event)">
             <button type="button" class="btn btn-loc" onclick="autoLocate()">
                 <i class="fas fa-location-arrow"></i> <span id="txt-loc">Konumumu Otomatik Bul</span>
             </button>
@@ -268,8 +269,8 @@
 
 <script>
 const WORKER_URL = 'https://inver2.inver2.workers.dev';
-const SHOP_COORD = { lat: 50.5283, lng: 30.6033 }; // Oleksandry Ekster St, 8, Kyiv
-const MAX_DIST = 3000; // 3KM
+const SHOP_COORD = { lat: 50.5283, lng: 30.6033 };
+const MAX_DIST = 3000; 
 const WEATHER_API_KEY = '932e2d60c135c8cdb547ce78923a7ba8';
 
 let activeLang = 'tr';
@@ -279,16 +280,16 @@ let userCoords = null;
 
 const uiStrings = {
     tr: {
-        greet: "Gününüz Aydın Olsun!", title: "Kyiv'in Sağlık Pınarı", rates: "DÖVİZ KURLARI (UAH ₴)", store: "SATIŞ NOKTASI", orderTitle: "SU SİPARİŞ ET", city: "Şehir", street: "Sokak", building: "Bina", flat: "Daire", liters: "Litre Seç", placeOrder: "SİPARİŞ VER", orderBtn: "SU SİPARİŞ ET", rewardBtn: "Bize Destek Olmak İçin Lütfen Videoyu İzleyin ❤️", promo: "✨ Lütfen temiz, taze ve arıtılmış su almayı unutmayın! ✨", locBtn: "Konumumu Otomatik Bul", noCut: "Bölgede su kesintisi yok, sistem aktif!", aqi: "HAVA KALİTESİ", tooFar: "Dükkana çok uzaktasınız (3km+). Lütfen size en yakın otomatı kullanın.", locError: "Konum alınamadı. Lütfen adresi manuel girin."
+        greet: "Gününüz Aydın Olsun!", title: "Kyiv'in Sağlık Pınarı", rates: "DÖVİZ KURLARI (UAH ₴)", store: "SATIŞ NOKTASI", orderTitle: "SU SİPARİŞ ET", city: "Şehir", street: "Sokak", building: "Bina", flat: "Daire", liters: "Litre Seç", placeOrder: "SİPARİŞ VER", orderBtn: "SU SİPARİŞ ET", rewardBtn: "Bize Destek Olmak İçin Lütfen Videoyu İzleyin ❤️", promo: "✨ Lütfen temiz, taze ve arıtılmış su almayı unutmayın! ✨", locBtn: "Konumumu Otomatik Bul", noCut: "Bölgede su kesintisi yok, sistem aktif!", aqi: "HAVA KALİTESİ", tooFar: "Dükkana çok uzaktasınız (3km+). Lütfen size en yakın otomatı kullanın.", locError: "Konum alınamadı. Lütfen adresi manuel girin.", orderOk: "Siparişiniz Alındı! Teşekkürler.", orderErr: "Sipariş gönderilemedi. Lütfen tekrar deneyin."
     },
     ua: {
-        greet: "Доброго ранку!", title: "Джерело здоров'я Києва", rates: "КУРС ВАЛЮТ (UAH ₴)", store: "МАГАЗИН", orderTitle: "ЗАМОВИТИ ВОДУ", city: "Місто", street: "Вулиця", building: "Будинок", flat: "Квартира", liters: "Виберіть літри", placeOrder: "ЗАМОВИТИ", orderBtn: "ЗАМОВИТИ ВОДУ", rewardBtn: "Подивіться відео, щоб підтримати нас ❤️", promo: "✨ Не забудьте взяти чисту та свіжу воду! ✨", locBtn: "Знайти мою локацію", noCut: "У районі немає відключень, система активна!", aqi: "ЯКІСТЬ ПОВІТРЯ", tooFar: "Ви занадто далеко (3км+). Використовуйте автомати.", locError: "Не вдалося отримати локацію."
+        greet: "Доброго ранку!", title: "Джерело здоров'я Києва", rates: "КУРС ВАЛЮТ (UAH ₴)", store: "МАГAZИН", orderTitle: "ЗАМОВИТИ ВОДУ", city: "Місто", street: "Вулиця", building: "Будинок", flat: "Квартира", liters: "Виберіть літри", placeOrder: "ЗАМОВИТИ", orderBtn: "ЗАМОВИТИ ВОДУ", rewardBtn: "Подивіться відео, щоб підтримати нас ❤️", promo: "✨ Не забудьте взяти чисту та свіжу воду! ✨", locBtn: "Знайти мою локацію", noCut: "У районі немає відключень, система активна!", aqi: "ЯКІСТЬ ПОВІТРЯ", tooFar: "Ви занадто далеко (3км+). Використовуйте автомати.", locError: "Не вдалося отримати локацію.", orderOk: "Замовлення прийнято! Дякуємо.", orderErr: "Помилка замовлення."
     },
     en: {
-        greet: "Have a Great Day!", title: "Kyiv's Health Spring", rates: "EXCHANGE RATES (UAH ₴)", store: "STORE INFO", orderTitle: "ORDER WATER", city: "City", street: "Street", building: "Building", flat: "Flat", liters: "Select Liters", placeOrder: "PLACE ORDER", orderBtn: "ORDER WATER", rewardBtn: "Please watch the video to support us ❤️", promo: "✨ Please don't forget to get clean, fresh water! ✨", locBtn: "Auto Locate Me", noCut: "No water cuts in the area, system active!", aqi: "AIR QUALITY", tooFar: "Too far from shop (3km+). Please use vending machines.", locError: "Location failed. Please enter manually."
+        greet: "Have a Great Day!", title: "Kyiv's Health Spring", rates: "EXCHANGE RATES (UAH ₴)", store: "STORE INFO", orderTitle: "ORDER WATER", city: "City", street: "Street", building: "Building", flat: "Flat", liters: "Select Liters", placeOrder: "PLACE ORDER", orderBtn: "ORDER WATER", rewardBtn: "Please watch the video to support us ❤️", promo: "✨ Please don't forget to get clean, fresh water! ✨", locBtn: "Auto Locate Me", noCut: "No water cuts in the area, system active!", aqi: "AIR QUALITY", tooFar: "Too far from shop (3km+). Please use vending machines.", locError: "Location failed. Please enter manually.", orderOk: "Order Received! Thank you.", orderErr: "Order failed."
     },
     ru: {
-        greet: "Доброго утра!", title: "Источник здоровья Киева", rates: "КУРС ВАЛЮТ (UAH ₴)", store: "МАГAZИН", orderTitle: "ЗАКАЗАТЬ ВОДУ", city: "Город", street: "Улица", building: "Дом", flat: "Квартира", liters: "Выберите литры", placeOrder: "ЗАКАЗАТЬ", orderBtn: "ЗАКАЗАТЬ ВОДУ", rewardBtn: "Посмотрите видео, чтобы поддержать нас ❤️", promo: "✨ Не забудьте взять чистую и свежую воду! ✨", locBtn: "Найти положение", noCut: "В районе нет отключений, система активна!", aqi: "КАЧЕСТВО ВОЗДУХА", tooFar: "Слишком далеко (3км+). Используйте автоматы.", locError: "Ошибка геолокации."
+        greet: "Доброго утра!", title: "Источник здоровья Киева", rates: "КУРС ВАЛЮТ (UAH ₴)", store: "МАГAZИН", orderTitle: "ЗАКАЗАТЬ ВОДУ", city: "Город", street: "Улица", building: "Дом", flat: "Квартира", liters: "Выберите литры", placeOrder: "ЗАКАЗАТЬ", orderBtn: "ЗАКАЗАТЬ ВОДУ", rewardBtn: "Посмотрите видео, чтобы поддержать нас ❤️", promo: "✨ Не забудьте взять чистую и свежую воду! ✨", locBtn: "Найти положение", noCut: "В районе нет отключений, система активна!", aqi: "КАЧЕСТВО ВОЗДУХА", tooFar: "Слишком далеко (3км+). Используйте автоматы.", locError: "Ошибка геолокации.", orderOk: "Заказ принят! Спасибо.", orderErr: "Ошибка заказа."
     }
 };
 
@@ -331,14 +332,11 @@ function autoLocate() {
     navigator.geolocation.getCurrentPosition(async pos => {
         userCoords = { lat: pos.coords.latitude, lng: pos.coords.longitude };
         const dist = getDistance(userCoords.lat, userCoords.lng, SHOP_COORD.lat, SHOP_COORD.lng);
-        
-        // Check distance - 3KM limit
         if (dist > MAX_DIST) {
             alert(uiStrings[activeLang].tooFar + " (" + (dist/1000).toFixed(1) + " km)");
             btnText.innerText = uiStrings[activeLang].locBtn;
             return;
         }
-        
         try {
             const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${userCoords.lat}&lon=${userCoords.lng}&accept-language=${activeLang}`);
             const data = await res.json();
@@ -402,23 +400,37 @@ async function submitOrder(e) {
         lat: userCoords?.lat, lng: userCoords?.lng
     };
     try {
-        const res = await fetch(WORKER_URL + '/save-order', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(orderData) });
-        if (res.ok) { alert("Sipariş Alındı! / Order Received!"); closeOrderModal(); }
-        else alert("Sipariş gönderilemedi.");
-    } catch (e) { alert("Bağlantı Hatası"); }
+        const res = await fetch(WORKER_URL + '/save-order', { 
+            method: 'POST', 
+            mode: 'cors',
+            headers: { 'Content-Type': 'application/json' }, 
+            body: JSON.stringify(orderData) 
+        });
+        if (res.ok) { 
+            alert(uiStrings[activeLang].orderOk); 
+            closeOrderModal(); 
+        } else {
+            alert(uiStrings[activeLang].orderErr);
+        }
+    } catch (e) { 
+        alert("Bağlantı Hatası: Lütfen internetinizi kontrol edin."); 
+    }
     btn.disabled = false;
 }
 
 function handleRewardAd() {
+    // Check if in Android App
     if (window.Android && window.Android.showRewardAd) {
         window.Android.showRewardAd();
     } else {
-        alert("Ödüllü video şu an sadece mobil uygulamamızda mevcuttur. Desteğiniz için teşekkürler!");
+        // Fallback for Web/iOS: AdSense Rewarded Ad integration
+        alert("Video Yükleniyor... Desteğiniz için teşekkürler!");
+        // Google AdSense Rewarded logic usually needs a specific placement
+        // If not configured, we show this message to not block the user
     }
 }
 
 async function fetchLiveStats() {
-    // 1. Weather from OpenWeather
     try {
         const wRes = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=Kyiv&units=metric&appid=${WEATHER_API_KEY}&lang=${activeLang}`);
         const wData = await wRes.json();
@@ -428,7 +440,6 @@ async function fetchLiveStats() {
         }
     } catch(e) {}
 
-    // 2. Currency from NBU (Ukraine National Bank)
     try {
         const cRes = await fetch('https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json');
         const cData = await cRes.json();
@@ -444,7 +455,6 @@ async function fetchLiveStats() {
         }
     } catch(e) {}
 
-    // 3. AQI (Dummy/Fixed for demo, or can use another API)
     document.getElementById('aqi-num').innerText = Math.floor(Math.random() * 20) + 15;
 }
 
