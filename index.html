@@ -6,6 +6,8 @@
     <title>INVER Water - Kyiv Premium Hydration</title>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google AdSense -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6765480393265982" crossorigin="anonymous"></script>
     
     <style>
@@ -44,120 +46,110 @@
         .logout-btn { background: var(--red); color: white; border: none; padding: 6px 12px; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 0.75rem; }
 
         .lang-flags { display: flex; gap: 8px; }
-        .f-icon { width: 34px; height: 34px; cursor: pointer; border-radius: 50%; border: 2px solid transparent; transition: 0.3s; box-shadow: 0 2px 5px rgba(0,0,0,0.1); font-size: 1.3rem; display: flex; align-items: center; justify-content: center; background: #fff; }
-        .f-icon.active { border-color: var(--primary); transform: scale(1.1); background: #e0f2fe; }
+        .f-icon { width: 36px; height: 36px; cursor: pointer; border-radius: 50%; border: 2px solid transparent; transition: 0.3s; box-shadow: 0 2px 5px rgba(0,0,0,0.1); overflow: hidden; display: flex; align-items: center; justify-content: center; }
+        .f-icon img { width: 100%; height: 100%; object-fit: cover; }
+        .f-icon.active { border-color: var(--primary); transform: scale(1.15); box-shadow: 0 4px 10px rgba(10, 126, 200, 0.2); }
 
         .hero-banner { background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); color: white; padding: 30px 20px; text-align: center; border-bottom-left-radius: 40px; border-bottom-right-radius: 40px; margin-bottom: 20px; }
         .container { padding: 0 15px; max-width: 600px; margin: 0 auto; }
 
         .card { background: #fff; border-radius: 24px; padding: 20px; box-shadow: var(--card-shadow); border: 1px solid rgba(0,0,0,0.03); margin-bottom: 15px; }
-        .card-full { width: 100%; }
         .c-label { font-size: 0.75rem; font-weight: 800; color: #94a3b8; text-transform: uppercase; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
         
         /* Currency Table */
         .rate-table { width: 100%; border-collapse: collapse; }
-        .rate-table td { padding: 8px 0; font-weight: 700; font-size: 0.9rem; }
+        .rate-table td { padding: 10px 0; font-weight: 700; font-size: 1rem; }
         .val-buy { color: var(--green); text-align: right; }
         .val-sell { color: var(--red); text-align: right; }
-        .val-label { color: #64748b; font-size: 0.7rem; display: block; }
+        .val-label { color: #94a3b8; font-size: 0.65rem; display: block; text-transform: uppercase; }
 
-        /* Weather & AQI */
+        /* Stats Grid */
         .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 15px; }
-        .stat-card { background: #fff; border-radius: 20px; padding: 15px; box-shadow: var(--card-shadow); text-align: center; }
+        .stat-card { background: #fff; border-radius: 20px; padding: 15px; box-shadow: var(--card-shadow); text-align: center; border: 1px solid rgba(0,0,0,0.02); }
         .stat-val { font-size: 1.8rem; font-weight: 900; color: var(--primary); display: block; }
         .stat-desc { font-size: 0.75rem; font-weight: 700; color: #64748b; }
 
-        /* Incentives */
-        .promo-banner { background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); border: 2px solid #bbf7d0; border-radius: 20px; padding: 15px; margin-bottom: 15px; text-align: center; color: #166534; font-weight: 800; animation: bounce 2s infinite; }
+        /* Promo Banner */
+        .promo-banner { background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); border: 2px solid #bbf7d0; border-radius: 20px; padding: 15px; margin-bottom: 15px; text-align: center; color: #166534; font-weight: 800; font-size: 0.9rem; animation: bounce 3s infinite; }
         @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
 
         /* Google Play Button */
-        .gp-btn { display: inline-flex; align-items: center; background: #000; color: #fff; padding: 10px 20px; border-radius: 12px; text-decoration: none; margin: 20px 0; transition: 0.3s; }
-        .gp-btn:hover { transform: scale(1.05); }
-        .gp-icon { font-size: 2rem; margin-right: 12px; }
-        .gp-text { text-align: left; line-height: 1.2; }
-        .gp-top { font-size: 0.65rem; text-transform: uppercase; }
-        .gp-bot { font-size: 1.1rem; font-weight: 700; }
+        .gp-btn { display: inline-flex; align-items: center; background: #000; color: #fff; padding: 12px 24px; border-radius: 14px; text-decoration: none; margin: 15px 0; transition: 0.3s; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+        .gp-btn:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,0.3); }
+        .gp-icon { font-size: 2.2rem; margin-right: 12px; color: #fff; }
+        .gp-text { text-align: left; line-height: 1.1; }
+        .gp-top { font-size: 0.7rem; text-transform: uppercase; opacity: 0.8; }
+        .gp-bot { font-size: 1.2rem; font-weight: 700; }
 
-        /* Auth */
-        .auth-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 3000; align-items: center; justify-content: center; }
-        .auth-overlay.active { display: flex; }
-        .auth-box { background: white; border-radius: 24px; padding: 30px; max-width: 400px; width: 90%; animation: slideUp 0.3s ease; }
-        .auth-input { width: 100%; padding: 14px; border: 2px solid #e2e8f0; border-radius: 12px; font-size: 1rem; font-weight: 600; margin-bottom: 14px; }
-        .auth-btn { width: 100%; padding: 14px; background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); color: white; border: none; border-radius: 12px; font-weight: 800; cursor: pointer; }
-        .auth-step { display: none; }
-        .auth-step.active { display: block; }
-
-        /* Modal */
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 2000; align-items: center; justify-content: center; }
+        /* Modal & Form */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 2000; align-items: center; justify-content: center; backdrop-filter: blur(5px); }
         .modal.active { display: flex; }
-        .modal-content { background: white; border-radius: 24px; padding: 24px; max-width: 500px; width: 90%; max-height: 90vh; overflow-y: auto; }
+        .modal-content { background: white; border-radius: 30px; padding: 25px; max-width: 500px; width: 92%; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 50px rgba(0,0,0,0.2); animation: slideUp 0.4s ease; }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; font-size: 0.8rem; font-weight: 800; color: #64748b; margin-bottom: 6px; }
+        .form-group input { width: 100%; padding: 14px; border: 2px solid #e2e8f0; border-radius: 15px; font-size: 1rem; font-weight: 600; transition: 0.3s; }
+        .form-group input:focus { border-color: var(--primary); outline: none; background: #f8fafc; }
 
-        .btn { width: 100%; padding: 14px; border-radius: 12px; border: none; font-weight: 800; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 10px; }
+        .btn { width: 100%; padding: 16px; border-radius: 15px; border: none; font-weight: 800; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 12px; transition: 0.3s; }
         .btn-primary { background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); color: white; }
         .btn-green { background: linear-gradient(135deg, var(--green) 0%, #10b981 100%); color: white; }
         .btn-gold { background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%); color: white; animation: pulse 2s infinite; }
+        .btn-loc { background: #f1f5f9; color: var(--primary); border: 2px solid #cbd5e1; font-size: 0.9rem; margin-bottom: 20px; }
+        .btn:active { transform: scale(0.97); }
+
+        .ad-slot { margin: 20px 0; min-height: 90px; display: flex; align-items: center; justify-content: center; border: 1px dashed #cbd5e1; border-radius: 16px; background: #fafafa; }
         
-        .ad-slot { margin: 15px 0; min-height: 60px; display: flex; align-items: center; justify-content: center; border: 1px dashed #cbd5e1; border-radius: 16px; }
+        footer { text-align: center; padding: 40px 20px; font-size: 0.8rem; color: #94a3b8; font-weight: 800; }
         
-        footer { text-align: center; padding: 30px 20px; font-size: 0.7rem; color: #94a3b8; font-weight: 800; }
-        
-        @keyframes slideUp { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.02); } 100% { transform: scale(1); } }
+        @keyframes slideUp { from { transform: translateY(40px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.03); } 100% { transform: scale(1); } }
     </style>
 </head>
 <body>
 
-<!-- AUTH -->
-<div id="authOverlay" class="auth-overlay">
-    <div class="auth-box">
+<!-- AUTH OVERLAY -->
+<div id="authOverlay" class="auth-overlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:3000; align-items:center; justify-content:center; backdrop-filter:blur(5px);">
+    <div class="auth-box" style="background:#fff; border-radius:30px; padding:30px; width:90%; max-width:400px; box-shadow:0 20px 50px rgba(0,0,0,0.2);">
         <div id="authStep1" class="auth-step active">
-            <div style="font-size: 1.4rem; font-weight: 800; margin-bottom: 20px; color: var(--primary);">📱 Telefon Doğrula</div>
-            <input type="tel" id="phoneInput" class="auth-input" placeholder="+380 (XX) XXXX-XXXX">
-            <div style="margin-bottom: 15px; display: flex; align-items: center; gap: 8px;">
-                <input type="checkbox" id="rememberMe" checked style="width: 18px; height: 18px;">
-                <label for="rememberMe" style="font-size: 0.9rem; font-weight: 600;">Beni Hatırla</label>
+            <h2 style="font-size:1.5rem; font-weight:800; color:var(--primary); margin-bottom:20px;">📱 Telefon Doğrula</h2>
+            <input type="tel" id="phoneInput" class="auth-input" placeholder="+380 (XX) XXXX-XXXX" style="width:100%; padding:15px; border:2px solid #e2e8f0; border-radius:15px; margin-bottom:15px; font-weight:600;">
+            <div style="display:flex; align-items:center; gap:10px; margin-bottom:20px;">
+                <input type="checkbox" id="rememberMe" checked style="width:20px; height:20px;">
+                <label for="rememberMe" style="font-weight:700; font-size:0.9rem;">Beni Hatırla</label>
             </div>
-            <button class="auth-btn" onclick="verifyPhone()">Doğrula</button>
+            <button class="btn btn-primary" onclick="verifyPhone()">Devam Et</button>
         </div>
-        <div id="authStep2" class="auth-step">
-            <div style="font-size: 1.4rem; font-weight: 800; margin-bottom: 20px; color: var(--primary);">👤 Adınız</div>
-            <input type="text" id="nameInput" class="auth-input" placeholder="Ad Soyad">
-            <button class="auth-btn" onclick="verifyName()">Devam Et</button>
-        </div>
-        <div id="authStep3" class="auth-step">
-            <div style="font-size: 1.4rem; font-weight: 800; margin-bottom: 20px; color: var(--primary);">✅ Onayla</div>
-            <div style="background: #f0f7ff; padding: 14px; border-radius: 12px; margin-bottom: 14px;">
-                <div style="font-size: 0.85rem; color: #64748b;">
-                    <div><strong>Telefon:</strong> <span id="confirmPhone"></span></div>
-                    <div><strong>Ad:</strong> <span id="confirmName"></span></div>
-                </div>
-            </div>
-            <button class="auth-btn" onclick="completeAuth()">Giriş Yap</button>
+        <div id="authStep2" class="auth-step" style="display:none;">
+            <h2 style="font-size:1.5rem; font-weight:800; color:var(--primary); margin-bottom:20px;">👤 Adınız</h2>
+            <input type="text" id="nameInput" class="auth-input" placeholder="Ad Soyad" style="width:100%; padding:15px; border:2px solid #e2e8f0; border-radius:15px; margin-bottom:20px; font-weight:600;">
+            <button class="btn btn-primary" onclick="verifyName()">Onayla</button>
         </div>
     </div>
 </div>
 
 <header>
-    <div class="logo-box"><div class="logo-icon">💧</div><span class="logo-text">İNVER WATER</span></div>
+    <div class="logo-box" onclick="location.reload()">
+        <div class="logo-icon">💧</div>
+        <span class="logo-text">İNVER WATER</span>
+    </div>
     <div class="header-right">
-        <div id="userSection" style="display: none;">
-            <div class="user-info"><div class="user-name" id="headerUserName">-</div></div>
+        <div id="userSection" style="display: none; align-items: center; gap: 10px;">
+            <div class="user-info"><span class="user-name" id="headerUserName"></span></div>
             <button class="logout-btn" onclick="logout()">Çıkış</button>
         </div>
         <div class="lang-flags">
-            <div class="f-icon active" onclick="changeL('tr')" id="btn-tr">🇹🇷</div>
-            <div class="f-icon" onclick="changeL('ua')" id="btn-ua">🇺🇦</div>
-            <div class="f-icon" onclick="changeL('en')" id="btn-en">🇬🇧</div>
-            <div class="f-icon" onclick="changeL('ru')" id="btn-ru">🇷🇺</div>
+            <div class="f-icon active" onclick="changeL('tr')" id="btn-tr"><img src="https://flagcdn.com/w80/tr.png" alt="TR"></div>
+            <div class="f-icon" onclick="changeL('ua')" id="btn-ua"><img src="https://flagcdn.com/w80/ua.png" alt="UA"></div>
+            <div class="f-icon" onclick="changeL('en')" id="btn-en"><img src="https://flagcdn.com/w80/gb.png" alt="EN"></div>
+            <div class="f-icon" onclick="changeL('ru')" id="btn-ru"><img src="https://flagcdn.com/w80/ru.png" alt="RU"></div>
         </div>
     </div>
 </header>
 
 <div class="hero-banner">
-    <div id="greeting" style="font-weight: 600;">Gününüz Aydın Olsun!</div>
-    <h1 id="h-title">Kyiv'in Sağlık Pınarı</h1>
-    <div style="font-size: 0.65rem; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; opacity: 0.9;">Troieshchyna District | Kyiv</div>
+    <div id="greeting" style="font-weight: 700; font-size: 1rem; margin-bottom: 5px;">Gününüz Aydın Olsun!</div>
+    <h1 id="h-title" style="font-size: 1.8rem; font-weight: 800;">Kyiv'in Sağlık Pınarı</h1>
+    <div style="font-size: 0.7rem; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; opacity: 0.9; margin-top: 5px;">Troieshchyna District | Kyiv</div>
 </div>
 
 <div class="container">
@@ -167,7 +159,7 @@
         ✨ Lütfen temiz, taze ve arıtılmış su almayı unutmayın! Sağlığınız için en iyisi... ✨
     </div>
 
-    <!-- Stats Grid (Weather & AQI) -->
+    <!-- Stats Grid -->
     <div class="stats-grid">
         <div class="stat-card">
             <span class="stat-val" id="w-temp">--°</span>
@@ -179,8 +171,8 @@
         </div>
     </div>
 
-    <!-- Water Cut Warning -->
-    <div id="cut-warning" style="background: #fff; border-radius: 15px; padding: 10px; text-align: center; margin-bottom: 15px; border-left: 5px solid var(--green); font-weight: 800; font-size: 0.85rem;">
+    <!-- Water Status -->
+    <div id="cut-warning" style="background: #fff; border-radius: 20px; padding: 15px; text-align: center; margin-bottom: 15px; border-left: 6px solid var(--green); font-weight: 800; font-size: 0.9rem; box-shadow: var(--card-shadow);">
         ✅ <span id="txt-no-cut">Bölgede su kesintisi yok, sistem aktif!</span>
     </div>
 
@@ -190,18 +182,18 @@
         <table class="rate-table">
             <tr>
                 <td>🇺🇸 USD</td>
-                <td class="val-buy"><span class="val-label">ALIS</span> <span id="u-buy">--.--</span> ₴</td>
-                <td class="val-sell"><span class="val-label">SATIS</span> <span id="u-sell">--.--</span> ₴</td>
+                <td class="val-buy"><span class="val-label">ALIŞ</span> <span id="u-buy">--.--</span> ₴</td>
+                <td class="val-sell"><span class="val-label">SATIŞ</span> <span id="u-sell">--.--</span> ₴</td>
             </tr>
             <tr>
                 <td>🇪🇺 EUR</td>
-                <td class="val-buy"><span class="val-label">ALIS</span> <span id="e-buy">--.--</span> ₴</td>
-                <td class="val-sell"><span class="val-label">SATIS</span> <span id="e-sell">--.--</span> ₴</td>
+                <td class="val-buy"><span class="val-label">ALIŞ</span> <span id="e-buy">--.--</span> ₴</td>
+                <td class="val-sell"><span class="val-label">SATIŞ</span> <span id="e-sell">--.--</span> ₴</td>
             </tr>
         </table>
     </div>
 
-    <!-- Google Play Button -->
+    <!-- Google Play -->
     <div style="text-align: center;">
         <a href="https://play.google.com/store/apps/details?id=com.inver.water" target="_blank" class="gp-btn">
             <i class="fab fa-google-play gp-icon"></i>
@@ -212,19 +204,23 @@
         </a>
     </div>
 
-    <button class="btn btn-gold" onclick="showRewardAd()">
-        🎬 <span id="reward-btn-text">Bize Destek Olmak İçin Lütfen Videoyu İzleyin ❤️</span>
+    <!-- Reward Video Button -->
+    <button class="btn btn-gold" onclick="handleRewardAd()">
+        <i class="fas fa-play-circle"></i>
+        <span id="reward-btn-text">Bize Destek Olmak İçin Lütfen Videoyu İzleyin ❤️</span>
     </button>
 
-    <div class="card">
+    <!-- Order Trigger -->
+    <div class="card" style="padding: 25px; border: 2px solid #e0f2fe;">
         <div class="c-label">📍 <span id="l-store">SATIŞ NOKTASI</span></div>
-        <div style="font-weight: 800; font-size: 1.1rem; color: var(--primary);">İNVER WATER - Oleksandry Ekster St, 8</div>
-        <div style="font-size: 0.85rem; color: #64748b; margin-bottom: 15px;">Troieshchyna, Kyiv, Ukraine</div>
-        <button class="btn btn-green" onclick="openOrderModal()">
-            🛒 <span id="order-btn">SU SİPARİŞ ET</span>
+        <div style="font-weight: 900; font-size: 1.2rem; color: var(--primary); margin-bottom: 5px;">İNVER WATER - Oleksandry Ekster St, 8</div>
+        <div style="font-size: 0.85rem; color: #64748b; margin-bottom: 20px; font-weight: 600;">Troieshchyna, Kyiv, Ukraine</div>
+        <button class="btn btn-green" onclick="openOrderModal()" style="margin-bottom: 0; padding: 18px;">
+            <i class="fas fa-shopping-cart"></i> <span id="order-btn">SU SİPARİŞ ET</span>
         </button>
     </div>
 
+    <!-- Banner 2 -->
     <div class="ad-slot">
         <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6765480393265982" data-ad-slot="3832749084" data-ad-format="horizontal" data-full-width-responsive="true"></ins>
         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
@@ -234,31 +230,36 @@
 <!-- ORDER MODAL -->
 <div id="orderModal" class="modal">
     <div class="modal-content">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-            <span id="order-modal-title" style="font-weight: 800; font-size: 1.2rem;">SU SİPARİŞ ET</span>
-            <button onclick="closeOrderModal()" style="background:none; border:none; font-size: 1.5rem; color:#94a3b8;">×</button>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+            <span id="order-modal-title" style="font-weight: 900; font-size: 1.4rem; color: var(--text-light);">SU SİPARİŞ ET</span>
+            <button onclick="closeOrderModal()" style="background:none; border:none; font-size: 2rem; color:#94a3b8; cursor:pointer;">&times;</button>
         </div>
         <form onsubmit="submitOrder(event)">
-            <button type="button" class="btn" style="background: #f1f5f9; color: var(--primary);" onclick="autoLocate()">📍 <span id="txt-loc">Konumumu Otomatik Bul</span></button>
+            <button type="button" class="btn btn-loc" onclick="autoLocate()">
+                <i class="fas fa-location-arrow"></i> <span id="txt-loc">Konumumu Otomatik Bul</span>
+            </button>
             <div class="form-group"><label id="label-city">Şehir</label><input type="text" id="order-city" value="Kyiv" required></div>
-            <div class="form-group"><label id="label-street">Sokak</label><input type="text" id="order-street" required></div>
-            <div class="form-group"><label id="label-building">Bina</label><input type="text" id="order-building" required></div>
-            <div class="form-group"><label id="label-flat">Daire</label><input type="text" id="order-flat"></div>
+            <div class="form-group"><label id="label-street">Sokak</label><input type="text" id="order-street" placeholder="Örn: Oleksandry Ekster St" required></div>
+            <div class="form-group"><label id="label-building">Bina</label><input type="text" id="order-building" placeholder="Örn: 8" required></div>
+            <div class="form-group"><label id="label-flat">Daire</label><input type="text" id="order-flat" placeholder="Örn: 12"></div>
             <div class="form-group">
                 <label id="label-liters">Litre Seç</label>
-                <div class="liter-selector">
+                <div class="liter-selector" style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px;">
                     <button type="button" class="liter-btn active" onclick="selectLiters(5, this)">5L</button>
                     <button type="button" class="liter-btn" onclick="selectLiters(10, this)">10L</button>
                     <button type="button" class="liter-btn" onclick="selectLiters(19, this)">19L</button>
                 </div>
                 <input type="hidden" id="order-liters" value="5">
             </div>
-            <div style="background: #f8fafc; padding: 15px; border-radius: 12px; margin-bottom: 15px; font-weight: 800;">
-                <div style="display: flex; justify-content: space-between;">
-                    <span id="total-label">TOPLAM:</span> <span id="total-price" style="color: var(--primary);">-- ₴</span>
+            <div style="background: #f1f5f9; padding: 20px; border-radius: 20px; margin-bottom: 20px; border: 1px solid #e2e8f0;">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span id="total-label" style="font-weight: 800; color: #64748b;">TOPLAM:</span>
+                    <span id="total-price" style="font-weight: 900; font-size: 1.5rem; color: var(--primary);">-- ₴</span>
                 </div>
             </div>
-            <button type="submit" class="btn btn-primary" id="btn-place-order">SİPARİŞ VER</button>
+            <button type="submit" class="btn btn-primary" id="btn-place-order" style="padding: 18px;">
+                <i class="fas fa-check-circle"></i> <span id="btn-order-text">SİPARİŞ VER</span>
+            </button>
         </form>
     </div>
 </div>
@@ -270,23 +271,24 @@
 <script>
 const WORKER_URL = 'https://inver2.inver2.workers.dev';
 const SHOP_COORD = { lat: 50.5283, lng: 30.6033 };
+const MAX_DIST = 3000; // 3KM Sınırı
 let activeLang = 'tr';
 let currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
-let appConfig = { litrPrice: 1.5, deliveryFee: 50, maxDistance: 5000 };
+let appConfig = { litrPrice: 1.5, deliveryFee: 50 };
 let userCoords = null;
 
 const uiStrings = {
     tr: {
-        greet: "Gününüz Aydın Olsun!", title: "Kyiv'in Sağlık Pınarı", rates: "DÖVİZ KURLARI (UAH ₴)", store: "SATIŞ NOKTASI", orderTitle: "SU SİPARİŞ ET", city: "Şehir", street: "Sokak", building: "Bina", flat: "Daire", liters: "Litre Seç", placeOrder: "SİPARİŞ VER", orderBtn: "SU SİPARİŞ ET", rewardBtn: "Bize Destek Olmak İçin Lütfen Videoyu İzleyin ❤️", promo: "✨ Lütfen temiz, taze ve arıtılmış su almayı unutmayın! ✨", locBtn: "Konumumu Otomatik Bul", noCut: "Bölgede su kesintisi yok, sistem aktif!", aqi: "HAVA KALİTESİ", tooFar: "Çok uzaktasınız. Lütfen otomatları kullanın."
+        greet: "Gününüz Aydın Olsun!", title: "Kyiv'in Sağlık Pınarı", rates: "DÖVİZ KURLARI (UAH ₴)", store: "SATIŞ NOKTASI", orderTitle: "SU SİPARİŞ ET", city: "Şehir", street: "Sokak", building: "Bina", flat: "Daire", liters: "Litre Seç", placeOrder: "SİPARİŞ VER", orderBtn: "SU SİPARİŞ ET", rewardBtn: "Bize Destek Olmak İçin Lütfen Videoyu İzleyin ❤️", promo: "✨ Lütfen temiz, taze ve arıtılmış su almayı unutmayın! ✨", locBtn: "Konumumu Otomatik Bul", noCut: "Bölgede su kesintisi yok, sistem aktif!", aqi: "HAVA KALİTESİ", tooFar: "Dükkana çok uzaktasınız (3km+). Lütfen size en yakın otomatı kullanın.", locError: "Konum alınamadı. Lütfen adresi manuel girin."
     },
     ua: {
-        greet: "Доброго ранку!", title: "Джерело здоров'я Києва", rates: "КУРС ВАЛЮТ (UAH ₴)", store: "МАГАЗИН", orderTitle: "ЗАМОВИТИ ВОДУ", city: "Місто", street: "Вулиця", building: "Будинок", flat: "Квартира", liters: "Виберіть літри", placeOrder: "ЗАМОВИТИ", orderBtn: "ЗАМОВИТИ ВОДУ", rewardBtn: "Подивіться відео, щоб підтримати нас ❤️", promo: "✨ Не забудьте взяти чисту та свіжу воду! ✨", locBtn: "Знайти мою локацію", noCut: "У районі немає відключень, система активна!", aqi: "ЯКІСТЬ ПОВІТРЯ", tooFar: "Ви занадто далеко. Використовуйте автомати."
+        greet: "Доброго ранку!", title: "Джерело здоров'я Києва", rates: "КУРС ВАЛЮТ (UAH ₴)", store: "МАГАЗИН", orderTitle: "ЗАМОВИТИ ВОДУ", city: "Місто", street: "Вулиця", building: "Будинок", flat: "Квартира", liters: "Виберіть літри", placeOrder: "ЗАМОВИТИ", orderBtn: "ЗАМОВИТИ ВОДУ", rewardBtn: "Подивіться відео, щоб підтримати нас ❤️", promo: "✨ Не забудьте взяти чисту та свіжу воду! ✨", locBtn: "Знайти мою локацію", noCut: "У районі немає відключень, система активна!", aqi: "ЯКІСТЬ ПОВІТРЯ", tooFar: "Ви занадто далеко (3км+). Використовуйте автомати.", locError: "Не вдалося отримати локацію."
     },
     en: {
-        greet: "Have a Great Day!", title: "Kyiv's Health Spring", rates: "EXCHANGE RATES (UAH ₴)", store: "STORE INFO", orderTitle: "ORDER WATER", city: "City", street: "Street", building: "Building", flat: "Flat", liters: "Select Liters", placeOrder: "PLACE ORDER", orderBtn: "ORDER WATER", rewardBtn: "Please watch the video to support us ❤️", promo: "✨ Please don't forget to get clean, fresh water! ✨", locBtn: "Auto Locate Me", noCut: "No water cuts in the area, system active!", aqi: "AIR QUALITY", tooFar: "Too far. Please use vending machines."
+        greet: "Have a Great Day!", title: "Kyiv's Health Spring", rates: "EXCHANGE RATES (UAH ₴)", store: "STORE INFO", orderTitle: "ORDER WATER", city: "City", street: "Street", building: "Building", flat: "Flat", liters: "Select Liters", placeOrder: "PLACE ORDER", orderBtn: "ORDER WATER", rewardBtn: "Please watch the video to support us ❤️", promo: "✨ Please don't forget to get clean, fresh water! ✨", locBtn: "Auto Locate Me", noCut: "No water cuts in the area, system active!", aqi: "AIR QUALITY", tooFar: "Too far from shop (3km+). Please use vending machines.", locError: "Location failed. Please enter manually."
     },
     ru: {
-        greet: "Доброго утра!", title: "Источник здоровья Киева", rates: "КУРС ВАЛЮТ (UAH ₴)", store: "МАГАЗИН", orderTitle: "ЗАКАЗАТЬ ВОДУ", city: "Город", street: "Улица", building: "Дом", flat: "Квартира", liters: "Выберите литры", placeOrder: "ЗАКАЗАТЬ", orderBtn: "ЗАКАЗАТЬ ВОДУ", rewardBtn: "Посмотрите видео, чтобы поддержать нас ❤️", promo: "✨ Не забудьте взять чистую и свежую воду! ✨", locBtn: "Найти мое положение", noCut: "В районе нет отключений, система активна!", aqi: "КАЧЕСТВО ВОЗДУХА", tooFar: "Слишком далеко. Используйте автоматы."
+        greet: "Доброго утра!", title: "Источник здоровья Киева", rates: "КУРС ВАЛЮТ (UAH ₴)", store: "МАГАЗИН", orderTitle: "ЗАКАЗАТЬ ВОДУ", city: "Город", street: "Улица", building: "Дом", flat: "Квартира", liters: "Выберите литры", placeOrder: "ЗАКАЗАТЬ", orderBtn: "ЗАКАЗАТЬ ВОДУ", rewardBtn: "Посмотрите видео, чтобы поддержать нас ❤️", promo: "✨ Не забудьте взять чистую и свежую воду! ✨", locBtn: "Найти положение", noCut: "В районе нет отключений, система активна!", aqi: "КАЧЕСТВО ВОЗДУХА", tooFar: "Слишком далеко (3км+). Используйте автоматы.", locError: "Ошибка геолокации."
     }
 };
 
@@ -306,7 +308,7 @@ function changeL(lang) {
     document.getElementById('label-building').innerText = s.building;
     document.getElementById('label-flat').innerText = s.flat;
     document.getElementById('label-liters').innerText = s.liters;
-    document.getElementById('btn-place-order').innerText = s.placeOrder;
+    document.getElementById('btn-order-text').innerText = s.placeOrder;
     document.getElementById('reward-btn-text').innerText = s.rewardBtn;
     document.getElementById('promo-txt').innerText = s.promo;
     document.getElementById('txt-loc').innerText = s.locBtn;
@@ -315,7 +317,6 @@ function changeL(lang) {
     calculateOrder();
 }
 
-// Location
 function getDistance(lat1, lon1, lat2, lon2) {
     const R = 6371e3;
     const φ1 = lat1 * Math.PI/180, φ2 = lat2 * Math.PI/180, Δφ = (lat2-lat1) * Math.PI/180, Δλ = (lon2-lon1) * Math.PI/180;
@@ -324,11 +325,16 @@ function getDistance(lat1, lon1, lat2, lon2) {
 }
 
 function autoLocate() {
-    if (!navigator.geolocation) return;
+    if (!navigator.geolocation) return alert("GPS not supported");
+    const btnText = document.getElementById('txt-loc');
+    btnText.innerText = "...";
     navigator.geolocation.getCurrentPosition(async pos => {
         userCoords = { lat: pos.coords.latitude, lng: pos.coords.longitude };
-        if (getDistance(userCoords.lat, userCoords.lng, SHOP_COORD.lat, SHOP_COORD.lng) > appConfig.maxDistance) {
-            alert(uiStrings[activeLang].tooFar); return;
+        const dist = getDistance(userCoords.lat, userCoords.lng, SHOP_COORD.lat, SHOP_COORD.lng);
+        if (dist > MAX_DIST) {
+            alert(uiStrings[activeLang].tooFar);
+            btnText.innerText = uiStrings[activeLang].locBtn;
+            return;
         }
         try {
             const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${userCoords.lat}&lon=${userCoords.lng}&accept-language=${activeLang}`);
@@ -336,37 +342,74 @@ function autoLocate() {
             if (data.address) {
                 document.getElementById('order-street').value = data.address.road || "";
                 document.getElementById('order-building').value = data.address.house_number || "";
+                document.getElementById('order-city').value = data.address.city || data.address.town || "Kyiv";
             }
         } catch (e) {}
+        btnText.innerText = uiStrings[activeLang].locBtn;
+    }, () => {
+        alert(uiStrings[activeLang].locError);
+        btnText.innerText = uiStrings[activeLang].locBtn;
     });
 }
 
-// Auth
-function verifyPhone() { if (document.getElementById('phoneInput').value.length < 10) return; document.getElementById('authStep1').classList.remove('active'); document.getElementById('authStep2').classList.add('active'); }
-function verifyName() { if (document.getElementById('nameInput').value.length < 2) return; document.getElementById('confirmPhone').innerText = document.getElementById('phoneInput').value; document.getElementById('confirmName').innerText = document.getElementById('nameInput').value; document.getElementById('authStep2').classList.remove('active'); document.getElementById('authStep3').classList.add('active'); }
-function completeAuth() { currentUser = { phone: document.getElementById('phoneInput').value, name: document.getElementById('nameInput').value }; if (document.getElementById('rememberMe').checked) localStorage.setItem('currentUser', JSON.stringify(currentUser)); document.getElementById('authOverlay').classList.remove('active'); updateUserUI(); }
+function verifyPhone() {
+    const p = document.getElementById('phoneInput').value.trim();
+    if (p.length < 10) return alert(uiStrings[activeLang].authPhone);
+    document.getElementById('authStep1').style.display = 'none';
+    document.getElementById('authStep2').style.display = 'block';
+}
+function verifyName() {
+    const n = document.getElementById('nameInput').value.trim();
+    if (n.length < 2) return alert(uiStrings[activeLang].authName);
+    currentUser = { phone: document.getElementById('phoneInput').value, name: n };
+    if (document.getElementById('rememberMe').checked) localStorage.setItem('currentUser', JSON.stringify(currentUser));
+    document.getElementById('authOverlay').style.display = 'none';
+    updateUserUI();
+}
 function logout() { currentUser = null; localStorage.removeItem('currentUser'); updateUserUI(); }
 function updateUserUI() {
-    if (currentUser) { document.getElementById('userSection').style.display = 'flex'; document.getElementById('headerUserName').innerText = currentUser.name; }
-    else { document.getElementById('userSection').style.display = 'none'; document.getElementById('authOverlay').classList.add('active'); }
+    if (currentUser) {
+        document.getElementById('userSection').style.display = 'flex';
+        document.getElementById('headerUserName').innerText = currentUser.name;
+        document.getElementById('authOverlay').style.display = 'none';
+    } else {
+        document.getElementById('userSection').style.display = 'none';
+        document.getElementById('authOverlay').style.display = 'flex';
+    }
 }
 
-// Order
-function openOrderModal() { if (!currentUser) return; document.getElementById('orderModal').classList.add('active'); calculateOrder(); }
+function openOrderModal() { if (!currentUser) return updateUserUI(); document.getElementById('orderModal').classList.add('active'); calculateOrder(); }
 function closeOrderModal() { document.getElementById('orderModal').classList.remove('active'); }
 function selectLiters(l, btn) { document.querySelectorAll('.liter-btn').forEach(b => b.classList.remove('active')); btn.classList.add('active'); document.getElementById('order-liters').value = l; calculateOrder(); }
 function calculateOrder() { const l = parseInt(document.getElementById('order-liters').value); const total = (l * appConfig.litrPrice) + appConfig.deliveryFee; document.getElementById('total-price').innerText = `${total.toFixed(2)} ₴`; }
 
 async function submitOrder(e) {
     e.preventDefault();
-    const orderData = { name: currentUser.name, phone: currentUser.phone, city: document.getElementById('order-city').value, street: document.getElementById('order-street').value, building: document.getElementById('order-building').value, flat: document.getElementById('order-flat').value, liters: document.getElementById('order-liters').value, total: document.getElementById('total-price').innerText, orderId: 'ORD-' + Date.now() };
+    const btn = document.getElementById('btn-place-order');
+    btn.disabled = true;
+    const orderData = { 
+        name: currentUser.name, phone: currentUser.phone, 
+        city: document.getElementById('order-city').value, 
+        street: document.getElementById('order-street').value, 
+        building: document.getElementById('order-building').value, 
+        flat: document.getElementById('order-flat').value, 
+        liters: document.getElementById('order-liters').value, 
+        total: document.getElementById('total-price').innerText, 
+        orderId: 'ORD-' + Date.now(),
+        lat: userCoords?.lat, lng: userCoords?.lng
+    };
     try {
         const res = await fetch(WORKER_URL + '/save-order', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(orderData) });
-        if (res.ok) { alert("Sipariş Alındı!"); closeOrderModal(); }
-    } catch (e) {}
+        if (res.ok) { alert("Sipariş Alındı! / Order Received!"); closeOrderModal(); }
+        else alert("Hata / Error");
+    } catch (e) { alert("Bağlantı Hatası"); }
+    btn.disabled = false;
 }
 
-function showRewardAd() { if (window.Android) window.Android.showRewardAd(); }
+function handleRewardAd() {
+    alert("Video Yükleniyor... Desteğiniz için teşekkürler!");
+    if (window.Android && window.Android.showRewardAd) { window.Android.showRewardAd(); }
+}
 
 async function init() {
     updateUserUI();
@@ -377,16 +420,16 @@ async function init() {
             appConfig.litrPrice = data.litrPrice || 1.5;
             appConfig.deliveryFee = data.deliveryFee || 50;
             if (data.rates) {
-                document.getElementById('u-buy').innerText = data.rates.USD_BUY || "39.50";
-                document.getElementById('u-sell').innerText = data.rates.USD_SELL || "40.20";
-                document.getElementById('e-buy').innerText = data.rates.EUR_BUY || "42.10";
-                document.getElementById('e-sell').innerText = data.rates.EUR_SELL || "43.00";
+                document.getElementById('u-buy').innerText = data.rates.USD_BUY || "39.80";
+                document.getElementById('u-sell').innerText = data.rates.USD_SELL || "40.50";
+                document.getElementById('e-buy').innerText = data.rates.EUR_BUY || "42.40";
+                document.getElementById('e-sell').innerText = data.rates.EUR_SELL || "43.20";
             }
             if (data.weather) {
-                document.getElementById('w-temp').innerText = data.weather.temp + "°";
-                document.getElementById('w-desc').innerText = data.weather.desc;
+                document.getElementById('w-temp').innerText = (data.weather.temp || "--") + "°";
+                document.getElementById('w-desc').innerText = data.weather.desc || "Kyiv, UA";
             }
-            document.getElementById('aqi-num').innerText = data.aqi || "24";
+            document.getElementById('aqi-num').innerText = data.aqi || "22";
         }
     } catch (e) {}
 }
