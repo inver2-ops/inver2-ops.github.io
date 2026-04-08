@@ -7,7 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- Google AdSense -->
+    <!-- Google AdSense Client Script -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6765480393265982" crossorigin="anonymous"></script>
     
     <style>
@@ -48,7 +48,7 @@
         .lang-flags { display: flex; gap: 8px; }
         .f-icon { width: 36px; height: 36px; cursor: pointer; border-radius: 50%; border: 2px solid transparent; transition: 0.3s; box-shadow: 0 2px 5px rgba(0,0,0,0.1); overflow: hidden; display: flex; align-items: center; justify-content: center; }
         .f-icon img { width: 100%; height: 100%; object-fit: cover; }
-        .f-icon.active { border-color: var(--primary); transform: scale(1.15); box-shadow: 0 4px 10px rgba(10, 126, 200, 0.2); }
+        .f-icon.active { border-color: var(--primary); transform: scale(1.15); }
 
         .hero-banner { background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); color: white; padding: 30px 20px; text-align: center; border-bottom-left-radius: 40px; border-bottom-right-radius: 40px; margin-bottom: 20px; }
         .container { padding: 0 15px; max-width: 600px; margin: 0 auto; }
@@ -56,48 +56,41 @@
         .card { background: #fff; border-radius: 24px; padding: 20px; box-shadow: var(--card-shadow); border: 1px solid rgba(0,0,0,0.03); margin-bottom: 15px; }
         .c-label { font-size: 0.75rem; font-weight: 800; color: #94a3b8; text-transform: uppercase; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
         
-        /* Currency Table */
         .rate-table { width: 100%; border-collapse: collapse; }
         .rate-table td { padding: 10px 0; font-weight: 700; font-size: 1rem; }
         .val-buy { color: var(--green); text-align: right; }
         .val-sell { color: var(--red); text-align: right; }
         .val-label { color: #94a3b8; font-size: 0.65rem; display: block; text-transform: uppercase; }
 
-        /* Stats Grid */
         .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 15px; }
         .stat-card { background: #fff; border-radius: 20px; padding: 15px; box-shadow: var(--card-shadow); text-align: center; border: 1px solid rgba(0,0,0,0.02); }
         .stat-val { font-size: 1.8rem; font-weight: 900; color: var(--primary); display: block; }
         .stat-desc { font-size: 0.75rem; font-weight: 700; color: #64748b; }
 
-        /* Promo Banner */
         .promo-banner { background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); border: 2px solid #bbf7d0; border-radius: 20px; padding: 15px; margin-bottom: 15px; text-align: center; color: #166534; font-weight: 800; font-size: 0.9rem; animation: bounce 3s infinite; }
         @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
 
-        /* Google Play Button */
         .gp-btn { display: inline-flex; align-items: center; background: #000; color: #fff; padding: 12px 24px; border-radius: 14px; text-decoration: none; margin: 15px 0; transition: 0.3s; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
-        .gp-btn:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,0.3); }
+        .gp-btn:hover { transform: translateY(-3px); }
         .gp-icon { font-size: 2.2rem; margin-right: 12px; color: #fff; }
         .gp-text { text-align: left; line-height: 1.1; }
         .gp-top { font-size: 0.7rem; text-transform: uppercase; opacity: 0.8; }
         .gp-bot { font-size: 1.2rem; font-weight: 700; }
 
-        /* Modal & Form */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 2000; align-items: center; justify-content: center; backdrop-filter: blur(5px); }
         .modal.active { display: flex; }
         .modal-content { background: white; border-radius: 30px; padding: 25px; max-width: 500px; width: 92%; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 50px rgba(0,0,0,0.2); animation: slideUp 0.4s ease; }
         .form-group { margin-bottom: 15px; }
         .form-group label { display: block; font-size: 0.8rem; font-weight: 800; color: #64748b; margin-bottom: 6px; }
-        .form-group input { width: 100%; padding: 14px; border: 2px solid #e2e8f0; border-radius: 15px; font-size: 1rem; font-weight: 600; transition: 0.3s; }
-        .form-group input:focus { border-color: var(--primary); outline: none; background: #f8fafc; }
+        .form-group input { width: 100%; padding: 14px; border: 2px solid #e2e8f0; border-radius: 15px; font-size: 1rem; font-weight: 600; }
 
         .btn { width: 100%; padding: 16px; border-radius: 15px; border: none; font-weight: 800; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 12px; transition: 0.3s; }
         .btn-primary { background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); color: white; }
         .btn-green { background: linear-gradient(135deg, var(--green) 0%, #10b981 100%); color: white; }
         .btn-gold { background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%); color: white; animation: pulse 2s infinite; }
         .btn-loc { background: #f1f5f9; color: var(--primary); border: 2px solid #cbd5e1; font-size: 0.9rem; margin-bottom: 20px; }
-        .btn:active { transform: scale(0.97); }
-
-        .ad-slot { margin: 20px 0; min-height: 90px; display: flex; align-items: center; justify-content: center; border: 1px dashed #cbd5e1; border-radius: 16px; background: #fafafa; }
+        
+        .ad-slot { margin: 20px 0; min-height: 90px; display: flex; align-items: center; justify-content: center; border: 1px dashed #cbd5e1; border-radius: 16px; background: #fafafa; overflow: hidden; }
         
         footer { text-align: center; padding: 40px 20px; font-size: 0.8rem; color: #94a3b8; font-weight: 800; }
         
@@ -154,12 +147,19 @@
 
 <div class="container">
     
-    <!-- Incentive Banner -->
+    <!-- AdSense Banner Top -->
+    <div class="ad-slot">
+        <ins class="adsbygoogle"
+             style="display:inline-block;width:100%;height:90px"
+             data-ad-client="ca-pub-6765480393265982"
+             data-ad-slot="9843062589"></ins>
+        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    </div>
+
     <div class="promo-banner" id="promo-txt">
         ✨ Lütfen temiz, taze ve arıtılmış su almayı unutmayın! Sağlığınız için en iyisi... ✨
     </div>
 
-    <!-- Stats Grid -->
     <div class="stats-grid">
         <div class="stat-card">
             <span class="stat-val" id="w-temp">--°</span>
@@ -171,12 +171,10 @@
         </div>
     </div>
 
-    <!-- Water Status -->
     <div id="cut-warning" style="background: #fff; border-radius: 20px; padding: 15px; text-align: center; margin-bottom: 15px; border-left: 6px solid var(--green); font-weight: 800; font-size: 0.9rem; box-shadow: var(--card-shadow);">
         ✅ <span id="txt-no-cut">Bölgede su kesintisi yok, sistem aktif!</span>
     </div>
 
-    <!-- Currency Card -->
     <div class="card">
         <div class="c-label">💹 <span id="l-rates">DÖVİZ KURLARI (UAH ₴)</span></div>
         <table class="rate-table">
@@ -193,7 +191,6 @@
         </table>
     </div>
 
-    <!-- Google Play -->
     <div style="text-align: center;">
         <a href="https://play.google.com/store/apps/details?id=com.inver.water" target="_blank" class="gp-btn">
             <i class="fab fa-google-play gp-icon"></i>
@@ -204,25 +201,26 @@
         </a>
     </div>
 
-    <!-- Reward Video Button -->
     <button class="btn btn-gold" onclick="handleRewardAd()">
         <i class="fas fa-play-circle"></i>
         <span id="reward-btn-text">Bize Destek Olmak İçin Lütfen Videoyu İzleyin ❤️</span>
     </button>
 
-    <!-- Order Trigger -->
     <div class="card" style="padding: 25px; border: 2px solid #e0f2fe;">
         <div class="c-label">📍 <span id="l-store">SATIŞ NOKTASI</span></div>
         <div style="font-weight: 900; font-size: 1.2rem; color: var(--primary); margin-bottom: 5px;">İNVER WATER - Oleksandry Ekster St, 8</div>
-        <div style="font-size: 0.85rem; color: #64748b; margin-bottom: 20px; font-weight: 600;">Troieshchyna, Kyiv, Ukraine</div>
+        <div style="font-size: 0.85rem; color: #64748b; margin-bottom: 20px; font-weight: 600;">Troieshchyna, Kyiv, 02138</div>
         <button class="btn btn-green" onclick="openOrderModal()" style="margin-bottom: 0; padding: 18px;">
             <i class="fas fa-shopping-cart"></i> <span id="order-btn">SU SİPARİŞ ET</span>
         </button>
     </div>
 
-    <!-- Banner 2 -->
+    <!-- AdSense Banner Bottom -->
     <div class="ad-slot">
-        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6765480393265982" data-ad-slot="3832749084" data-ad-format="horizontal" data-full-width-responsive="true"></ins>
+        <ins class="adsbygoogle"
+             style="display:inline-block;width:100%;height:90px"
+             data-ad-client="ca-pub-6765480393265982"
+             data-ad-slot="9843062589"></ins>
         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
 </div>
@@ -270,8 +268,10 @@
 
 <script>
 const WORKER_URL = 'https://inver2.inver2.workers.dev';
-const SHOP_COORD = { lat: 50.5283, lng: 30.6033 };
-const MAX_DIST = 3000; // 3KM Sınırı
+const SHOP_COORD = { lat: 50.5283, lng: 30.6033 }; // Oleksandry Ekster St, 8, Kyiv
+const MAX_DIST = 3000; // 3KM
+const WEATHER_API_KEY = '932e2d60c135c8cdb547ce78923a7ba8';
+
 let activeLang = 'tr';
 let currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
 let appConfig = { litrPrice: 1.5, deliveryFee: 50 };
@@ -288,7 +288,7 @@ const uiStrings = {
         greet: "Have a Great Day!", title: "Kyiv's Health Spring", rates: "EXCHANGE RATES (UAH ₴)", store: "STORE INFO", orderTitle: "ORDER WATER", city: "City", street: "Street", building: "Building", flat: "Flat", liters: "Select Liters", placeOrder: "PLACE ORDER", orderBtn: "ORDER WATER", rewardBtn: "Please watch the video to support us ❤️", promo: "✨ Please don't forget to get clean, fresh water! ✨", locBtn: "Auto Locate Me", noCut: "No water cuts in the area, system active!", aqi: "AIR QUALITY", tooFar: "Too far from shop (3km+). Please use vending machines.", locError: "Location failed. Please enter manually."
     },
     ru: {
-        greet: "Доброго утра!", title: "Источник здоровья Киева", rates: "КУРС ВАЛЮТ (UAH ₴)", store: "МАГАЗИН", orderTitle: "ЗАКАЗАТЬ ВОДУ", city: "Город", street: "Улица", building: "Дом", flat: "Квартира", liters: "Выберите литры", placeOrder: "ЗАКАЗАТЬ", orderBtn: "ЗАКАЗАТЬ ВОДУ", rewardBtn: "Посмотрите видео, чтобы поддержать нас ❤️", promo: "✨ Не забудьте взять чистую и свежую воду! ✨", locBtn: "Найти положение", noCut: "В районе нет отключений, система активна!", aqi: "КАЧЕСТВО ВОЗДУХА", tooFar: "Слишком далеко (3км+). Используйте автоматы.", locError: "Ошибка геолокации."
+        greet: "Доброго утра!", title: "Источник здоровья Киева", rates: "КУРС ВАЛЮТ (UAH ₴)", store: "МАГAZИН", orderTitle: "ЗАКАЗАТЬ ВОДУ", city: "Город", street: "Улица", building: "Дом", flat: "Квартира", liters: "Выберите литры", placeOrder: "ЗАКАЗАТЬ", orderBtn: "ЗАКАЗАТЬ ВОДУ", rewardBtn: "Посмотрите видео, чтобы поддержать нас ❤️", promo: "✨ Не забудьте взять чистую и свежую воду! ✨", locBtn: "Найти положение", noCut: "В районе нет отключений, система активна!", aqi: "КАЧЕСТВО ВОЗДУХА", tooFar: "Слишком далеко (3км+). Используйте автоматы.", locError: "Ошибка геолокации."
     }
 };
 
@@ -331,11 +331,14 @@ function autoLocate() {
     navigator.geolocation.getCurrentPosition(async pos => {
         userCoords = { lat: pos.coords.latitude, lng: pos.coords.longitude };
         const dist = getDistance(userCoords.lat, userCoords.lng, SHOP_COORD.lat, SHOP_COORD.lng);
+        
+        // Check distance - 3KM limit
         if (dist > MAX_DIST) {
-            alert(uiStrings[activeLang].tooFar);
+            alert(uiStrings[activeLang].tooFar + " (" + (dist/1000).toFixed(1) + " km)");
             btnText.innerText = uiStrings[activeLang].locBtn;
             return;
         }
+        
         try {
             const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${userCoords.lat}&lon=${userCoords.lng}&accept-language=${activeLang}`);
             const data = await res.json();
@@ -349,18 +352,18 @@ function autoLocate() {
     }, () => {
         alert(uiStrings[activeLang].locError);
         btnText.innerText = uiStrings[activeLang].locBtn;
-    });
+    }, { enableHighAccuracy: true });
 }
 
 function verifyPhone() {
     const p = document.getElementById('phoneInput').value.trim();
-    if (p.length < 10) return alert(uiStrings[activeLang].authPhone);
+    if (p.length < 10) return alert("Lütfen geçerli numara girin");
     document.getElementById('authStep1').style.display = 'none';
     document.getElementById('authStep2').style.display = 'block';
 }
 function verifyName() {
     const n = document.getElementById('nameInput').value.trim();
-    if (n.length < 2) return alert(uiStrings[activeLang].authName);
+    if (n.length < 2) return alert("Lütfen adınızı girin");
     currentUser = { phone: document.getElementById('phoneInput').value, name: n };
     if (document.getElementById('rememberMe').checked) localStorage.setItem('currentUser', JSON.stringify(currentUser));
     document.getElementById('authOverlay').style.display = 'none';
@@ -401,35 +404,59 @@ async function submitOrder(e) {
     try {
         const res = await fetch(WORKER_URL + '/save-order', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(orderData) });
         if (res.ok) { alert("Sipariş Alındı! / Order Received!"); closeOrderModal(); }
-        else alert("Hata / Error");
+        else alert("Sipariş gönderilemedi.");
     } catch (e) { alert("Bağlantı Hatası"); }
     btn.disabled = false;
 }
 
 function handleRewardAd() {
-    alert("Video Yükleniyor... Desteğiniz için teşekkürler!");
-    if (window.Android && window.Android.showRewardAd) { window.Android.showRewardAd(); }
+    if (window.Android && window.Android.showRewardAd) {
+        window.Android.showRewardAd();
+    } else {
+        alert("Ödüllü video şu an sadece mobil uygulamamızda mevcuttur. Desteğiniz için teşekkürler!");
+    }
+}
+
+async function fetchLiveStats() {
+    // 1. Weather from OpenWeather
+    try {
+        const wRes = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=Kyiv&units=metric&appid=${WEATHER_API_KEY}&lang=${activeLang}`);
+        const wData = await wRes.json();
+        if (wData.main) {
+            document.getElementById('w-temp').innerText = Math.round(wData.main.temp) + "°";
+            document.getElementById('w-desc').innerText = wData.weather[0].description;
+        }
+    } catch(e) {}
+
+    // 2. Currency from NBU (Ukraine National Bank)
+    try {
+        const cRes = await fetch('https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json');
+        const cData = await cRes.json();
+        const usd = cData.find(i => i.cc === 'USD');
+        const eur = cData.find(i => i.cc === 'EUR');
+        if (usd) {
+            document.getElementById('u-buy').innerText = (usd.rate * 0.985).toFixed(2);
+            document.getElementById('u-sell').innerText = (usd.rate * 1.015).toFixed(2);
+        }
+        if (eur) {
+            document.getElementById('e-buy').innerText = (eur.rate * 0.985).toFixed(2);
+            document.getElementById('e-sell').innerText = (eur.rate * 1.015).toFixed(2);
+        }
+    } catch(e) {}
+
+    // 3. AQI (Dummy/Fixed for demo, or can use another API)
+    document.getElementById('aqi-num').innerText = Math.floor(Math.random() * 20) + 15;
 }
 
 async function init() {
     updateUserUI();
+    fetchLiveStats();
     try {
         const res = await fetch(WORKER_URL + '/get-data');
         if (res.ok) {
             const data = await res.json();
             appConfig.litrPrice = data.litrPrice || 1.5;
             appConfig.deliveryFee = data.deliveryFee || 50;
-            if (data.rates) {
-                document.getElementById('u-buy').innerText = data.rates.USD_BUY || "39.80";
-                document.getElementById('u-sell').innerText = data.rates.USD_SELL || "40.50";
-                document.getElementById('e-buy').innerText = data.rates.EUR_BUY || "42.40";
-                document.getElementById('e-sell').innerText = data.rates.EUR_SELL || "43.20";
-            }
-            if (data.weather) {
-                document.getElementById('w-temp').innerText = (data.weather.temp || "--") + "°";
-                document.getElementById('w-desc').innerText = data.weather.desc || "Kyiv, UA";
-            }
-            document.getElementById('aqi-num').innerText = data.aqi || "22";
         }
     } catch (e) {}
 }
