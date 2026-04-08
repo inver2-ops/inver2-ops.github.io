@@ -22,7 +22,25 @@
             --card-shadow: 0 10px 30px rgba(0,0,0,0.05);
         }
 
-        * { box-sizing: border-box; font-family: 'Nunito', sans-serif; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        /* Prevent text selection */
+        * { 
+            box-sizing: border-box; 
+            font-family: 'Nunito', sans-serif; 
+            margin: 0; padding: 0; 
+            -webkit-tap-highlight-color: transparent;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+        
+        input, textarea {
+            -webkit-user-select: text;
+            -moz-user-select: text;
+            -ms-user-select: text;
+            user-select: text;
+        }
+
         body { background: var(--bg-light); color: var(--text-light); line-height: 1.6; padding-bottom: 20px; overflow-x: hidden; }
 
         header {
@@ -112,6 +130,7 @@
         .ad-slot { margin: 25px 0; min-height: 90px; display: flex; align-items: center; justify-content: center; border: 1px dashed #cbd5e1; border-radius: 20px; background: #fafafa; overflow: hidden; }
         
         footer { text-align: center; padding: 40px 20px; font-size: 0.85rem; color: #94a3b8; font-weight: 800; border-top: 1px solid #e2e8f0; margin-top: 20px; }
+        .dev-brand { color: var(--primary); font-weight: 900; background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         
         @keyframes slideUp { from { transform: translateY(60px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
         @keyframes pulse { 0% { transform: scale(1); box-shadow: 0 8px 20px rgba(245, 158, 11, 0.3); } 50% { transform: scale(1.03); box-shadow: 0 12px 30px rgba(245, 158, 11, 0.5); } 100% { transform: scale(1); box-shadow: 0 8px 20px rgba(245, 158, 11, 0.3); } }
@@ -123,7 +142,7 @@
         .auth-step.active { display: block; }
     </style>
 </head>
-<body>
+<body oncontextmenu="return false;">
 
 <!-- AUTH OVERLAY -->
 <div id="authOverlay" class="auth-overlay">
@@ -299,10 +318,20 @@
 </div>
 
 <footer>
-    <p id="footer-text">İNVER WATER © 2026 | dev/ByAltun</p>
+    <p id="footer-text">İNVER WATER © 2026 | <span class="dev-brand">dev/ByAltun</span></p>
 </footer>
 
 <script>
+// SECURITY SCRIPTS: Disable F12, Right Click, Ctrl+U, etc.
+document.onkeydown = function(e) {
+    if (e.keyCode == 123) return false; // F12
+    if (e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) return false; // Ctrl+Shift+I
+    if (e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)) return false; // Ctrl+Shift+C
+    if (e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) return false; // Ctrl+Shift+J
+    if (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) return false; // Ctrl+U
+};
+
+// Constant Configuration
 const WORKER_URL = 'https://inver2.inver2.workers.dev';
 const SHOP_COORD = { lat: 50.5283, lng: 30.6033 };
 const MAX_DIST = 3000;
@@ -327,7 +356,6 @@ const uiStrings = {
         tooFar: "Dükkana çok uzaktasınız (3km+). Lütfen size en yakın otomatı kullanın.",
         locError: "Konum alınamadı. Lütfen adresi manuel girin.", orderOk: "Siparişiniz Alındı! Teşekkürler.",
         orderErr: "Sipariş gönderilemedi. Lütfen tekrar deneyin.", opensAt: "Açılış: ", closesAt: "Kapanış: ",
-        footerText: "İNVER WATER © 2026 | Troieshchyna Premium Su Dağıtım Hizmeti",
         authTitle: "📱 Telefon Doğrula", authTitle2: "👤 Adınız", remember: "Beni Hatırla", authBtn: "Devam Et", authBtn2: "Onayla",
         annBadge: "DUYURU", annReadMore: "Devamını Oku"
     },
@@ -343,7 +371,6 @@ const uiStrings = {
         tooFar: "Ви занадто далеко (3км+). Використовуйте автомати.",
         locError: "Не вдалося отримати локацію.", orderOk: "Замовлення прийнято! Дякуємо.",
         orderErr: "Помилка замовлення.", opensAt: "Відкриття: ", closesAt: "Закриття: ",
-        footerText: "ІНВЕР ВОДА © 2026 | Преміальна служба доставки води Троєщини",
         authTitle: "📱 Підтвердити телефон", authTitle2: "👤 Ваше ім'я", remember: "Запам'ятати мене", authBtn: "Продовжити", authBtn2: "Підтвердити",
         annBadge: "ОГОЛОШЕННЯ", annReadMore: "Читати далі"
     },
@@ -359,7 +386,6 @@ const uiStrings = {
         tooFar: "Too far from shop (3km+). Please use vending machines.",
         locError: "Location failed. Please enter manually.", orderOk: "Order Received! Thank you.",
         orderErr: "Order failed.", opensAt: "Opens at: ", closesAt: "Closes at: ",
-        footerText: "INVER WATER © 2026 | Troieshchyna Premium Water Delivery Service",
         authTitle: "📱 Verify Phone", authTitle2: "👤 Your Name", remember: "Remember Me", authBtn: "Continue", authBtn2: "Confirm",
         annBadge: "ANNOUNCEMENT", annReadMore: "Read More"
     },
@@ -375,7 +401,6 @@ const uiStrings = {
         tooFar: "Слишком далеко (3км+). Используйте автоматы.",
         locError: "Ошибка геолокации.", orderOk: "Заказ принят! Спасибо.",
         orderErr: "Ошибка заказа.", opensAt: "Открытие: ", closesAt: "Закрытие: ",
-        footerText: "ИНВЕР ВОДА © 2026 | Премиальная служба доставки воды Троещины",
         authTitle: "📱 Подтвердить телефон", authTitle2: "👤 Ваше имя", remember: "Запомнить меня", authBtn: "Продолжить", authBtn2: "Подтвердить",
         annBadge: "ОБЪЯВЛЕНИЕ", annReadMore: "Читать далее"
     }
@@ -408,7 +433,6 @@ function updateUI() {
     document.getElementById('btn-order-text').innerText = s.placeOrder;
     document.getElementById('txt-loc').innerText = s.locBtn;
     document.getElementById('l-aqi').innerText = s.aqi;
-    document.getElementById('footer-text').innerText = s.footerText;
     document.getElementById('auth-title').innerText = s.authTitle;
     document.getElementById('auth-title-2').innerText = s.authTitle2;
     document.getElementById('remember-label').innerText = s.remember;
