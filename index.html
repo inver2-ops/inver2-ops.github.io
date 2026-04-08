@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -13,38 +13,16 @@
             --primary: #0A7EC8;
             --secondary: #00d2ff;
             --bg-light: #EFF8FF;
-            --bg-dark: #05101D;
-            --card-light: #FFFFFF;
-            --card-dark: rgba(255,255,255,0.06);
             --text-light: #09192A;
-            --text-dark: #EFF8FF;
-            --text-secondary-light: #3B6A8C;
-            --text-secondary-dark: rgba(239,248,255,0.58);
-            --text-tertiary-light: #8CB5CC;
-            --text-tertiary-dark: rgba(239,248,255,0.30);
             --green: #16A34A;
             --red: #DC2626;
-            --amber: #D97706;
             --gold: #F59E0B;
+            --card-shadow: 0 10px 30px rgba(0,0,0,0.05);
         }
 
-        * {
-            box-sizing: border-box;
-            font-family: 'Nunito', sans-serif;
-            margin: 0;
-            padding: 0;
-            -webkit-tap-highlight-color: transparent;
-        }
+        * { box-sizing: border-box; font-family: 'Nunito', sans-serif; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        body { background: var(--bg-light); color: var(--text-light); line-height: 1.6; padding-bottom: 20px; overflow-x: hidden; }
 
-        body {
-            background: var(--bg-light);
-            color: var(--text-light);
-            line-height: 1.6;
-            padding-bottom: 20px;
-            overflow-x: hidden;
-        }
-
-        /* HEADER */
         header {
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
@@ -53,738 +31,104 @@
             justify-content: space-between;
             align-items: center;
             box-shadow: 0 4px 15px rgba(0,0,0,0.03);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
-
-        .logo-box {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            cursor: pointer;
-        }
-
-        .logo-icon {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: 800;
-        }
-
-        .logo-text {
-            font-weight: 800;
-            font-size: 1.1rem;
-            color: var(--primary);
-            letter-spacing: -0.5px;
-        }
-
-        .header-right {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .user-info {
-            text-align: right;
-            font-size: 0.8rem;
-        }
-
-        .user-name {
-            font-weight: 800;
-            color: var(--primary);
-        }
-
-        .user-phone {
-            color: #64748b;
-            font-size: 0.75rem;
-        }
-
-        .logout-btn {
-            background: var(--red);
-            color: white;
-            border: none;
-            padding: 6px 12px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 700;
-            font-size: 0.75rem;
-        }
-
-        .lang-flags {
-            display: flex;
-            gap: 6px;
-        }
-
-        .f-icon {
-            width: 36px;
-            height: 36px;
-            cursor: pointer;
-            border-radius: 50%;
-            border: 2px solid transparent;
-            transition: 0.3s;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            font-size: 1.4rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: #f0f4f8;
-        }
-
-        .f-icon.active {
-            border-color: var(--primary);
-            transform: scale(1.15);
-            background: #e0f2fe;
-        }
-
-        /* HERO BANNER */
-        .hero-banner {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            color: white;
-            padding: 40px 20px;
-            text-align: center;
-            border-bottom-left-radius: 40px;
-            border-bottom-right-radius: 40px;
-            margin-bottom: 20px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero-banner::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            right: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
-            animation: pulse 8s ease-in-out infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-        }
-
-        .hero-content {
-            position: relative;
-            z-index: 1;
-        }
-
-        .greet {
-            font-size: 0.95rem;
-            font-weight: 600;
-            opacity: 0.95;
-            margin-bottom: 8px;
-        }
-
-        .hero-banner h1 {
-            font-size: 1.8rem;
-            font-weight: 800;
-            margin-bottom: 8px;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-
-        .hero-banner .location {
-            font-size: 0.65rem;
-            font-weight: 800;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            opacity: 0.9;
-        }
-
-        .container {
-            padding: 0 15px;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        /* AUTH MODAL */
-        .auth-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.6);
-            z-index: 3000;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .auth-overlay.active {
-            display: flex;
-        }
-
-        .auth-box {
-            background: white;
-            border-radius: 24px;
-            padding: 30px;
-            max-width: 400px;
-            width: 90%;
-            animation: slideUp 0.3s ease;
-        }
-
-        .auth-title {
-            font-size: 1.4rem;
-            font-weight: 800;
-            margin-bottom: 20px;
-            color: var(--primary);
-        }
-
-        .auth-input {
-            width: 100%;
-            padding: 14px;
-            border: 2px solid #e2e8f0;
-            border-radius: 12px;
-            font-size: 1rem;
-            font-family: inherit;
-            font-weight: 600;
-            margin-bottom: 14px;
-            transition: 0.3s;
-        }
-
-        .auth-input:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(10, 126, 200, 0.1);
-        }
-
-        .auth-btn {
-            width: 100%;
-            padding: 14px;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            color: white;
-            border: none;
-            border-radius: 12px;
-            font-weight: 800;
-            cursor: pointer;
-            font-size: 1rem;
-            transition: 0.3s;
-        }
-
-        .auth-btn:active {
-            transform: scale(0.96);
-        }
-
-        .auth-step {
-            display: none;
-        }
-
-        .auth-step.active {
-            display: block;
-        }
-
-        /* TABS */
-        .tab-nav {
-            display: flex;
-            gap: 8px;
-            margin: 20px 0;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
-        .tab-btn {
-            padding: 10px 18px;
-            border-radius: 12px;
-            border: none;
-            cursor: pointer;
-            font-weight: 700;
-            font-size: 0.9rem;
-            background: #e2e8f0;
-            color: var(--text-light);
-            transition: 0.3s;
-        }
-
-        .tab-btn.active {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            color: white;
-            box-shadow: 0 4px 12px rgba(10, 126, 200, 0.3);
-        }
-
-        /* DASHBOARD GRID */
-        .dash-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 14px;
-            margin-bottom: 20px;
-        }
-
-        .card {
-            background: var(--card-light);
-            border-radius: 24px;
-            padding: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.02);
-            border: 1px solid rgba(0,0,0,0.03);
-            transition: 0.3s;
-        }
-
-        .card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.05);
-        }
-
-        .card-full {
-            grid-column: span 2;
-        }
-
-        .c-label {
-            font-size: 0.75rem;
-            font-weight: 800;
-            color: #94a3b8;
-            text-transform: uppercase;
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            letter-spacing: 0.5px;
-        }
-
-        .c-label i {
-            color: var(--primary);
-        }
-
-        .big-val {
-            font-size: 2.2rem;
-            font-weight: 900;
-            color: var(--text-light);
-            letter-spacing: -1px;
-            margin-bottom: 4px;
-        }
-
-        .sub-info {
-            font-size: 0.85rem;
-            font-weight: 700;
-            color: #64748b;
-        }
-
-        /* CURRENCY TABLE */
-        .rate-table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        .rate-table tr {
-            border-top: 1px solid #f8fafc;
-        }
-
-        .rate-table td {
-            padding: 12px 0;
-            font-weight: 800;
-            font-size: 1rem;
-        }
-
-        .cur-name {
-            font-size: 0.9rem;
-            color: #64748b;
-        }
-
-        .val-up {
-            color: var(--green);
-            text-align: right;
-        }
-
-        .val-down {
-            color: var(--red);
-            text-align: right;
-        }
-
-        /* WATER TOOL */
-        .water-tool {
-            background: linear-gradient(135deg, #f0f7ff 0%, #e0f2fe 100%);
-            border: 2px solid #bae6fd;
-        }
-
-        .calc-box {
-            width: 100%;
-            padding: 14px;
-            border-radius: 15px;
-            border: 2px solid var(--primary);
-            margin-top: 12px;
-            font-size: 1.1rem;
-            font-weight: 800;
-            text-align: center;
-            color: var(--primary);
-            outline: none;
-            transition: 0.3s;
-        }
-
-        .calc-box:focus {
-            border-color: var(--secondary);
-            box-shadow: 0 0 0 3px rgba(0, 210, 255, 0.1);
-        }
-
-        .calc-result {
-            margin-top: 12px;
-            font-weight: 900;
-            color: var(--primary);
-            font-size: 1.2rem;
-            display: none;
-        }
-
-        /* STORE INFO */
-        .store-info {
-            border: 2px solid var(--primary);
-        }
-
-        .store-name {
-            font-weight: 900;
-            font-size: 1.2rem;
-            color: var(--primary);
-            margin-bottom: 4px;
-        }
-
-        .btn {
-            padding: 14px 20px;
-            border-radius: 16px;
-            border: none;
-            font-weight: 800;
-            cursor: pointer;
-            transition: 0.3s;
-            font-size: 0.95rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            width: 100%;
-            margin-top: 12px;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            color: white;
-            box-shadow: 0 4px 15px rgba(10, 126, 200, 0.3);
-        }
-
-        .btn-primary:active {
-            transform: scale(0.96);
-        }
-
-        .btn-secondary {
-            background: #e2e8f0;
-            color: var(--text-light);
-        }
-
-        .btn-secondary:active {
-            transform: scale(0.96);
-        }
-
-        /* VENDING MACHINES */
-        .machines-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 16px;
-            margin-top: 20px;
-        }
-
-        .machine-card {
-            background: var(--card-light);
-            border-radius: 20px;
-            padding: 16px;
-            border: 2px solid #e2e8f0;
-            transition: 0.3s;
-        }
-
-        .machine-card:hover {
-            border-color: var(--primary);
-            box-shadow: 0 8px 20px rgba(10, 126, 200, 0.15);
-        }
-
-        .machine-name {
-            font-weight: 800;
-            color: var(--primary);
-            margin-bottom: 8px;
-            font-size: 1rem;
-        }
-
-        .machine-status {
-            display: inline-block;
-            padding: 6px 12px;
-            border-radius: 8px;
-            font-size: 0.7rem;
-            font-weight: 800;
-            margin-top: 8px;
-        }
-
-        .status-active {
-            background: #dcfce7;
-            color: #166534;
-        }
-
-        .status-maintenance {
-            background: #fef3c7;
-            color: #92400e;
-        }
-
-        /* MODALS */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.5);
-            z-index: 2000;
-            align-items: center;
-            justify-content: center;
-            animation: fadeIn 0.3s ease;
-        }
-
-        .modal.active {
-            display: flex;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        @keyframes slideUp {
-            from { transform: translateY(30px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-
-        .modal-content {
-            background: white;
-            border-radius: 24px;
-            padding: 24px;
-            max-width: 500px;
-            width: 90%;
-            max-height: 90vh;
-            overflow-y: auto;
-            animation: slideUp 0.3s ease;
-        }
-
-        .modal-header {
-            font-size: 1.3rem;
-            font-weight: 800;
-            margin-bottom: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            color: var(--text-light);
-        }
-
-        .modal-close {
-            background: none;
-            border: none;
-            font-size: 1.8rem;
-            cursor: pointer;
-            color: #94a3b8;
-            transition: 0.3s;
-        }
-
-        .modal-close:hover {
-            color: var(--text-light);
-        }
-
-        .form-group {
-            margin-bottom: 14px;
-        }
-
-        .form-group label {
-            display: block;
-            font-size: 0.75rem;
-            font-weight: 800;
-            color: #64748b;
-            text-transform: uppercase;
-            margin-bottom: 6px;
-            letter-spacing: 0.5px;
-        }
-
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #e2e8f0;
-            border-radius: 12px;
-            font-size: 1rem;
-            font-family: inherit;
-            font-weight: 600;
-            transition: 0.3s;
-        }
-
-        .form-group input:focus,
-        .form-group select:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(10, 126, 200, 0.1);
-        }
-
-        /* LITER SELECTOR */
-        .liter-selector {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            margin-top: 12px;
-        }
-
-        .liter-btn {
-            padding: 14px;
-            border: 2px solid #e2e8f0;
-            border-radius: 12px;
-            background: white;
-            font-weight: 800;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: 0.3s;
-            color: var(--text-light);
-        }
-
-        .liter-btn.active {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            color: white;
-            border-color: var(--primary);
-            box-shadow: 0 4px 12px rgba(10, 126, 200, 0.3);
-        }
-
-        .liter-btn:active {
-            transform: scale(0.96);
-        }
-
-        .calc-summary {
-            background: linear-gradient(135deg, #f0f7ff 0%, #e0f2fe 100%);
-            padding: 14px;
-            border-radius: 12px;
-            margin-bottom: 14px;
-            border-left: 4px solid var(--primary);
-        }
-
-        .calc-line {
-            font-size: 0.85rem;
-            color: #64748b;
-            margin-bottom: 6px;
-            display: flex;
-            justify-content: space-between;
-        }
-
-        .calc-total {
-            font-weight: 900;
-            font-size: 1.3rem;
-            color: var(--primary);
-            margin-top: 8px;
-            padding-top: 8px;
-            border-top: 1px solid rgba(10, 126, 200, 0.2);
-        }
-
-        /* BADGES */
-        .badge {
-            padding: 5px 14px;
-            border-radius: 12px;
-            font-size: 0.7rem;
-            font-weight: 800;
-            margin-top: 10px;
-            display: inline-block;
-        }
-
-        .badge-good {
-            background: #dcfce7;
-            color: #166534;
-        }
-
-        .badge-moderate {
-            background: #fef3c7;
-            color: #92400e;
-        }
-
-        .badge-bad {
-            background: #fee2e2;
-            color: #991b1b;
-        }
-
-        /* AD SLOTS */
-        .ad-slot {
-            margin: 15px 0;
-            background: #fff;
-            border-radius: 16px;
-            padding: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.04);
-            min-height: 100px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            border: 1px dashed #cbd5e1;
-        }
-
-        /* FOOTER */
-        footer {
-            text-align: center;
-            padding: 40px 20px;
-            font-size: 0.75rem;
-            color: #94a3b8;
-            font-weight: 700;
-        }
-
-        /* TAB CONTENT */
-        .tab-content {
-            display: none;
-        }
-
-        .tab-content.active {
-            display: block;
-            animation: fadeIn 0.3s ease;
-        }
-
-        /* RESPONSIVE */
-        @media (max-width: 480px) {
-            .hero-banner h1 {
-                font-size: 1.4rem;
-            }
-            .big-val {
-                font-size: 1.8rem;
-            }
-            .modal-content {
-                width: 95%;
-            }
-            .dash-grid {
-                grid-template-columns: 1fr;
-            }
-            .card-full {
-                grid-column: span 1;
-            }
-            .header-right {
-                flex-direction: column;
-                gap: 6px;
-            }
-            .user-info {
-                text-align: right;
-            }
-        }
+            position: sticky; top: 0; z-index: 1000;
+        }
+
+        .logo-box { display: flex; align-items: center; gap: 8px; cursor: pointer; }
+        .logo-icon { width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); display: flex; align-items: center; justify-content: center; color: white; font-weight: 800; }
+        .logo-text { font-weight: 800; font-size: 1.1rem; color: var(--primary); letter-spacing: -0.5px; }
+
+        .header-right { display: flex; align-items: center; gap: 12px; }
+        .user-info { text-align: right; font-size: 0.8rem; }
+        .user-name { font-weight: 800; color: var(--primary); }
+        .logout-btn { background: var(--red); color: white; border: none; padding: 6px 12px; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 0.75rem; }
+
+        .lang-flags { display: flex; gap: 8px; }
+        .f-icon { width: 34px; height: 34px; cursor: pointer; border-radius: 50%; border: 2px solid transparent; transition: 0.3s; box-shadow: 0 2px 5px rgba(0,0,0,0.1); font-size: 1.3rem; display: flex; align-items: center; justify-content: center; background: #fff; }
+        .f-icon.active { border-color: var(--primary); transform: scale(1.1); background: #e0f2fe; }
+
+        .hero-banner { background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); color: white; padding: 30px 20px; text-align: center; border-bottom-left-radius: 40px; border-bottom-right-radius: 40px; margin-bottom: 20px; }
+        .container { padding: 0 15px; max-width: 600px; margin: 0 auto; }
+
+        .card { background: #fff; border-radius: 24px; padding: 20px; box-shadow: var(--card-shadow); border: 1px solid rgba(0,0,0,0.03); margin-bottom: 15px; }
+        .card-full { width: 100%; }
+        .c-label { font-size: 0.75rem; font-weight: 800; color: #94a3b8; text-transform: uppercase; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+        
+        /* Currency Table */
+        .rate-table { width: 100%; border-collapse: collapse; }
+        .rate-table td { padding: 8px 0; font-weight: 700; font-size: 0.9rem; }
+        .val-buy { color: var(--green); text-align: right; }
+        .val-sell { color: var(--red); text-align: right; }
+        .val-label { color: #64748b; font-size: 0.7rem; display: block; }
+
+        /* Weather & AQI */
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 15px; }
+        .stat-card { background: #fff; border-radius: 20px; padding: 15px; box-shadow: var(--card-shadow); text-align: center; }
+        .stat-val { font-size: 1.8rem; font-weight: 900; color: var(--primary); display: block; }
+        .stat-desc { font-size: 0.75rem; font-weight: 700; color: #64748b; }
+
+        /* Incentives */
+        .promo-banner { background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); border: 2px solid #bbf7d0; border-radius: 20px; padding: 15px; margin-bottom: 15px; text-align: center; color: #166534; font-weight: 800; animation: bounce 2s infinite; }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+
+        /* Google Play Button */
+        .gp-btn { display: inline-flex; align-items: center; background: #000; color: #fff; padding: 10px 20px; border-radius: 12px; text-decoration: none; margin: 20px 0; transition: 0.3s; }
+        .gp-btn:hover { transform: scale(1.05); }
+        .gp-icon { font-size: 2rem; margin-right: 12px; }
+        .gp-text { text-align: left; line-height: 1.2; }
+        .gp-top { font-size: 0.65rem; text-transform: uppercase; }
+        .gp-bot { font-size: 1.1rem; font-weight: 700; }
+
+        /* Auth */
+        .auth-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 3000; align-items: center; justify-content: center; }
+        .auth-overlay.active { display: flex; }
+        .auth-box { background: white; border-radius: 24px; padding: 30px; max-width: 400px; width: 90%; animation: slideUp 0.3s ease; }
+        .auth-input { width: 100%; padding: 14px; border: 2px solid #e2e8f0; border-radius: 12px; font-size: 1rem; font-weight: 600; margin-bottom: 14px; }
+        .auth-btn { width: 100%; padding: 14px; background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); color: white; border: none; border-radius: 12px; font-weight: 800; cursor: pointer; }
+        .auth-step { display: none; }
+        .auth-step.active { display: block; }
+
+        /* Modal */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 2000; align-items: center; justify-content: center; }
+        .modal.active { display: flex; }
+        .modal-content { background: white; border-radius: 24px; padding: 24px; max-width: 500px; width: 90%; max-height: 90vh; overflow-y: auto; }
+
+        .btn { width: 100%; padding: 14px; border-radius: 12px; border: none; font-weight: 800; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 10px; }
+        .btn-primary { background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); color: white; }
+        .btn-green { background: linear-gradient(135deg, var(--green) 0%, #10b981 100%); color: white; }
+        .btn-gold { background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%); color: white; animation: pulse 2s infinite; }
+        
+        .ad-slot { margin: 15px 0; min-height: 60px; display: flex; align-items: center; justify-content: center; border: 1px dashed #cbd5e1; border-radius: 16px; }
+        
+        footer { text-align: center; padding: 30px 20px; font-size: 0.7rem; color: #94a3b8; font-weight: 800; }
+        
+        @keyframes slideUp { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.02); } 100% { transform: scale(1); } }
     </style>
 </head>
 <body>
 
+<!-- AUTH -->
 <div id="authOverlay" class="auth-overlay">
     <div class="auth-box">
-        <!-- STEP 1: PHONE -->
         <div id="authStep1" class="auth-step active">
-            <div class="auth-title">📱 Telefon Doğrula</div>
-            <input type="tel" id="phoneInput" class="auth-input" placeholder="+380 (XX) XXXX-XXXX" maxlength="20">
+            <div style="font-size: 1.4rem; font-weight: 800; margin-bottom: 20px; color: var(--primary);">📱 Telefon Doğrula</div>
+            <input type="tel" id="phoneInput" class="auth-input" placeholder="+380 (XX) XXXX-XXXX">
+            <div style="margin-bottom: 15px; display: flex; align-items: center; gap: 8px;">
+                <input type="checkbox" id="rememberMe" checked style="width: 18px; height: 18px;">
+                <label for="rememberMe" style="font-size: 0.9rem; font-weight: 600;">Beni Hatırla</label>
+            </div>
             <button class="auth-btn" onclick="verifyPhone()">Doğrula</button>
         </div>
-
-        <!-- STEP 2: NAME -->
         <div id="authStep2" class="auth-step">
-            <div class="auth-title">👤 Adınız</div>
+            <div style="font-size: 1.4rem; font-weight: 800; margin-bottom: 20px; color: var(--primary);">👤 Adınız</div>
             <input type="text" id="nameInput" class="auth-input" placeholder="Ad Soyad">
             <button class="auth-btn" onclick="verifyName()">Devam Et</button>
         </div>
-
-        <!-- STEP 3: CONFIRM -->
         <div id="authStep3" class="auth-step">
-            <div class="auth-title">✅ Onayla</div>
+            <div style="font-size: 1.4rem; font-weight: 800; margin-bottom: 20px; color: var(--primary);">✅ Onayla</div>
             <div style="background: #f0f7ff; padding: 14px; border-radius: 12px; margin-bottom: 14px;">
-                <div style="font-size: 0.85rem; color: #64748b; margin-bottom: 6px;">
+                <div style="font-size: 0.85rem; color: #64748b;">
                     <div><strong>Telefon:</strong> <span id="confirmPhone"></span></div>
                     <div><strong>Ad:</strong> <span id="confirmName"></span></div>
                 </div>
@@ -795,692 +139,258 @@
 </div>
 
 <header>
-    <div class="logo-box" onclick="handleLogoTap()">
-        <div class="logo-icon">💧</div>
-        <span class="logo-text">İNVER WATER</span>
-    </div>
+    <div class="logo-box"><div class="logo-icon">💧</div><span class="logo-text">İNVER WATER</span></div>
     <div class="header-right">
         <div id="userSection" style="display: none;">
-            <div class="user-info">
-                <div class="user-name" id="headerUserName">-</div>
-                <div class="user-phone" id="headerUserPhone">-</div>
-            </div>
+            <div class="user-info"><div class="user-name" id="headerUserName">-</div></div>
             <button class="logout-btn" onclick="logout()">Çıkış</button>
         </div>
         <div class="lang-flags">
-            <div class="f-icon active" id="btn-tr" onclick="changeL('tr')" title="Türkçe">🇹🇷</div>
-            <div class="f-icon" id="btn-ua" onclick="changeL('ua')" title="Українська">🇺🇦</div>
-            <div class="f-icon" id="btn-en" onclick="changeL('en')" title="English">🇬🇧</div>
-            <div class="f-icon" id="btn-ru" onclick="changeL('ru')" title="Русский">🇷🇺</div>
+            <div class="f-icon active" onclick="changeL('tr')" id="btn-tr">🇹🇷</div>
+            <div class="f-icon" onclick="changeL('ua')" id="btn-ua">🇺🇦</div>
+            <div class="f-icon" onclick="changeL('en')" id="btn-en">🇬🇧</div>
+            <div class="f-icon" onclick="changeL('ru')" id="btn-ru">🇷🇺</div>
         </div>
     </div>
 </header>
 
 <div class="hero-banner">
-    <div class="hero-content">
-        <div class="greet" id="greeting">Gününüz Aydın Olsun!</div>
-        <h1 id="h-title">Kyiv'in Sağlık Pınarı</h1>
-        <div class="location">Troieshchyna District | Kyiv</div>
-    </div>
+    <div id="greeting" style="font-weight: 600;">Gününüz Aydın Olsun!</div>
+    <h1 id="h-title">Kyiv'in Sağlık Pınarı</h1>
+    <div style="font-size: 0.65rem; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; opacity: 0.9;">Troieshchyna District | Kyiv</div>
 </div>
 
 <div class="container">
+    
+    <!-- Incentive Banner -->
+    <div class="promo-banner" id="promo-txt">
+        ✨ Lütfen temiz, taze ve arıtılmış su almayı unutmayın! Sağlığınız için en iyisi... ✨
+    </div>
 
-    <!-- AD SLOT 1 -->
+    <!-- Stats Grid (Weather & AQI) -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <span class="stat-val" id="w-temp">--°</span>
+            <span class="stat-desc" id="w-desc">Kyiv, UA</span>
+        </div>
+        <div class="stat-card">
+            <span class="stat-val" id="aqi-num">--</span>
+            <span class="stat-desc" id="l-aqi">HAVA KALİTESİ</span>
+        </div>
+    </div>
+
+    <!-- Water Cut Warning -->
+    <div id="cut-warning" style="background: #fff; border-radius: 15px; padding: 10px; text-align: center; margin-bottom: 15px; border-left: 5px solid var(--green); font-weight: 800; font-size: 0.85rem;">
+        ✅ <span id="txt-no-cut">Bölgede su kesintisi yok, sistem aktif!</span>
+    </div>
+
+    <!-- Currency Card -->
+    <div class="card">
+        <div class="c-label">💹 <span id="l-rates">DÖVİZ KURLARI (UAH ₴)</span></div>
+        <table class="rate-table">
+            <tr>
+                <td>🇺🇸 USD</td>
+                <td class="val-buy"><span class="val-label">ALIS</span> <span id="u-buy">--.--</span> ₴</td>
+                <td class="val-sell"><span class="val-label">SATIS</span> <span id="u-sell">--.--</span> ₴</td>
+            </tr>
+            <tr>
+                <td>🇪🇺 EUR</td>
+                <td class="val-buy"><span class="val-label">ALIS</span> <span id="e-buy">--.--</span> ₴</td>
+                <td class="val-sell"><span class="val-label">SATIS</span> <span id="e-sell">--.--</span> ₴</td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- Google Play Button -->
+    <div style="text-align: center;">
+        <a href="https://play.google.com/store/apps/details?id=com.inver.water" target="_blank" class="gp-btn">
+            <i class="fab fa-google-play gp-icon"></i>
+            <div class="gp-text">
+                <div class="gp-top">GET IT ON</div>
+                <div class="gp-bot">Google Play</div>
+            </div>
+        </a>
+    </div>
+
+    <button class="btn btn-gold" onclick="showRewardAd()">
+        🎬 <span id="reward-btn-text">Bize Destek Olmak İçin Lütfen Videoyu İzleyin ❤️</span>
+    </button>
+
+    <div class="card">
+        <div class="c-label">📍 <span id="l-store">SATIŞ NOKTASI</span></div>
+        <div style="font-weight: 800; font-size: 1.1rem; color: var(--primary);">İNVER WATER - Oleksandry Ekster St, 8</div>
+        <div style="font-size: 0.85rem; color: #64748b; margin-bottom: 15px;">Troieshchyna, Kyiv, Ukraine</div>
+        <button class="btn btn-green" onclick="openOrderModal()">
+            🛒 <span id="order-btn">SU SİPARİŞ ET</span>
+        </button>
+    </div>
+
     <div class="ad-slot">
-        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6765480393265982" data-ad-slot="3687506983" data-ad-format="horizontal" data-full-width-responsive="true"></ins>
+        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6765480393265982" data-ad-slot="3832749084" data-ad-format="horizontal" data-full-width-responsive="true"></ins>
         <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
-
-    <!-- TAB NAVIGATION -->
-    <div class="tab-nav">
-        <button class="tab-btn active" onclick="switchTab('home')" id="tab-home">
-            <i class="fas fa-home"></i> <span id="tab-home-label">Ana Sayfa</span>
-        </button>
-        <button class="tab-btn" onclick="switchTab('vending')" id="tab-vending">
-            <i class="fas fa-water"></i> <span id="tab-vending-label">Otomatlar</span>
-        </button>
-    </div>
-
-    <!-- HOME TAB -->
-    <div id="tab-home-content" class="tab-content active">
-        <div class="dash-grid">
-            <!-- Currency Card -->
-            <div class="card card-full">
-                <div class="c-label"><i class="fas fa-money-bill-trend-up"></i> <span id="l-rates">DÖVİZ KURU (UAH ₴)</span></div>
-                <table class="rate-table">
-                    <tr>
-                        <td class="cur-name">🇺🇸 DOLLAR (USD)</td>
-                        <td class="val-up" id="u-buy">--.--</td>
-                        <td class="val-down" id="u-sell">--.--</td>
-                    </tr>
-                    <tr>
-                        <td class="cur-name">🇪🇺 EURO (EUR)</td>
-                        <td class="val-up" id="e-buy">--.--</td>
-                        <td class="val-down" id="e-sell">--.--</td>
-                    </tr>
-                </table>
-            </div>
-
-            <!-- AD SLOT 2 -->
-            <div class="card card-full" style="padding:5px; border:none; background:transparent;">
-                <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6765480393265982" data-ad-slot="3687506983" data-ad-format="auto" data-full-width-responsive="true"></ins>
-                <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-            </div>
-
-            <!-- Weather Card -->
-            <div class="card">
-                <div class="c-label"><i class="fas fa-cloud-sun"></i> <span id="l-weather">HAVA</span></div>
-                <div class="big-val" id="w-temp">--°</div>
-                <div class="sub-info" id="w-desc">Kyiv, UA</div>
-            </div>
-
-            <!-- AQI Card -->
-            <div class="card">
-                <div class="c-label"><i class="fas fa-leaf"></i> <span id="l-aqi">HAVA KALİTESİ</span></div>
-                <div class="big-val" id="aqi-num">--</div>
-                <div class="badge badge-good" id="aqi-txt">İYİ</div>
-            </div>
-
-            <!-- Water Calculator -->
-            <div class="card card-full water-tool">
-                <div class="c-label"><i class="fas fa-faucet-drip"></i> <span id="l-calc">GÜNLÜK SU İHTİYACI</span></div>
-                <div class="sub-info" id="l-kg">Kilonuzu girin:</div>
-                <input type="number" id="weight" class="calc-box" placeholder="KG" oninput="runCalc()">
-                <div id="res-val" class="calc-result"></div>
-            </div>
-        </div>
-
-        <!-- AD SLOT 3 -->
-        <div class="ad-slot">
-            <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6765480393265982" data-ad-slot="3687506983" data-ad-format="auto" data-full-width-responsive="true"></ins>
-            <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-        </div>
-
-        <!-- Store Info -->
-        <div class="card card-full store-info">
-            <div class="c-label"><i class="fas fa-shop"></i> <span id="l-store">SATIŞ NOKTASI</span></div>
-            <div class="store-name">İNVER WATER - Oleksandry Ekster St, 8</div>
-            <div class="sub-info">Troieshchyna, Kyiv, Ukraine</div>
-            <button class="btn btn-primary" onclick="openMaps('50.5283,30.6033')">
-                <i class="fas fa-map-location-dot"></i> <span id="txt-map">Haritada Aç</span>
-            </button>
-            <button class="btn btn-primary" onclick="openOrderModal()" style="background: linear-gradient(135deg, var(--green) 0%, #10b981 100%);">
-                <i class="fas fa-shopping-cart"></i> <span id="order-btn">SU SİPARİŞ ET</span>
-            </button>
-        </div>
-    </div>
-
-    <!-- VENDING MACHINES TAB -->
-    <div id="tab-vending-content" class="tab-content">
-        <div id="machines-container" class="machines-grid"></div>
-    </div>
-
 </div>
 
 <!-- ORDER MODAL -->
 <div id="orderModal" class="modal">
     <div class="modal-content">
-        <div class="modal-header">
-            <span id="order-modal-title">SU SİPARİŞ ET</span>
-            <button class="modal-close" onclick="closeOrderModal()">×</button>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <span id="order-modal-title" style="font-weight: 800; font-size: 1.2rem;">SU SİPARİŞ ET</span>
+            <button onclick="closeOrderModal()" style="background:none; border:none; font-size: 1.5rem; color:#94a3b8;">×</button>
         </div>
         <form onsubmit="submitOrder(event)">
-            <div class="form-group">
-                <label id="label-city">Şehir</label>
-                <input type="text" id="order-city" required>
-            </div>
-            <div class="form-group">
-                <label id="label-street">Sokak</label>
-                <input type="text" id="order-street" required>
-            </div>
-            <div class="form-group">
-                <label id="label-building">Bina</label>
-                <input type="text" id="order-building" required>
-            </div>
-            <div class="form-group">
-                <label id="label-flat">Daire</label>
-                <input type="text" id="order-flat">
-            </div>
-
+            <button type="button" class="btn" style="background: #f1f5f9; color: var(--primary);" onclick="autoLocate()">📍 <span id="txt-loc">Konumumu Otomatik Bul</span></button>
+            <div class="form-group"><label id="label-city">Şehir</label><input type="text" id="order-city" value="Kyiv" required></div>
+            <div class="form-group"><label id="label-street">Sokak</label><input type="text" id="order-street" required></div>
+            <div class="form-group"><label id="label-building">Bina</label><input type="text" id="order-building" required></div>
+            <div class="form-group"><label id="label-flat">Daire</label><input type="text" id="order-flat"></div>
             <div class="form-group">
                 <label id="label-liters">Litre Seç</label>
                 <div class="liter-selector">
-                    <button type="button" class="liter-btn active" data-liters="5" onclick="selectLiters(5, this)">5L</button>
-                    <button type="button" class="liter-btn" data-liters="10" onclick="selectLiters(10, this)">10L</button>
-                    <button type="button" class="liter-btn" data-liters="19" onclick="selectLiters(19, this)">19L</button>
+                    <button type="button" class="liter-btn active" onclick="selectLiters(5, this)">5L</button>
+                    <button type="button" class="liter-btn" onclick="selectLiters(10, this)">10L</button>
+                    <button type="button" class="liter-btn" onclick="selectLiters(19, this)">19L</button>
                 </div>
                 <input type="hidden" id="order-liters" value="5">
             </div>
-
-            <div class="form-group">
-                <label id="label-deposits">Depozito Şişe</label>
-                <input type="number" id="order-deposits" min="0" max="20" value="0" oninput="calculateOrder()">
-            </div>
-            <div class="form-group">
-                <label id="label-discount">İndirim Kodu (Opsiyonel)</label>
-                <input type="text" id="order-discount" placeholder="INVER10" oninput="calculateOrder()">
-            </div>
-
-            <div class="calc-summary">
-                <div class="calc-line">
-                    <span id="calc-liters-label">Litre:</span>
-                    <span id="calc-liters">5 L × 1.50 = 7.50 UAH</span>
-                </div>
-                <div class="calc-line">
-                    <span id="calc-deposits-label">Depozito:</span>
-                    <span id="calc-deposits">0 × 150 = 0 UAH</span>
-                </div>
-                <div class="calc-line">
-                    <span id="calc-delivery-label">Teslimat:</span>
-                    <span id="calc-delivery">50 UAH</span>
-                </div>
-                <div class="calc-line" id="calc-discount" style="display: none; color: var(--green);">
-                    <span id="calc-discount-label">İndirim:</span>
-                    <span id="calc-discount-value">-0 UAH</span>
-                </div>
-                <div class="calc-total">
-                    <span id="total-label">TOPLAM:</span>
-                    <span id="total-price">57.50 UAH</span>
+            <div style="background: #f8fafc; padding: 15px; border-radius: 12px; margin-bottom: 15px; font-weight: 800;">
+                <div style="display: flex; justify-content: space-between;">
+                    <span id="total-label">TOPLAM:</span> <span id="total-price" style="color: var(--primary);">-- ₴</span>
                 </div>
             </div>
-
-            <button type="submit" class="btn btn-primary" style="margin-top: 0;">
-                <i class="fas fa-check"></i> <span id="btn-place-order">SİPARİŞ VER</span>
-            </button>
-            <button type="button" class="btn btn-secondary" onclick="closeOrderModal()">
-                <span id="btn-cancel">İPTAL</span>
-            </button>
+            <button type="submit" class="btn btn-primary" id="btn-place-order">SİPARİŞ VER</button>
         </form>
     </div>
 </div>
 
 <footer>
-    <div style="margin-bottom: 20px;">
-        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6765480393265982" data-ad-slot="3687506983" data-ad-format="horizontal" data-full-width-responsive="true"></ins>
-        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-    </div>
-    <p>İNVER WATER © 2026 | BY ALTUN SOLUTIONS</p>
-    <p style="margin-top:5px; opacity:0.6;">Kyiv Premium Hydration Service</p>
+    <p>İNVER WATER © 2026 | Dev/ByAltun</p>
 </footer>
 
 <script>
+const WORKER_URL = 'https://inver2.inver2.workers.dev';
+const SHOP_COORD = { lat: 50.5283, lng: 30.6033 };
+let activeLang = 'tr';
+let currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
+let appConfig = { litrPrice: 1.5, deliveryFee: 50, maxDistance: 5000 };
+let userCoords = null;
+
 const uiStrings = {
     tr: {
-        greet: "Gününüz Aydın Olsun!",
-        title: "Kyiv'in Sağlık Pınarı",
-        rates: "DÖVİZ KURU (UAH ₴)",
-        weather: "HAVA",
-        aqi: "HAVA KALİTESİ",
-        store: "SATIŞ NOKTASI",
-        map: "Haritada Aç",
-        calc: "GÜNLÜK SU İHTİYACI",
-        kg: "Kilonuzu girin:",
-        drink: "İçmeniz gereken:",
-        good: "İYİ",
-        moderate: "ORTA",
-        unhealthy: "KÖTÜ",
-        home: "Ana Sayfa",
-        vending: "Otomatlar",
-        orderTitle: "SU SİPARİŞ ET",
-        city: "Şehir",
-        street: "Sokak",
-        building: "Bina",
-        flat: "Daire",
-        liters: "Litre Seç",
-        deposits: "Depozito Şişe",
-        discount: "İndirim Kodu",
-        placeOrder: "SİPARİŞ VER",
-        cancel: "İPTAL",
-        active: "Aktif",
-        maintenance: "Bakım",
-        orderBtn: "SU SİPARİŞ ET",
-        litersLabel: "Litre:",
-        depositsLabel: "Depozito:",
-        deliveryLabel: "Teslimat:",
-        discountLabel: "İndirim:",
-        totalLabel: "TOPLAM:",
+        greet: "Gününüz Aydın Olsun!", title: "Kyiv'in Sağlık Pınarı", rates: "DÖVİZ KURLARI (UAH ₴)", store: "SATIŞ NOKTASI", orderTitle: "SU SİPARİŞ ET", city: "Şehir", street: "Sokak", building: "Bina", flat: "Daire", liters: "Litre Seç", placeOrder: "SİPARİŞ VER", orderBtn: "SU SİPARİŞ ET", rewardBtn: "Bize Destek Olmak İçin Lütfen Videoyu İzleyin ❤️", promo: "✨ Lütfen temiz, taze ve arıtılmış su almayı unutmayın! ✨", locBtn: "Konumumu Otomatik Bul", noCut: "Bölgede su kesintisi yok, sistem aktif!", aqi: "HAVA KALİTESİ", tooFar: "Çok uzaktasınız. Lütfen otomatları kullanın."
     },
     ua: {
-        greet: "Доброго ранку!",
-        title: "Джерело здоров'я Києва",
-        rates: "КУРС ВАЛЮТ (UAH ₴)",
-        weather: "ПОГОДА",
-        aqi: "ЯКІСТЬ ПОВІТРЯ",
-        store: "МАГАЗИН",
-        map: "Відкрити карту",
-        calc: "НОРМА ВОДИ",
-        kg: "Введіть вагу:",
-        drink: "Треба пити:",
-        good: "Добре",
-        moderate: "Помірно",
-        unhealthy: "Погано",
-        home: "Головна",
-        vending: "Автомати",
-        orderTitle: "ЗАМОВИТИ ВОДУ",
-        city: "Місто",
-        street: "Вулиця",
-        building: "Будинок",
-        flat: "Квартира",
-        liters: "Виберіть літри",
-        deposits: "Депозит",
-        discount: "Код знижки",
-        placeOrder: "ЗАМОВИТИ",
-        cancel: "СКАСУВАТИ",
-        active: "Активний",
-        maintenance: "Обслуговування",
-        orderBtn: "ЗАМОВИТИ ВОДУ",
-        litersLabel: "Літри:",
-        depositsLabel: "Депозит:",
-        deliveryLabel: "Доставка:",
-        discountLabel: "Знижка:",
-        totalLabel: "ВСЬОГО:",
+        greet: "Доброго ранку!", title: "Джерело здоров'я Києва", rates: "КУРС ВАЛЮТ (UAH ₴)", store: "МАГАЗИН", orderTitle: "ЗАМОВИТИ ВОДУ", city: "Місто", street: "Вулиця", building: "Будинок", flat: "Квартира", liters: "Виберіть літри", placeOrder: "ЗАМОВИТИ", orderBtn: "ЗАМОВИТИ ВОДУ", rewardBtn: "Подивіться відео, щоб підтримати нас ❤️", promo: "✨ Не забудьте взяти чисту та свіжу воду! ✨", locBtn: "Знайти мою локацію", noCut: "У районі немає відключень, система активна!", aqi: "ЯКІСТЬ ПОВІТРЯ", tooFar: "Ви занадто далеко. Використовуйте автомати."
     },
     en: {
-        greet: "Have a Great Day!",
-        title: "Kyiv's Health Spring",
-        rates: "EXCHANGE RATES (UAH ₴)",
-        weather: "WEATHER",
-        aqi: "AIR QUALITY",
-        store: "STORE INFO",
-        map: "Open Maps",
-        calc: "DAILY WATER NEED",
-        kg: "Enter weight:",
-        drink: "You should drink:",
-        good: "Good",
-        moderate: "Moderate",
-        unhealthy: "Unhealthy",
-        home: "Home",
-        vending: "Vending",
-        orderTitle: "ORDER WATER",
-        city: "City",
-        street: "Street",
-        building: "Building",
-        flat: "Flat",
-        liters: "Select Liters",
-        deposits: "Deposit Bottles",
-        discount: "Discount Code",
-        placeOrder: "PLACE ORDER",
-        cancel: "CANCEL",
-        active: "Active",
-        maintenance: "Maintenance",
-        orderBtn: "ORDER WATER",
-        litersLabel: "Liters:",
-        depositsLabel: "Deposit:",
-        deliveryLabel: "Delivery:",
-        discountLabel: "Discount:",
-        totalLabel: "TOTAL:",
+        greet: "Have a Great Day!", title: "Kyiv's Health Spring", rates: "EXCHANGE RATES (UAH ₴)", store: "STORE INFO", orderTitle: "ORDER WATER", city: "City", street: "Street", building: "Building", flat: "Flat", liters: "Select Liters", placeOrder: "PLACE ORDER", orderBtn: "ORDER WATER", rewardBtn: "Please watch the video to support us ❤️", promo: "✨ Please don't forget to get clean, fresh water! ✨", locBtn: "Auto Locate Me", noCut: "No water cuts in the area, system active!", aqi: "AIR QUALITY", tooFar: "Too far. Please use vending machines."
     },
     ru: {
-        greet: "Доброго утра!",
-        title: "Источник здоровья Киева",
-        rates: "КУРС ВАЛЮТ (UAH ₴)",
-        weather: "ПОГОДА",
-        aqi: "КАЧЕСТВО ВОЗДУХА",
-        store: "МАГАЗИН",
-        map: "Открыть карту",
-        calc: "НОРМА ВОДЫ",
-        kg: "Введите вес:",
-        drink: "Нужно пить:",
-        good: "Хорошо",
-        moderate: "Умеренно",
-        unhealthy: "Плохо",
-        home: "Главная",
-        vending: "Автоматы",
-        orderTitle: "ЗАКАЗАТЬ ВОДУ",
-        city: "Город",
-        street: "Улица",
-        building: "Дом",
-        flat: "Квартира",
-        liters: "Выберите литры",
-        deposits: "Депозит",
-        discount: "Код скидки",
-        placeOrder: "ЗАКАЗАТЬ",
-        cancel: "ОТМЕНА",
-        active: "Активный",
-        maintenance: "Обслуживание",
-        orderBtn: "ЗАКАЗАТЬ ВОДУ",
-        litersLabel: "Литры:",
-        depositsLabel: "Депозит:",
-        deliveryLabel: "Доставка:",
-        discountLabel: "Скидка:",
-        totalLabel: "ИТОГО:",
+        greet: "Доброго утра!", title: "Источник здоровья Киева", rates: "КУРС ВАЛЮТ (UAH ₴)", store: "МАГАЗИН", orderTitle: "ЗАКАЗАТЬ ВОДУ", city: "Город", street: "Улица", building: "Дом", flat: "Квартира", liters: "Выберите литры", placeOrder: "ЗАКАЗАТЬ", orderBtn: "ЗАКАЗАТЬ ВОДУ", rewardBtn: "Посмотрите видео, чтобы поддержать нас ❤️", promo: "✨ Не забудьте взять чистую и свежую воду! ✨", locBtn: "Найти мое положение", noCut: "В районе нет отключений, система активна!", aqi: "КАЧЕСТВО ВОЗДУХА", tooFar: "Слишком далеко. Используйте автоматы."
     }
 };
 
-let activeLang = 'tr';
-let logoTapCount = 0;
-let logoTapTimer = null;
-let appConfig = null;
-let currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
-
-const WORKER_URL = 'https://inver2.inver2.workers.dev';
-const API_KEY = '932e2d60c135c8cdb547ce78923a7ba8';
-
-// Auth System
-function verifyPhone() {
-    const phone = document.getElementById('phoneInput').value.trim();
-    if (!phone || phone.length < 10) {
-        alert(activeLang === 'tr' ? 'Geçerli telefon numarası girin' : 'Enter valid phone');
-        return;
-    }
-    document.getElementById('authStep1').classList.remove('active');
-    document.getElementById('authStep2').classList.add('active');
-    document.getElementById('nameInput').focus();
-}
-
-function verifyName() {
-    const name = document.getElementById('nameInput').value.trim();
-    if (!name || name.length < 2) {
-        alert(activeLang === 'tr' ? 'Adınızı girin' : 'Enter your name');
-        return;
-    }
-    document.getElementById('confirmPhone').innerText = document.getElementById('phoneInput').value;
-    document.getElementById('confirmName').innerText = name;
-    document.getElementById('authStep2').classList.remove('active');
-    document.getElementById('authStep3').classList.add('active');
-}
-
-function completeAuth() {
-    const phone = document.getElementById('phoneInput').value;
-    const name = document.getElementById('nameInput').value;
-    currentUser = { phone, name };
-    localStorage.setItem('currentUser', JSON.stringify(currentUser));
-    document.getElementById('authOverlay').classList.remove('active');
-    updateUserUI();
-}
-
-function logout() {
-    currentUser = null;
-    localStorage.removeItem('currentUser');
-    document.getElementById('authOverlay').classList.add('active');
-    resetAuthForm();
-    updateUserUI();
-}
-
-function resetAuthForm() {
-    document.getElementById('phoneInput').value = '';
-    document.getElementById('nameInput').value = '';
-    document.getElementById('authStep1').classList.add('active');
-    document.getElementById('authStep2').classList.remove('active');
-    document.getElementById('authStep3').classList.remove('active');
-}
-
-function updateUserUI() {
-    const userSection = document.getElementById('userSection');
-    if (currentUser) {
-        userSection.style.display = 'flex';
-        document.getElementById('headerUserName').innerText = currentUser.name;
-        document.getElementById('headerUserPhone').innerText = currentUser.phone;
-    } else {
-        userSection.style.display = 'none';
-    }
-}
-
-// Fetch config from Worker
-async function fetchConfig() {
-    try {
-        const response = await fetch(WORKER_URL + '/get-data');
-        if (response.ok) {
-            appConfig = await response.json();
-            loadVendingMachines();
-            updateAllData();
-        }
-    } catch (error) {
-        console.error('Config fetch error:', error);
-    }
-}
-
-function loadVendingMachines() {
-    if (!appConfig || !appConfig.vendingMachines) return;
-    
-    const container = document.getElementById('machines-container');
-    container.innerHTML = '';
-    
-    appConfig.vendingMachines.forEach(machine => {
-        const card = document.createElement('div');
-        card.className = 'machine-card';
-        card.innerHTML = `
-            <div class="machine-name">${machine.name}</div>
-            <div class="sub-info">${machine.address}</div>
-            <div class="sub-info">💰 ${machine.literPrice} UAH/L</div>
-            <div class="machine-status ${machine.status === 'active' ? 'status-active' : 'status-maintenance'}">
-                ${machine.status === 'active' ? '✓ ' + uiStrings[activeLang].active : '⚙ ' + uiStrings[activeLang].maintenance}
-            </div>
-            <button class="btn btn-primary" style="margin-top: 12px;" onclick="openMaps('${machine.lat},${machine.lng}')">
-                <i class="fas fa-directions"></i> Yol Tarifi
-            </button>
-        `;
-        container.appendChild(card);
-    });
-}
-
-async function updateAllData() {
-    try {
-        // Currency
-        const exRes = await fetch('https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json');
-        const exData = await exRes.json();
-        const usd = exData.find(c => c.cc === 'USD').rate;
-        const eur = exData.find(c => c.cc === 'EUR').rate;
-        
-        document.getElementById('u-buy').innerText = (usd * 0.993).toFixed(2);
-        document.getElementById('u-sell').innerText = (usd * 1.007).toFixed(2);
-        document.getElementById('e-buy').innerText = (eur * 0.992).toFixed(2);
-        document.getElementById('e-sell').innerText = (eur * 1.008).toFixed(2);
-
-        // Weather
-        const wRes = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=Kyiv&units=metric&lang=${activeLang}&appid=${API_KEY}`);
-        const wData = await wRes.json();
-        document.getElementById('w-temp').innerText = Math.round(wData.main.temp) + '°';
-        document.getElementById('w-desc').innerText = wData.weather[0].description;
-
-        // AQI
-        const aRes = await fetch(`https://api.openweathermap.org/data/2.5/air_pollution?lat=50.45&lon=30.52&appid=${API_KEY}`);
-        const aData = await aRes.json();
-        const aqiVal = aData.list[0].main.aqi;
-        const aqiLabels = { 1: uiStrings[activeLang].good, 2: uiStrings[activeLang].good, 3: uiStrings[activeLang].moderate, 4: uiStrings[activeLang].unhealthy, 5: uiStrings[activeLang].unhealthy };
-        const aqiBadges = { 1: 'badge-good', 2: 'badge-good', 3: 'badge-moderate', 4: 'badge-bad', 5: 'badge-bad' };
-        document.getElementById('aqi-num').innerText = aqiVal;
-        document.getElementById('aqi-txt').innerText = aqiLabels[aqiVal] || 'Analiz ediliyor';
-        document.getElementById('aqi-txt').className = 'badge ' + (aqiBadges[aqiVal] || 'badge-good');
-    } catch (err) { 
-        console.error("Data error:", err); 
-    }
-}
-
-function runCalc() {
-    const w = document.getElementById('weight').value;
-    const res = document.getElementById('res-val');
-    if(w > 25) {
-        const lit = (w * 0.033).toFixed(1);
-        res.innerText = `${uiStrings[activeLang].drink} ${lit} L 💧`;
-        res.style.display = 'block';
-    } else { 
-        res.style.display = 'none'; 
-    }
-}
-
-function changeL(l) {
-    activeLang = l;
-    document.querySelectorAll('.f-icon').forEach(img => img.classList.remove('active'));
-    document.getElementById(`btn-${l}`).classList.add('active');
-    
-    const s = uiStrings[l];
+function changeL(lang) {
+    activeLang = lang;
+    document.querySelectorAll('.f-icon').forEach(i => i.classList.remove('active'));
+    document.getElementById('btn-' + lang).classList.add('active');
+    const s = uiStrings[lang];
     document.getElementById('greeting').innerText = s.greet;
     document.getElementById('h-title').innerText = s.title;
     document.getElementById('l-rates').innerText = s.rates;
-    document.getElementById('l-weather').innerText = s.weather;
-    document.getElementById('l-aqi').innerText = s.aqi;
     document.getElementById('l-store').innerText = s.store;
-    document.getElementById('txt-map').innerText = s.map;
-    document.getElementById('l-calc').innerText = s.calc;
-    document.getElementById('l-kg').innerText = s.kg;
     document.getElementById('order-btn').innerText = s.orderBtn;
-    
-    document.getElementById('tab-home-label').innerText = s.home;
-    document.getElementById('tab-vending-label').innerText = s.vending;
-    
     document.getElementById('order-modal-title').innerText = s.orderTitle;
     document.getElementById('label-city').innerText = s.city;
     document.getElementById('label-street').innerText = s.street;
     document.getElementById('label-building').innerText = s.building;
     document.getElementById('label-flat').innerText = s.flat;
     document.getElementById('label-liters').innerText = s.liters;
-    document.getElementById('label-deposits').innerText = s.deposits;
-    document.getElementById('label-discount').innerText = s.discount;
     document.getElementById('btn-place-order').innerText = s.placeOrder;
-    document.getElementById('btn-cancel').innerText = s.cancel;
-    
-    document.getElementById('calc-liters-label').innerText = s.litersLabel;
-    document.getElementById('calc-deposits-label').innerText = s.depositsLabel;
-    document.getElementById('calc-delivery-label').innerText = s.deliveryLabel;
-    document.getElementById('calc-discount-label').innerText = s.discountLabel;
-    document.getElementById('total-label').innerText = s.totalLabel;
-    
-    updateAllData();
-}
-
-function switchTab(tab) {
-    document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-    document.querySelectorAll('.tab-btn').forEach(t => t.classList.remove('active'));
-    
-    document.getElementById(`tab-${tab}-content`).classList.add('active');
-    document.getElementById(`tab-${tab}`).classList.add('active');
-    
-    if (tab === 'vending') {
-        loadVendingMachines();
-    }
-}
-
-function selectLiters(liters, btn) {
-    document.querySelectorAll('.liter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    document.getElementById('order-liters').value = liters;
+    document.getElementById('reward-btn-text').innerText = s.rewardBtn;
+    document.getElementById('promo-txt').innerText = s.promo;
+    document.getElementById('txt-loc').innerText = s.locBtn;
+    document.getElementById('txt-no-cut').innerText = s.noCut;
+    document.getElementById('l-aqi').innerText = s.aqi;
     calculateOrder();
 }
 
-function openOrderModal() {
-    if (!currentUser) {
-        document.getElementById('authOverlay').classList.add('active');
-        return;
-    }
-    document.getElementById('orderModal').classList.add('active');
-    calculateOrder();
+// Location
+function getDistance(lat1, lon1, lat2, lon2) {
+    const R = 6371e3;
+    const φ1 = lat1 * Math.PI/180, φ2 = lat2 * Math.PI/180, Δφ = (lat2-lat1) * Math.PI/180, Δλ = (lon2-lon1) * Math.PI/180;
+    const a = Math.sin(Δφ/2) * Math.sin(Δφ/2) + Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ/2) * Math.sin(Δλ/2);
+    return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
 }
 
-function closeOrderModal() {
-    document.getElementById('orderModal').classList.remove('active');
-}
-
-function openMaps(coords) {
-    const [lat, lng] = coords.split(',');
-    window.open(`https://maps.google.com/?q=${lat},${lng}`, '_blank');
-}
-
-function calculateOrder() {
-    const liters = parseInt(document.getElementById('order-liters').value) || 5;
-    const deposits = parseInt(document.getElementById('order-deposits').value) || 0;
-    const litrPrice = appConfig?.litrPrice || 1.5;
-    const depositPrice = appConfig?.depositPrice || 150;
-    const deliveryFee = appConfig?.deliveryFee || 50;
-    
-    const litersTotal = liters * litrPrice;
-    const depositsTotal = deposits * depositPrice;
-    let total = litersTotal + depositsTotal + deliveryFee;
-    
-    document.getElementById('calc-liters').innerText = `${liters} L × ${litrPrice} = ${litersTotal.toFixed(2)} UAH`;
-    document.getElementById('calc-deposits').innerText = `${deposits} × ${depositPrice} = ${depositsTotal} UAH`;
-    document.getElementById('calc-delivery').innerText = `${deliveryFee} UAH`;
-    
-    const discountCode = document.getElementById('order-discount').value;
-    if (discountCode && appConfig?.discountCodes) {
-        const code = appConfig.discountCodes.find(c => c.code === discountCode && c.active);
-        if (code) {
-            const discount = code.type === 'percent' ? (total * code.value / 100) : code.value;
-            total -= discount;
-            document.getElementById('calc-discount').style.display = 'flex';
-            document.getElementById('calc-discount-value').innerText = `-${discount.toFixed(2)} UAH`;
-        } else {
-            document.getElementById('calc-discount').style.display = 'none';
+function autoLocate() {
+    if (!navigator.geolocation) return;
+    navigator.geolocation.getCurrentPosition(async pos => {
+        userCoords = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+        if (getDistance(userCoords.lat, userCoords.lng, SHOP_COORD.lat, SHOP_COORD.lng) > appConfig.maxDistance) {
+            alert(uiStrings[activeLang].tooFar); return;
         }
-    } else {
-        document.getElementById('calc-discount').style.display = 'none';
-    }
-    
-    document.getElementById('total-price').innerText = `${total.toFixed(2)} UAH`;
+        try {
+            const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${userCoords.lat}&lon=${userCoords.lng}&accept-language=${activeLang}`);
+            const data = await res.json();
+            if (data.address) {
+                document.getElementById('order-street').value = data.address.road || "";
+                document.getElementById('order-building').value = data.address.house_number || "";
+            }
+        } catch (e) {}
+    });
 }
 
-function submitOrder(event) {
-    event.preventDefault();
-    
-    if (!currentUser) {
-        alert(activeLang === 'tr' ? 'Lütfen giriş yapın' : 'Please login');
-        return;
-    }
-    
-    const order = {
-        id: 'ORD-' + Date.now(),
-        date: new Date().toISOString(),
-        name: currentUser.name,
-        phone: currentUser.phone,
-        city: document.getElementById('order-city').value,
-        street: document.getElementById('order-street').value,
-        building: document.getElementById('order-building').value,
-        flat: document.getElementById('order-flat').value,
-        liters: parseInt(document.getElementById('order-liters').value),
-        deposits: parseInt(document.getElementById('order-deposits').value),
-        total: parseFloat(document.getElementById('total-price').innerText)
-    };
-    
-    // Send to Worker
-    fetch(WORKER_URL + '/place-order', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(order)
-    }).catch(e => console.error('Order send error:', e));
-    
-    alert(activeLang === 'tr' ? 'Sipariş başarıyla alındı!' : activeLang === 'ua' ? 'Замовлення прийнято!' : activeLang === 'en' ? 'Order placed successfully!' : 'Заказ принят!');
-    closeOrderModal();
-    document.querySelector('form').reset();
-    document.querySelectorAll('.liter-btn').forEach(b => b.classList.remove('active'));
-    document.querySelector('.liter-btn').classList.add('active');
+// Auth
+function verifyPhone() { if (document.getElementById('phoneInput').value.length < 10) return; document.getElementById('authStep1').classList.remove('active'); document.getElementById('authStep2').classList.add('active'); }
+function verifyName() { if (document.getElementById('nameInput').value.length < 2) return; document.getElementById('confirmPhone').innerText = document.getElementById('phoneInput').value; document.getElementById('confirmName').innerText = document.getElementById('nameInput').value; document.getElementById('authStep2').classList.remove('active'); document.getElementById('authStep3').classList.add('active'); }
+function completeAuth() { currentUser = { phone: document.getElementById('phoneInput').value, name: document.getElementById('nameInput').value }; if (document.getElementById('rememberMe').checked) localStorage.setItem('currentUser', JSON.stringify(currentUser)); document.getElementById('authOverlay').classList.remove('active'); updateUserUI(); }
+function logout() { currentUser = null; localStorage.removeItem('currentUser'); updateUserUI(); }
+function updateUserUI() {
+    if (currentUser) { document.getElementById('userSection').style.display = 'flex'; document.getElementById('headerUserName').innerText = currentUser.name; }
+    else { document.getElementById('userSection').style.display = 'none'; document.getElementById('authOverlay').classList.add('active'); }
 }
 
-function handleLogoTap() {
-    logoTapCount++;
-    if (logoTapTimer) clearTimeout(logoTapTimer);
-    
-    logoTapTimer = setTimeout(() => {
-        logoTapCount = 0;
-    }, 1000);
+// Order
+function openOrderModal() { if (!currentUser) return; document.getElementById('orderModal').classList.add('active'); calculateOrder(); }
+function closeOrderModal() { document.getElementById('orderModal').classList.remove('active'); }
+function selectLiters(l, btn) { document.querySelectorAll('.liter-btn').forEach(b => b.classList.remove('active')); btn.classList.add('active'); document.getElementById('order-liters').value = l; calculateOrder(); }
+function calculateOrder() { const l = parseInt(document.getElementById('order-liters').value); const total = (l * appConfig.litrPrice) + appConfig.deliveryFee; document.getElementById('total-price').innerText = `${total.toFixed(2)} ₴`; }
+
+async function submitOrder(e) {
+    e.preventDefault();
+    const orderData = { name: currentUser.name, phone: currentUser.phone, city: document.getElementById('order-city').value, street: document.getElementById('order-street').value, building: document.getElementById('order-building').value, flat: document.getElementById('order-flat').value, liters: document.getElementById('order-liters').value, total: document.getElementById('total-price').innerText, orderId: 'ORD-' + Date.now() };
+    try {
+        const res = await fetch(WORKER_URL + '/save-order', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(orderData) });
+        if (res.ok) { alert("Sipariş Alındı!"); closeOrderModal(); }
+    } catch (e) {}
 }
 
-// Time-based greeting
-const hour = new Date().getHours();
-if (hour >= 18) { 
-    uiStrings.tr.greet = "İyi Akşamlar Kyiv!"; 
-    uiStrings.ua.greet = "Добрий вечір!"; 
-    uiStrings.en.greet = "Good Evening!";
-    uiStrings.ru.greet = "Добрый вечер!";
-} else if (hour >= 12) { 
-    uiStrings.tr.greet = "İyi Günler Kyiv!"; 
-    uiStrings.ua.greet = "Добрий день!"; 
-    uiStrings.en.greet = "Good Afternoon!";
-    uiStrings.ru.greet = "Добрый день!";
+function showRewardAd() { if (window.Android) window.Android.showRewardAd(); }
+
+async function init() {
+    updateUserUI();
+    try {
+        const res = await fetch(WORKER_URL + '/get-data');
+        if (res.ok) {
+            const data = await res.json();
+            appConfig.litrPrice = data.litrPrice || 1.5;
+            appConfig.deliveryFee = data.deliveryFee || 50;
+            if (data.rates) {
+                document.getElementById('u-buy').innerText = data.rates.USD_BUY || "39.50";
+                document.getElementById('u-sell').innerText = data.rates.USD_SELL || "40.20";
+                document.getElementById('e-buy').innerText = data.rates.EUR_BUY || "42.10";
+                document.getElementById('e-sell').innerText = data.rates.EUR_SELL || "43.00";
+            }
+            if (data.weather) {
+                document.getElementById('w-temp').innerText = data.weather.temp + "°";
+                document.getElementById('w-desc').innerText = data.weather.desc;
+            }
+            document.getElementById('aqi-num').innerText = data.aqi || "24";
+        }
+    } catch (e) {}
 }
-
-// Initialize
-changeL('tr');
-fetchConfig();
-updateUserUI();
-
-if (!currentUser) {
-    document.getElementById('authOverlay').classList.add('active');
-}
-
-setInterval(updateAllData, 600000); // 10 minutes
-setInterval(fetchConfig, 60000); // 1 minute - sync with Worker
+window.onload = init;
 </script>
-
 </body>
 </html>
