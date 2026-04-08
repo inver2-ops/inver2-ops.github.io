@@ -55,6 +55,15 @@
 
         .datetime-box { position: absolute; bottom: 10px; left: 0; width: 100%; font-size: 0.75rem; font-weight: 700; opacity: 0.8; }
 
+        /* Announcement Panel Style */
+        .announcement-card { display: none; background: #fff; border-radius: 24px; padding: 20px; box-shadow: 0 15px 35px rgba(10, 126, 200, 0.15); border: 2px solid var(--primary); margin-bottom: 20px; position: relative; overflow: hidden; animation: slideIn 0.5s ease-out; }
+        @keyframes slideIn { from { transform: translateY(-20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .ann-badge { background: var(--primary); color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.7rem; font-weight: 800; text-transform: uppercase; margin-bottom: 10px; display: inline-block; }
+        .ann-title { font-weight: 800; font-size: 1.2rem; color: var(--primary); margin-bottom: 8px; display: block; }
+        .ann-message { font-size: 0.95rem; color: var(--text-light); font-weight: 600; line-height: 1.5; }
+        .ann-link { display: inline-block; margin-top: 12px; color: var(--primary); font-weight: 800; text-decoration: none; border-bottom: 2px solid var(--primary); font-size: 0.9rem; }
+        .ann-close { position: absolute; top: 15px; right: 15px; font-size: 1.2rem; color: #94a3b8; cursor: pointer; }
+
         .card { background: #fff; border-radius: 24px; padding: 20px; box-shadow: var(--card-shadow); border: 1px solid rgba(0,0,0,0.03); margin-bottom: 15px; }
         .c-label { font-size: 0.75rem; font-weight: 800; color: #94a3b8; text-transform: uppercase; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
         
@@ -163,6 +172,15 @@
 
 <div class="container">
     
+    <!-- DYNAMIC ANNOUNCEMENT PANEL -->
+    <div id="announcementPanel" class="announcement-card">
+        <span class="ann-close" onclick="closeAnn()">&times;</span>
+        <span class="ann-badge" id="ann-badge-text">DUYURU</span>
+        <span class="ann-title" id="ann-title">Başlık</span>
+        <p class="ann-message" id="ann-message">Mesaj içeriği buraya gelecek.</p>
+        <a href="#" id="ann-link" class="ann-link" target="_blank">Devamını Oku</a>
+    </div>
+
     <!-- AdSense Banner Top -->
     <div class="ad-slot">
         <ins class="adsbygoogle"
@@ -292,114 +310,74 @@ const WEATHER_API_KEY = '932e2d60c135c8cdb547ce78923a7ba8';
 
 let activeLang = 'tr';
 let currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
-let appConfig = { litrPrice: 1.5, deliveryFee: 50, shopStatus: 'closed', schedule: {}, isWaterCut: false };
+let appConfig = { litrPrice: 1.5, deliveryFee: 50, shopStatus: 'closed', schedule: {}, isWaterCut: false, lastAnnouncement: null };
 let userCoords = null;
 let shopOpenStatus = false;
 
 const uiStrings = {
     tr: {
-        title: "Troieshchyna Bölgesi",
-        tagline: "Bölgenin En İyi, En Taze Suyu Bizde!",
+        title: "Troieshchyna Bölgesi", tagline: "Bölgenin En İyi, En Taze Suyu Bizde!",
         promo: "✨ Lütfen Taze, Temiz ve Arıtılmış Suyunuzu Almayı Unutmayın! Sağlığınız için bizi tercih edin... ✨",
-        noCut: "Bölgede su kesintisi yok, sistem aktif!",
-        activeCut: "Dikkat: Bölgede su kesintisi bildirilmiştir!",
-        rates: "DÖVİZ KURLARI (UAH ₴)",
-        store: "SATIŞ NOKTASI",
-        storeName: "İNVER WATER - Troieshchyna",
-        storeAddress: "Oleksandry Ekster St, 8 | Troieshchyna",
-        orderBtn: "SU SİPARİŞ ET",
-        closedBtn: "ÇALIŞMA SAATİNDEN DOLAYI KAPALIYIZ",
-        rewardBtn: "Bize Destek Olmak İçin Lütfen Videoyu İzleyin ❤️",
-        orderTitle: "SU SİPARİŞ ET",
-        city: "Şehir", street: "Sokak", building: "Bina", flat: "Daire", liters: "Litre Seç",
-        placeOrder: "SİPARİŞİ TAMAMLA",
-        locBtn: "Konumumu Otomatik Bul",
-        aqi: "HAVA KALİTESİ",
+        noCut: "Bölgede su kesintisi yok, sistem aktif!", activeCut: "Dikkat: Bölgede su kesintisi bildirilmiştir!",
+        rates: "DÖVİZ KURLARI (UAH ₴)", store: "SATIŞ NOKTASI", storeName: "İNVER WATER - Troieshchyna",
+        storeAddress: "Oleksandry Ekster St, 8 | Troieshchyna", orderBtn: "SU SİPARİŞ ET",
+        closedBtn: "ÇALIŞMA SAATİNDEN DOLAYI KAPALIYIZ", rewardBtn: "Bize Destek Olmak İçin Lütfen Videoyu İzleyin ❤️",
+        orderTitle: "SU SİPARİŞ ET", city: "Şehir", street: "Sokak", building: "Bina", flat: "Daire", liters: "Litre Seç",
+        placeOrder: "SİPARİŞİ TAMAMLA", locBtn: "Konumumu Otomatik Bul", aqi: "HAVA KALİTESİ",
         tooFar: "Dükkana çok uzaktasınız (3km+). Lütfen size en yakın otomatı kullanın.",
-        locError: "Konum alınamadı. Lütfen adresi manuel girin.",
-        orderOk: "Siparişiniz Alındı! Teşekkürler.",
-        orderErr: "Sipariş gönderilemedi. Lütfen tekrar deneyin.",
-        opensAt: "Açılış: ", closesAt: "Kapanış: ",
+        locError: "Konum alınamadı. Lütfen adresi manuel girin.", orderOk: "Siparişiniz Alındı! Teşekkürler.",
+        orderErr: "Sipariş gönderilemedi. Lütfen tekrar deneyin.", opensAt: "Açılış: ", closesAt: "Kapanış: ",
         footerText: "İNVER WATER © 2026 | Troieshchyna Premium Su Dağıtım Hizmeti",
-        authTitle: "📱 Telefon Doğrula", authTitle2: "👤 Adınız", remember: "Beni Hatırla", authBtn: "Devam Et", authBtn2: "Onayla"
+        authTitle: "📱 Telefon Doğrula", authTitle2: "👤 Adınız", remember: "Beni Hatırla", authBtn: "Devam Et", authBtn2: "Onayla",
+        annBadge: "DUYURU", annReadMore: "Devamını Oku"
     },
     ua: {
-        title: "Район Троєщина",
-        tagline: "Найкраща та найсвіжіша вода у нас!",
+        title: "Район Троєщина", tagline: "Найкраща та найсвіжіша вода у нас!",
         promo: "✨ Будь ласка, не забудьте взяти свіжу, чисту та очищену воду! Обирайте нас для вашого здоров'я... ✨",
-        noCut: "Відключень води в районі немає, система активна!",
-        activeCut: "Увага: Повідомлено про відключення води в районі!",
-        rates: "КУРС ВАЛЮТ (UAH ₴)",
-        store: "ТОЧКА ПРОДАЖУ",
-        storeName: "ІНВЕР ВОДА - Троєщина",
-        storeAddress: "вул. Олександра Екстера, 8 | Троєщина",
-        orderBtn: "ЗАМОВИТИ ВОДУ",
-        closedBtn: "ЗАКРИТО ЧЕРЕЗ РОБОЧИЙ ГРАФІК",
-        rewardBtn: "Будь ласка, подивіться відео, щоб підтримати нас ❤️",
-        orderTitle: "ЗАМОВИТИ ВОДУ",
-        city: "Місто", street: "Вулиця", building: "Будинок", flat: "Квартира", liters: "Виберіть літри",
-        placeOrder: "ОФОРМИТИ ЗАМОВЛЕННЯ",
-        locBtn: "Знайти мою локацію",
-        aqi: "ЯКІСТЬ ПОВІТРЯ",
+        noCut: "Відключень води в районі немає, система активна!", activeCut: "Увага: Повідомлено про відключення води в районі!",
+        rates: "КУРС ВАЛЮТ (UAH ₴)", store: "ТОЧКА ПРОДАЖУ", storeName: "ІНВЕР ВОДА - Троєщина",
+        storeAddress: "вул. Олександра Екстера, 8 | Троєщина", orderBtn: "ЗАМОВИТИ ВОДУ",
+        closedBtn: "ЗАКРИТО ЧЕРЕЗ РОБОЧИЙ ГРАФІК", rewardBtn: "Будь ласка, подивіться відео, щоб підтримати нас ❤️",
+        orderTitle: "ЗАМОВИТИ ВОДУ", city: "Місто", street: "Вулиця", building: "Будинок", flat: "Квартира", liters: "Виберіть літри",
+        placeOrder: "ОФОРМИТИ ЗАМОВЛЕННЯ", locBtn: "Знайти мою локацію", aqi: "ЯКІСТЬ ПОВІТРЯ",
         tooFar: "Ви занадто далеко (3км+). Використовуйте автомати.",
-        locError: "Не вдалося отримати локацію.",
-        orderOk: "Замовлення прийнято! Дякуємо.",
-        orderErr: "Помилка замовлення.",
-        opensAt: "Відкриття: ", closesAt: "Закриття: ",
+        locError: "Не вдалося отримати локацію.", orderOk: "Замовлення прийнято! Дякуємо.",
+        orderErr: "Помилка замовлення.", opensAt: "Відкриття: ", closesAt: "Закриття: ",
         footerText: "ІНВЕР ВОДА © 2026 | Преміальна служба доставки води Троєщини",
-        authTitle: "📱 Підтвердити телефон", authTitle2: "👤 Ваше ім'я", remember: "Запам'ятати мене", authBtn: "Продовжити", authBtn2: "Підтвердити"
+        authTitle: "📱 Підтвердити телефон", authTitle2: "👤 Ваше ім'я", remember: "Запам'ятати мене", authBtn: "Продовжити", authBtn2: "Підтвердити",
+        annBadge: "ОГОЛОШЕННЯ", annReadMore: "Читати далі"
     },
     en: {
-        title: "Troieshchyna District",
-        tagline: "We Have the Best and Freshest Water!",
+        title: "Troieshchyna District", tagline: "We Have the Best and Freshest Water!",
         promo: "✨ Please Don't Forget to Get Your Fresh, Clean, and Purified Water! Choose us for your health... ✨",
-        noCut: "No water cuts in the area, system active!",
-        activeCut: "Warning: Water cut reported in the area!",
-        rates: "EXCHANGE RATES (UAH ₴)",
-        store: "SALES POINT",
-        storeName: "INVER WATER - Troieshchyna",
-        storeAddress: "Oleksandry Ekster St, 8 | Troieshchyna",
-        orderBtn: "ORDER WATER",
-        closedBtn: "CLOSED DUE TO WORKING HOURS",
-        rewardBtn: "Please Watch the Video to Support Us ❤️",
-        orderTitle: "ORDER WATER",
-        city: "City", street: "Street", building: "Building", flat: "Flat", liters: "Select Liters",
-        placeOrder: "COMPLETE ORDER",
-        locBtn: "Auto Locate Me",
-        aqi: "AIR QUALITY",
+        noCut: "No water cuts in the area, system active!", activeCut: "Warning: Water cut reported in the area!",
+        rates: "EXCHANGE RATES (UAH ₴)", store: "SALES POINT", storeName: "INVER WATER - Troieshchyna",
+        storeAddress: "Oleksandry Ekster St, 8 | Troieshchyna", orderBtn: "ORDER WATER",
+        closedBtn: "CLOSED DUE TO WORKING HOURS", rewardBtn: "Please Watch the Video to Support Us ❤️",
+        orderTitle: "ORDER WATER", city: "City", street: "Street", building: "Building", flat: "Flat", liters: "Select Liters",
+        placeOrder: "COMPLETE ORDER", locBtn: "Auto Locate Me", aqi: "AIR QUALITY",
         tooFar: "Too far from shop (3km+). Please use vending machines.",
-        locError: "Location failed. Please enter manually.",
-        orderOk: "Order Received! Thank you.",
-        orderErr: "Order failed.",
-        opensAt: "Opens at: ", closesAt: "Closes at: ",
+        locError: "Location failed. Please enter manually.", orderOk: "Order Received! Thank you.",
+        orderErr: "Order failed.", opensAt: "Opens at: ", closesAt: "Closes at: ",
         footerText: "INVER WATER © 2026 | Troieshchyna Premium Water Delivery Service",
-        authTitle: "📱 Verify Phone", authTitle2: "👤 Your Name", remember: "Remember Me", authBtn: "Continue", authBtn2: "Confirm"
+        authTitle: "📱 Verify Phone", authTitle2: "👤 Your Name", remember: "Remember Me", authBtn: "Continue", authBtn2: "Confirm",
+        annBadge: "ANNOUNCEMENT", annReadMore: "Read More"
     },
     ru: {
-        title: "Район Троещина",
-        tagline: "У нас самая лучшая и свежая вода!",
+        title: "Район Троещина", tagline: "У нас самая лучшая и свежая вода!",
         promo: "✨ Пожалуйста, не забудьте взять свежую, чистую и очищенную воду! Выбирайте нас для вашего здоровья... ✨",
-        noCut: "Отключений воды в районе нет, система активна!",
-        activeCut: "Внимание: Сообщено об отключении воды в районе!",
-        rates: "КУРС ВАЛЮТ (UAH ₴)",
-        store: "ТОЧКА ПРОДАЖИ",
-        storeName: "ИНВЕР ВОДА - Троещина",
-        storeAddress: "ул. Александра Экстера, 8 | Троещина",
-        orderBtn: "ЗАКАЗАТЬ ВОДУ",
-        closedBtn: "ЗАКРЫТО ПО РАБОЧЕМУ ГРАФИКУ",
-        rewardBtn: "Пожалуйста, посмотрите видео, чтобы поддержать нас ❤️",
-        orderTitle: "ЗАКАЗАТЬ ВОДУ",
-        city: "Город", street: "Улица", building: "Дом", flat: "Квартира", liters: "Выберите литры",
-        placeOrder: "ОФОРМИТЬ ЗАКАЗ",
-        locBtn: "Найти мое положение",
-        aqi: "КАЧЕСТВО ВОЗДУХА",
+        noCut: "Отключений воды в районе нет, система активна!", activeCut: "Внимание: Сообщено об отключении воды в районе!",
+        rates: "КУРС ВАЛЮТ (UAH ₴)", store: "ТОЧКА ПРОДАЖИ", storeName: "ИНВЕР ВОДА - Троещина",
+        storeAddress: "ул. Александра Экстера, 8 | Троещина", orderBtn: "ЗАКАЗАТЬ ВОДУ",
+        closedBtn: "ЗАКРЫТО ПО РАБОЧЕМУ ГРАФИКУ", rewardBtn: "Пожалуйста, посмотрите видео, чтобы поддержать нас ❤️",
+        orderTitle: "ЗАКАЗАТЬ ВОДУ", city: "Город", street: "Улица", building: "Дом", flat: "Квартира", liters: "Выберите литры",
+        placeOrder: "ОФОРМИТЬ ЗАКАЗ", locBtn: "Найти мое положение", aqi: "КАЧЕСТВО ВОЗДУХА",
         tooFar: "Слишком далеко (3км+). Используйте автоматы.",
-        locError: "Ошибка геолокации.",
-        orderOk: "Заказ принят! Спасибо.",
-        orderErr: "Ошибка заказа.",
-        opensAt: "Открытие: ", closesAt: "Закрытие: ",
+        locError: "Ошибка геолокации.", orderOk: "Заказ принят! Спасибо.",
+        orderErr: "Ошибка заказа.", opensAt: "Открытие: ", closesAt: "Закрытие: ",
         footerText: "ИНВЕР ВОДА © 2026 | Премиальная служба доставки воды Троещины",
-        authTitle: "📱 Подтвердить телефон", authTitle2: "👤 Ваше имя", remember: "Запомнить меня", authBtn: "Продолжить", authBtn2: "Подтвердить"
+        authTitle: "📱 Подтвердить телефон", authTitle2: "👤 Ваше имя", remember: "Запомнить меня", authBtn: "Продолжить", authBtn2: "Подтвердить",
+        annBadge: "ОБЪЯВЛЕНИЕ", annReadMore: "Читать далее"
     }
 };
 
@@ -436,8 +414,9 @@ function updateUI() {
     document.getElementById('remember-label').innerText = s.remember;
     document.getElementById('auth-btn1').innerText = s.authBtn;
     document.getElementById('auth-btn2').innerText = s.authBtn2;
+    document.getElementById('ann-badge-text').innerText = s.annBadge;
+    document.getElementById('ann-link').innerText = s.annReadMore;
     
-    // Su kesintisi durumu
     const cutWarn = document.getElementById('cut-warning');
     const cutTxt = document.getElementById('txt-no-cut');
     if (appConfig.isWaterCut) {
@@ -449,6 +428,34 @@ function updateUI() {
     }
 
     checkShopStatus();
+    displayAnnouncement();
+}
+
+function displayAnnouncement() {
+    const ann = appConfig.lastAnnouncement;
+    const panel = document.getElementById('announcementPanel');
+    if (ann && ann.message && !localStorage.getItem('closed_ann_' + ann.id)) {
+        document.getElementById('ann-title').innerText = ann.title || uiStrings[activeLang].annBadge;
+        document.getElementById('ann-message').innerText = ann.message;
+        const link = document.getElementById('ann-link');
+        if (ann.link) {
+            link.href = ann.link;
+            link.style.display = 'inline-block';
+        } else {
+            link.style.display = 'none';
+        }
+        panel.style.display = 'block';
+    } else {
+        panel.style.display = 'none';
+    }
+}
+
+function closeAnn() {
+    const ann = appConfig.lastAnnouncement;
+    if (ann && ann.id) {
+        localStorage.setItem('closed_ann_' + ann.id, 'true');
+    }
+    document.getElementById('announcementPanel').style.display = 'none';
 }
 
 function checkShopStatus() {
