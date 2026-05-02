@@ -25,9 +25,27 @@
         @media (min-width: 768px) { .main-container { max-width: 1000px; margin: 0 auto; } }
         input::-webkit-outer-spin-button, input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
         .scrollbar-hide::-webkit-scrollbar { display: none; }
+        .modal-overlay { background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); }
     </style>
 </head>
 <body class="pb-28">
+
+    <!-- GÜN SONU TARİH SEÇME MODAL -->
+    <div id="dateModal" class="fixed inset-0 z-[200] hidden flex items-center justify-center p-4 modal-overlay">
+        <div class="glass-card p-6 rounded-[2.5rem] w-full max-w-sm border-cyan-500/30">
+            <h3 class="text-xl font-black italic mb-4 text-center text-cyan-400">RAPOR TARİHİ SEÇ</h3>
+            <div class="space-y-3">
+                <button onclick="reportToday()" class="w-full bg-cyan-600 p-4 rounded-2xl font-bold uppercase italic">BUGÜNÜN RAPORU</button>
+                <div class="relative py-2">
+                    <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-white/10"></div></div>
+                    <div class="relative flex justify-center text-xs uppercase text-slate-500 font-bold bg-transparent px-2">VEYA</div>
+                </div>
+                <input type="date" id="reportCustomDate" class="w-full bg-slate-900 p-4 rounded-2xl border border-white/10 outline-none text-white font-bold italic">
+                <button onclick="reportCustom()" class="w-full bg-slate-800 p-4 rounded-2xl font-bold uppercase italic border border-white/10">SEÇİLİ TARİHİ AL</button>
+                <button onclick="closeDateModal()" class="w-full text-slate-500 font-bold uppercase text-[10px] pt-2">İPTAL</button>
+            </div>
+        </div>
+    </div>
 
     <div id="toast" class="fixed top-12 left-1/2 -translate-x-1/2 z-[100] transition-all duration-500 opacity-0 pointer-events-none">
         <div id="toastContent" class="px-6 py-3 rounded-full font-bold shadow-2xl text-sm text-white"></div>
@@ -66,9 +84,9 @@
 
     <!-- GÜN SONU BUTONU -->
     <div class="px-4 mb-8 max-w-6xl mx-auto">
-        <button onclick="generateEndOfDayPDF()" class="w-full bg-gradient-to-r from-amber-500 to-orange-600 p-4 rounded-2xl font-black text-xs uppercase shadow-lg active:scale-95 italic transition-all flex items-center justify-center gap-3">
+        <button onclick="openDateModal()" class="w-full bg-gradient-to-r from-amber-500 to-orange-600 p-4 rounded-2xl font-black text-xs uppercase shadow-lg active:scale-95 italic transition-all flex items-center justify-center gap-3">
             <i class="fas fa-file-invoice-dollar text-lg"></i>
-            GÜN SONU RAPORUNU AL (09:00 - 20:00)
+            GÜN SONU RAPORUNU AL
         </button>
     </div>
 
@@ -154,7 +172,9 @@
         <section id="history" class="content-section hidden">
             <div class="glass-card rounded-[30px] overflow-hidden">
                 <div class="p-4 bg-white/5 border-b border-white/10 flex gap-2">
-                    <input type="date" id="historyDate" onchange="updateHistory()" class="bg-slate-900 text-[10px] p-2 rounded-lg flex-1 outline-none text-white font-bold italic">
+                    <select id="historyDateSelect" onchange="updateHistory()" class="bg-slate-900 text-[10px] p-2 rounded-lg flex-1 outline-none text-white font-bold italic border border-white/10">
+                        <option value="">Kayıt Bulunan Günler</option>
+                    </select>
                     <button onclick="exportHistoryPDF()" class="bg-red-600 px-4 rounded-lg text-[10px] font-black uppercase active:scale-95 italic">PDF İNDİR</button>
                 </div>
                 <div class="max-h-[550px] overflow-y-auto scrollbar-hide">
@@ -247,7 +267,6 @@
             } catch (err) { console.error("Sync Hatası"); }
         }
 
-        // ANINDA KAYIT: Saniyeler içinde JsonBin'e atar
         async function syncCloud() {
             localStorage.setItem('inver_v11_db', JSON.stringify(db));
             renderUI();
@@ -314,7 +333,6 @@
                 gross: gross, profit: gross - cost, method: method
             };
 
-            // KRİTİK: Index bazlı ekleme
             db.sales.push(entry);
             db.stock.tankWater -= litre;
             db.stock.bottles5L -= b5;
@@ -322,7 +340,7 @@
 
             saleAudio.play();
             clearSale();
-            syncCloud(); // ANINDA KAYIT ÇALIŞIR
+            syncCloud();
             notify("Satış Tamamlandı", "success");
         }
 
@@ -360,19 +378,34 @@
             document.getElementById('dash-sold-today').innerText = totalLitreToday.toFixed(1) + ' L';
             document.getElementById('dash-tank').innerText = Math.floor(db.stock.tankWater);
             document.getElementById('dash-bottles').innerText = `${db.stock.bottles5L} / ${db.stock.bottles10L}`;
+            
+            // Tarih seçim listesini güncelle
+            const dates = [...new Set(db.sales.map(s => new Date(s.date).toLocaleDateString('en-CA')))].sort().reverse();
+            const select = document.getElementById('historyDateSelect');
+            const currentVal = select.value;
+            select.innerHTML = '<option value="">Son İşlemler</option>';
+            dates.forEach(d => {
+                select.innerHTML += `<option value="${d}">${new Date(d).toLocaleDateString('tr-TR')}</option>`;
+            });
+            select.value = currentVal;
         }
 
         function updateHistory() {
-            const hDateInput = document.getElementById('historyDate').value;
-            const targetDate = hDateInput ? new Date(hDateInput).toLocaleDateString() : new Date().toLocaleDateString();
+            const targetDate = document.getElementById('historyDateSelect').value;
             
-            const filtered = db.sales
-                .filter(s => new Date(s.date).toLocaleDateString() === targetDate)
-                .sort((a,b) => b.id - a.id);
+            let filtered = db.sales;
+            if(targetDate) {
+                filtered = db.sales.filter(s => new Date(s.date).toLocaleDateString('en-CA') === targetDate);
+            } else {
+                filtered = db.sales.slice(-50); // Boşsa son 50 işlem
+            }
+            
+            filtered.sort((a,b) => b.id - a.id);
             
             let html = '';
             filtered.forEach(s => {
                 const time = new Date(s.date).toLocaleTimeString('tr-TR', {hour:'2-digit', minute:'2-digit'});
+                const day = new Date(s.date).toLocaleDateString('tr-TR', {day:'2-digit', month:'2-digit'});
                 let details = [];
                 if(s.liters > 0) details.push(`${s.liters}L Su`);
                 if(s.b5 > 0) details.push(`${s.b5}x5L Şişe`);
@@ -381,12 +414,12 @@
                 html += `
                     <tr>
                         <td class="p-3 text-center"><button onclick="deleteSale(${s.id})" class="text-red-500/30 hover:text-red-500"><i class="fas fa-times-circle text-lg"></i></button></td>
-                        <td class="p-3 font-bold text-slate-300">${time}</td>
+                        <td class="p-3 font-bold text-slate-300">${day} ${time}</td>
                         <td class="p-3 text-slate-400 leading-tight">${details.join('<br>')} <br> <span class="text-[7px] text-cyan-500 font-bold uppercase">${s.method}</span></td>
                         <td class="p-3 text-right font-black text-white">${s.gross.toFixed(1)} ₴</td>
                     </tr>`;
             });
-            document.getElementById('historyTable').innerHTML = html || '<tr><td colspan="4" class="p-10 text-center opacity-30 italic text-white">Bu tarihte kayıt bulunamadı.</td></tr>';
+            document.getElementById('historyTable').innerHTML = html || '<tr><td colspan="4" class="p-10 text-center opacity-30 italic text-white">Kayıt bulunamadı.</td></tr>';
         }
 
         function renderAnalytics() {
@@ -455,17 +488,28 @@
             `;
         }
 
-        async function generateEndOfDayPDF() {
+        // --- GÜN SONU YENİ FONKSİYONLAR ---
+        function openDateModal() { document.getElementById('dateModal').classList.remove('hidden'); }
+        function closeDateModal() { document.getElementById('dateModal').classList.add('hidden'); }
+        function reportToday() { generateEndOfDayPDF(new Date().toLocaleDateString('en-CA')); closeDateModal(); }
+        function reportCustom() { 
+            const d = document.getElementById('reportCustomDate').value;
+            if(!d) return notify("Tarih seçin!", "error");
+            generateEndOfDayPDF(d); 
+            closeDateModal(); 
+        }
+
+        async function generateEndOfDayPDF(targetDateStr) {
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF();
-            const now = new Date();
-            const todayStr = now.toLocaleDateString('tr-TR');
+            const todayDisplay = new Date(targetDateStr).toLocaleDateString('tr-TR');
 
             const dailySales = db.sales.filter(s => {
-                const sDate = new Date(s.date);
-                return sDate.toLocaleDateString('tr-TR') === todayStr && 
-                       sDate.getHours() >= 9 && sDate.getHours() < 20;
+                const sDate = new Date(s.date).toLocaleDateString('en-CA');
+                return sDate === targetDateStr;
             });
+
+            if(dailySales.length === 0) return notify("Bu tarihte satış bulunamadı!", "error");
 
             const stats = {
                 totalL: dailySales.reduce((a,b)=>a+parseFloat(b.liters), 0),
@@ -482,40 +526,43 @@
             const netKazancl = stats.profit - bankFee;
 
             doc.setFontSize(20);
-            doc.text("INVER WATER - GUN SONU Z RAPORU", 14, 20);
+            doc.text("INVER WATER - Z RAPORU", 14, 20);
             doc.setFontSize(10);
-            doc.text(`Tarih: ${todayStr} | Mesai: 09:00 - 20:00`, 14, 28);
+            doc.text(`Rapor Tarihi: ${todayDisplay}`, 14, 28);
             
             const body = [
-                ["Toplam Satilan L", `${stats.totalL.toFixed(1)} L`],
-                ["Nakit Satilan L", `${stats.nakitL.toFixed(1)} L`],
-                ["POS Satilan L", `${stats.posL.toFixed(1)} L`],
-                ["Bes Litre Sise", `${stats.b5} Adet`],
-                ["On Litre Sise", `${stats.b10} Adet`],
-                ["---", "---"],
-                ["Nakit Ciro", `${stats.nakitGross.toFixed(2)} Z`],
-                ["POS Ciro (Brut)", `${stats.posGross.toFixed(2)} Z`],
-                ["Banka Komisyonu", `-${bankFee.toFixed(2)} Z`],
-                ["POS Net Gelecek", `${(stats.posGross - bankFee).toFixed(2)} Z`],
-                ["TOPLAM NET KAR", `${netKazancl.toFixed(2)} Z`]
+                ["Toplam Satilan Su", `${stats.totalL.toFixed(1)} Litre`],
+                ["Nakit Satilan Su", `${stats.nakitL.toFixed(1)} Litre`],
+                ["POS Satilan Su", `${stats.posL.toFixed(1)} Litre`],
+                ["5L Bos Sise", `${stats.b5} Adet`],
+                ["10L Bos Sise", `${stats.b10} Adet`],
+                ["------------------", "------------------"],
+                ["NAKIT CIRO", `${stats.nakitGross.toFixed(2)} UAH`],
+                ["POS CIRO (Brut)", `${stats.posGross.toFixed(2)} UAH`],
+                ["Banka Komisyonu", `-${bankFee.toFixed(2)} UAH`],
+                ["POS Net Kazanc", `${(stats.posGross - bankFee).toFixed(2)} UAH`],
+                ["TOPLAM NET KAR", `${netKazancl.toFixed(2)} UAH`]
             ];
 
-            doc.autoTable({ startY: 35, head: [['Kalem', 'Miktar/Tutar']], body: body, theme: 'grid' });
-            doc.save(`Z-Raporu-${todayStr}.pdf`);
-            notify("Gün Sonu PDF İndirildi", "success");
+            doc.autoTable({ startY: 35, head: [['Kalem', 'Miktar / Tutar']], body: body, theme: 'grid' });
+            doc.save(`Z-Raporu-${targetDateStr}.pdf`);
+            notify("Rapor İndirildi", "success");
         }
 
         async function exportHistoryPDF() {
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF();
-            const hDate = document.getElementById('historyDate').value || new Date().toISOString().split('T')[0];
+            const hDate = document.getElementById('historyDateSelect').value || "Son_Islemler";
             doc.text(`INVER WATER - SATIS RAPORU (${hDate})`, 14, 20);
-            const rows = db.sales.filter(s => new Date(s.date).toLocaleDateString() === new Date(hDate).toLocaleDateString()).map(s => [
+            
+            let filtered = hDate === "Son_Islemler" ? db.sales.slice(-50) : db.sales.filter(s => new Date(s.date).toLocaleDateString('en-CA') === hDate);
+            
+            const rows = filtered.map(s => [
                 new Date(s.date).toLocaleTimeString('tr-TR', {hour:'2-digit', minute:'2-digit'}),
                 `${s.liters}L + ${s.b5}x5 + ${s.b10}x10`, s.method, s.gross.toFixed(2) + " ₴"
             ]);
             doc.autoTable({ startY: 30, head: [['Saat', 'Detay', 'Odeme', 'Tutar']], body: rows });
-            doc.save(`inver-rapor-${hDate}.pdf`);
+            doc.save(`inver-liste-${hDate}.pdf`);
         }
 
         function showSection(id) {
