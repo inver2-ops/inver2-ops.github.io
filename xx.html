@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>İNVER вода | Cloud Elite v11.0</title>
+    <title>İNVER вода | Cloud Elite v11.1</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -73,7 +73,7 @@
                     <button onclick="quickFill(5)" class="bg-slate-800/60 py-4 rounded-xl border border-white/5 active:scale-90 transition">+5L</button>
                     <button onclick="quickFill(10)" class="bg-slate-800/60 py-4 rounded-xl border border-white/5 active:scale-90 transition">+10L</button>
                     <button onclick="quickFill(19)" class="bg-slate-800/60 py-4 rounded-xl border border-white/5 active:scale-90 transition">+19L</button>
-                    <button onclick="document.getElementById('saleLiters').value=''" class="bg-red-900/20 text-red-500 py-4 rounded-xl border border-red-500/10 active:scale-90 transition">SİL</button>
+                    <button onclick="document.getElementById('saleLiters').value=''; calculateSale();" class="bg-red-900/20 text-red-500 py-4 rounded-xl border border-red-500/10 active:scale-90 transition">SİL</button>
                 </div>
 
                 <div class="space-y-4">
@@ -87,7 +87,7 @@
                             <span class="text-[8px] text-slate-500 font-bold uppercase mb-2">5L Şişe Satış</span>
                             <div class="flex items-center gap-4">
                                 <button onclick="adjValue('sale5L', -1)" class="text-red-500 text-xl"><i class="fas fa-minus-circle"></i></button>
-                                <input type="number" id="sale5L" oninput="calculateSale()" class="bg-transparent w-8 text-center font-black text-xl italic" value="0">
+                                <input type="number" id="sale5L" oninput="calculateSale()" class="bg-transparent w-8 text-center font-black text-xl italic" value="0" readonly>
                                 <button onclick="adjValue('sale5L', 1)" class="text-green-500 text-xl"><i class="fas fa-plus-circle"></i></button>
                             </div>
                         </div>
@@ -95,7 +95,7 @@
                             <span class="text-[8px] text-slate-500 font-bold uppercase mb-2">10L Şişe Satış</span>
                             <div class="flex items-center gap-4">
                                 <button onclick="adjValue('sale10L', -1)" class="text-red-500 text-xl"><i class="fas fa-minus-circle"></i></button>
-                                <input type="number" id="sale10L" oninput="calculateSale()" class="bg-transparent w-8 text-center font-black text-xl italic" value="0">
+                                <input type="number" id="sale10L" oninput="calculateSale()" class="bg-transparent w-8 text-center font-black text-xl italic" value="0" readonly>
                                 <button onclick="adjValue('sale10L', 1)" class="text-green-500 text-xl"><i class="fas fa-plus-circle"></i></button>
                             </div>
                         </div>
@@ -160,7 +160,7 @@
             </div>
         </section>
 
-        <!-- AYARLAR (FULL EKSİKSİZ) -->
+        <!-- AYARLAR -->
         <section id="settings" class="content-section hidden space-y-4">
             <div class="glass-card p-6 rounded-[30px] space-y-6">
                 
@@ -169,11 +169,11 @@
                     <div class="grid grid-cols-2 gap-3">
                         <div class="bg-slate-900/60 p-3 rounded-xl border border-white/5">
                             <label class="text-[8px] text-slate-500 uppercase font-bold italic">1L Su Satış</label>
-                            <input type="number" id="setPriceLitre" class="bg-transparent font-black w-full outline-none text-cyan-400 italic">
+                            <input type="number" id="setPriceLitre" class="bg-transparent font-black w-full outline-none text-cyan-400 italic" step="0.1">
                         </div>
                         <div class="bg-slate-900/60 p-3 rounded-xl border border-white/5">
                             <label class="text-[8px] text-slate-500 uppercase font-bold italic">1L Su Maliyet</label>
-                            <input type="number" id="setCostLitre" class="bg-transparent font-black w-full outline-none text-red-400 italic">
+                            <input type="number" id="setCostLitre" class="bg-transparent font-black w-full outline-none text-red-400 italic" step="0.1">
                         </div>
                         <div class="bg-slate-900/60 p-3 rounded-xl border border-white/5 font-bold italic">
                             <label class="text-[8px] text-slate-500 uppercase">5L Şişe Satış</label>
@@ -221,16 +221,11 @@
                 </div>
 
                 <button onclick="saveGlobalSettings()" class="w-full bg-gradient-to-r from-cyan-600 to-blue-700 py-5 rounded-2xl font-black text-xs uppercase shadow-xl hover:scale-[1.02] active:scale-95 transition-all italic">AYARLARI BULUTA İŞLE VE KAYDET</button>
-                
-                <div class="grid grid-cols-2 gap-2 font-bold italic">
-                    <button onclick="exportJSONBackup()" class="bg-slate-800 text-slate-300 py-3 rounded-xl text-[9px] uppercase hover:bg-slate-700">Yedek İndir (JSON)</button>
-                    <button onclick="factoryReset()" class="bg-red-900/20 text-red-500 border border-red-500/10 py-3 rounded-xl text-[9px] uppercase">Verileri Sıfırla</button>
-                </div>
             </div>
         </section>
     </main>
 
-    <!-- ALT NAVİGASYON -->
+    <!-- ALT NAV -->
     <nav class="fixed bottom-6 left-1/2 -translate-x-1/2 w-[92%] max-w-sm glass-card rounded-[2.5rem] p-2 flex justify-around items-center z-50 border border-white/10 shadow-[0_15px_50px_rgba(0,0,0,0.5)]">
         <button onclick="showSection('sales')" class="nav-btn active-nav w-14 h-14 rounded-full flex items-center justify-center transition-all"><i class="fas fa-tint"></i></button>
         <button onclick="showSection('dashboard')" class="nav-btn w-14 h-14 rounded-full flex items-center justify-center text-slate-500"><i class="fas fa-chart-line"></i></button>
@@ -239,245 +234,164 @@
     </nav>
 
     <script>
-        // API Bilgileri (v11.0)
+        // --- CONFIG ---
         const API_KEY = '$2a$10$QA58wc50wyQ3g8E9oqDNK./CTiaqIk0kjStY.wLOo4mUG9uZ7sQju';
         const BIN_ID = '69f5cd6baaba882197617526'; 
 
+        // Varsayılan DB Yapısı
         let db = {
-            settings: { priceLitre: 5, costLitre: 1.5, price5L: 20, cost5L: 12, price10L: 35, cost10L: 18, bankFee: 1.3 },
+            settings: { priceLitre: 5.0, costLitre: 1.5, price5L: 20, cost5L: 12, price10L: 35, cost10L: 18, bankFee: 1.3 },
             stock: { tankWater: 1500, bottles5L: 100, bottles10L: 50 },
             sales: []
         };
 
-        // --- VERİ YÖNETİMİ ---
-        async function loadCloudData() {
+        // --- VERİ MOTORU ---
+        async function loadData() {
+            // Önce LocalStorage'dan hızlıca yükle (Açılış hızı için)
+            const localData = localStorage.getItem('inver_v11_db');
+            if(localData) {
+                db = JSON.parse(localData);
+                renderUI();
+            }
+
+            // Sonra Buluttan çek ve güncelle (Gerçek veri)
             try {
-                const res = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, { headers: { 'X-Master-Key': API_KEY } });
+                const res = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, { 
+                    headers: { 'X-Master-Key': API_KEY, 'Cache-Control': 'no-cache' } 
+                });
                 const data = await res.json();
-                if(data.record) { 
+                if(data.record) {
                     db = data.record;
-                    // Eğer eski DB formatı ise eksik alanları tamamla
-                    if(!db.settings.costLitre) db.settings.costLitre = 1.5;
-                    renderUI(); 
+                    // Eksik maliyet tanımları kontrolü (Eski DB'leri bozmamak için)
+                    if(db.settings.costLitre === undefined) db.settings.costLitre = 1.5;
+                    localStorage.setItem('inver_v11_db', JSON.stringify(db));
+                    renderUI();
+                    console.log("Bulut Verisi Senkronize Edildi.");
                 }
             } catch (err) {
-                const local = localStorage.getItem('inver_v11_db');
-                if(local) db = JSON.parse(local);
-                renderUI();
+                console.error("Bulut Bağlantı Hatası:", err);
             }
         }
 
-        async function saveCloudData() {
+        async function syncCloud() {
             localStorage.setItem('inver_v11_db', JSON.stringify(db));
             try {
-                await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
+                const res = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
                     method: 'PUT',
                     headers: { 'Content-Type': 'application/json', 'X-Master-Key': API_KEY },
                     body: JSON.stringify(db)
                 });
-            } catch (err) { console.error("Cloud Error", err); }
-            renderUI();
+                if(res.ok) {
+                    notify("Bulut Senkronizasyonu Başarılı", "success");
+                    return true;
+                }
+            } catch (err) {
+                notify("Hata: Buluta Kaydedilemedi!", "error");
+                return false;
+            }
         }
 
-        // --- SATIŞ FONKSİYONLARI ---
+        // --- SATIŞ MANTIĞI ---
         function calculateSale() {
-            const l = parseFloat(document.getElementById('saleLiters').value) || 0;
+            const litre = parseFloat(document.getElementById('saleLiters').value) || 0;
             const b5 = parseInt(document.getElementById('sale5L').value) || 0;
             const b10 = parseInt(document.getElementById('sale10L').value) || 0;
-            const total = (l * db.settings.priceLitre) + (b5 * db.settings.price5L) + (b10 * db.settings.price10L);
+
+            const total = (litre * db.settings.priceLitre) + 
+                          (b5 * db.settings.price5L) + 
+                          (b10 * db.settings.price10L);
+
             document.getElementById('totalPriceDisplay').innerText = total.toFixed(2) + ' ₴';
         }
 
         function completeSale(method) {
-            const l = parseFloat(document.getElementById('saleLiters').value) || 0;
+            const litre = parseFloat(document.getElementById('saleLiters').value) || 0;
             const b5 = parseInt(document.getElementById('sale5L').value) || 0;
             const b10 = parseInt(document.getElementById('sale10L').value) || 0;
-            const mDate = document.getElementById('manualDate').value;
+            const manualDate = document.getElementById('manualDate').value;
 
-            if(l + b5 + b10 === 0) { notify("Miktar Girmediniz!", "error"); return; }
+            if (litre === 0 && b5 === 0 && b10 === 0) {
+                notify("Satış Tutarı Sıfır Olamaz!", "error");
+                return;
+            }
 
-            // Brüt Tutar
-            const gross = (l * db.settings.priceLitre) + (b5 * db.settings.price5L) + (b10 * db.settings.price10L);
-            // Toplam Maliyet (Su + Şişe)
-            const cost = (l * db.settings.costLitre) + (b5 * db.settings.cost5L) + (b10 * db.settings.cost10L);
-            
-            db.sales.push({
-                date: mDate ? new Date(mDate).toISOString() : new Date().toISOString(),
-                liters: l, b5, b10, gross, profit: gross - cost, method
-            });
+            const gross = (litre * db.settings.priceLitre) + (b5 * db.settings.price5L) + (b10 * db.settings.price10L);
+            const cost = (litre * db.settings.costLitre) + (b5 * db.settings.cost5L) + (b10 * db.settings.cost10L);
 
-            // Stok Güncelleme
-            db.stock.tankWater -= l;
+            const entry = {
+                date: manualDate ? new Date(manualDate).toISOString() : new Date().toISOString(),
+                liters: litre,
+                b5: b5,
+                b10: b10,
+                gross: gross,
+                profit: gross - cost,
+                method: method
+            };
+
+            db.sales.push(entry);
+            db.stock.tankWater -= litre;
             db.stock.bottles5L -= b5;
             db.stock.bottles10L -= b10;
 
-            resetSaleForm();
-            saveCloudData();
-            notify("Satış Kaydedildi", "success");
-        }
-
-        function resetSaleForm() {
             document.getElementById('saleLiters').value = '';
             document.getElementById('sale5L').value = 0;
             document.getElementById('sale10L').value = 0;
             document.getElementById('manualDate').value = '';
-            calculateSale();
+
+            syncCloud();
+            renderUI();
         }
 
-        // --- UI & RENDER ---
+        // --- AYAR KAYIT ---
+        async function saveGlobalSettings() {
+            // Inputlardaki güncel değerleri çek
+            db.settings.priceLitre = parseFloat(document.getElementById('setPriceLitre').value) || 0;
+            db.settings.costLitre = parseFloat(document.getElementById('setCostLitre').value) || 0;
+            db.settings.price5L = parseFloat(document.getElementById('setPrice5L').value) || 0;
+            db.settings.cost5L = parseFloat(document.getElementById('setCost5L').value) || 0;
+            db.settings.price10L = parseFloat(document.getElementById('setPrice10L').value) || 0;
+            db.settings.cost10L = parseFloat(document.getElementById('setCost10L').value) || 0;
+            db.settings.bankFee = parseFloat(document.getElementById('setBankFee').value) || 0;
+
+            db.stock.tankWater = parseFloat(document.getElementById('setStockTank').value) || 0;
+            db.stock.bottles5L = parseInt(document.getElementById('setStock5L').value) || 0;
+            db.stock.bottles10L = parseInt(document.getElementById('setStock10L').value) || 0;
+
+            const success = await syncCloud();
+            if(success) {
+                renderUI();
+                notify("Ayarlar Kaydedildi ve Kilitlendi", "success");
+            }
+        }
+
+        // --- UI ---
         function renderUI() {
             const today = new Date().toLocaleDateString();
             const todaySales = db.sales.filter(s => new Date(s.date).toLocaleDateString() === today);
-            
-            const cash = todaySales.filter(s => s.method === 'Nakit').reduce((a,b) => a + b.gross, 0);
-            const pos = todaySales.filter(s => s.method === 'Kart').reduce((a,b) => a + b.gross, 0);
 
-            document.getElementById('dash-cash').innerText = cash.toFixed(1) + ' ₴';
-            document.getElementById('dash-pos').innerText = pos.toFixed(1) + ' ₴';
+            const cashTotal = todaySales.filter(s => s.method === 'Nakit').reduce((a,b) => a + b.gross, 0);
+            const posTotal = todaySales.filter(s => s.method === 'Kart').reduce((a,b) => a + b.gross, 0);
+
+            document.getElementById('dash-cash').innerText = cashTotal.toFixed(1) + ' ₴';
+            document.getElementById('dash-pos').innerText = posTotal.toFixed(1) + ' ₴';
             document.getElementById('dash-tank').innerText = Math.floor(db.stock.tankWater) + ' L';
-            document.getElementById('dash-bottles').innerText = `${db.stock.bottles5L}/${db.stock.bottles10L}`;
+            document.getElementById('dash-bottles').innerText = `${db.stock.bottles5L} / ${db.stock.bottles10L}`;
 
-            // Ayarlar Panelini Doldur
+            // Ayarlar panelini DB'deki değerlerle güncelle
             document.getElementById('setPriceLitre').value = db.settings.priceLitre;
             document.getElementById('setCostLitre').value = db.settings.costLitre;
             document.getElementById('setPrice5L').value = db.settings.price5L;
             document.getElementById('setCost5L').value = db.settings.cost5L;
             document.getElementById('setPrice10L').value = db.settings.price10L;
             document.getElementById('setCost10L').value = db.settings.cost10L;
+            document.getElementById('setBankFee').value = db.settings.bankFee;
             document.getElementById('setStockTank').value = Math.floor(db.stock.tankWater);
             document.getElementById('setStock5L').value = db.stock.bottles5L;
             document.getElementById('setStock10L').value = db.stock.bottles10L;
-            document.getElementById('setBankFee').value = db.settings.bankFee;
-        }
-
-        // --- ANALİZ & İSTATİSTİKLER ---
-        function renderAnalytics() {
-            const days = parseInt(document.getElementById('statPeriod').value);
-            const filterDate = new Date();
-            filterDate.setDate(new Date().getDate() - days);
-
-            const filteredSales = db.sales.filter(s => new Date(s.date) >= filterDate);
             
-            const gross = filteredSales.reduce((a,b) => a + b.gross, 0);
-            const rawCost = filteredSales.reduce((a,b) => a + (b.gross - b.profit), 0);
-            const posTotal = filteredSales.filter(s=>s.method==='Kart').reduce((a,b)=>a+b.gross, 0);
-            const bankFee = posTotal * (db.settings.bankFee / 100);
-            const net = gross - rawCost - bankFee;
-
-            document.getElementById('statSum').innerText = `Net Kâr: ${net.toFixed(1)} ₴`;
-
-            const dataRows = [
-                { title: 'Nakit Tahsilat', b: filteredSales.filter(s=>s.method==='Nakit').reduce((a,b)=>a+b.gross, 0), k: 0 },
-                { title: 'POS Tahsilat', b: posTotal, k: bankFee },
-                { title: 'Üretim Maliyeti', b: rawCost, k: 0 }
-            ];
-
-            document.getElementById('detailedStatsBody').innerHTML = dataRows.map(r => `
-                <tr class="hover:bg-white/5 transition-colors">
-                    <td class="p-4 font-bold text-slate-300 uppercase">${r.title}</td>
-                    <td class="p-4 font-black">${r.b.toFixed(1)}</td>
-                    <td class="p-4 text-red-500 font-bold">-${r.k.toFixed(1)}</td>
-                    <td class="p-4 text-right font-black text-cyan-400">${(r.b - r.k).toFixed(1)}</td>
-                </tr>
-            `).join('');
-
-            updateChart(days);
+            calculateSale();
         }
 
-        let chart;
-        function updateChart(days) {
-            const ctx = document.getElementById('mainChart').getContext('2d');
-            if(chart) chart.destroy();
-
-            let labels = [], data = [];
-            for(let i=days-1; i>=0; i--) {
-                let d = new Date(); d.setDate(d.getDate()-i);
-                labels.push(d.toLocaleDateString('tr-TR', {day:'numeric', month:'short'}));
-                const val = db.sales.filter(s => new Date(s.date).toLocaleDateString() === d.toLocaleDateString()).reduce((a,b)=>a+b.gross, 0);
-                data.push(val);
-            }
-
-            chart = new Chart(ctx, {
-                type: 'line',
-                data: { labels, datasets: [{ data, borderColor: '#00d2ff', backgroundColor: 'rgba(0,210,255,0.1)', fill: true, tension: 0.4, borderWidth: 3, pointRadius: 2 }] },
-                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { display: false }, x: { grid: { display: false }, ticks: { color: '#64748b', font: { size: 9, weight: 'bold' } } } } }
-            });
-        }
-
-        function runEndOfDay() {
-            const today = new Date().toLocaleDateString();
-            const todaySales = db.sales.filter(s => new Date(s.date).toLocaleDateString() === today);
-            
-            const cash = todaySales.filter(s => s.method === 'Nakit').reduce((a,b) => a + b.gross, 0);
-            const pos = todaySales.filter(s => s.method === 'Kart').reduce((a,b) => a + b.gross, 0);
-            const fee = pos * (db.settings.bankFee / 100);
-            const cost = todaySales.reduce((a,b) => a + (b.gross - b.profit), 0);
-            const net = (cash + pos) - fee - cost;
-
-            const msg = `GÜN SONU (İNVER Вода)\n---------------------\nNakit: ${cash.toFixed(2)} ₴\nPOS: ${pos.toFixed(2)} ₴\nBanka Kesinti: -${fee.toFixed(2)} ₴\nŞişe+Su Mal: -${cost.toFixed(2)} ₴\n\nTEMİZ NET KÂR: ${net.toFixed(2)} ₴\n---------------------\nSaat: 09:00 - 19:50`;
-            alert(msg);
-        }
-
-        // --- GEÇMİŞ & PDF ---
-        function updateHistory() {
-            const filter = document.getElementById('historyDate').value;
-            let filtered = db.sales.slice().reverse();
-            if(filter) filtered = filtered.filter(s => new Date(s.date).toISOString().split('T')[0] === filter);
-
-            document.getElementById('historyTable').innerHTML = filtered.map(s => `
-                <tr class="hover:bg-white/5 border-b border-white/5 transition-colors">
-                    <td class="p-4 opacity-50 font-bold">${new Date(s.date).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}</td>
-                    <td class="p-4 font-black text-slate-200">${s.liters}L ${s.b5>0?'+'+s.b5+'ş5':''} ${s.b10>0?'+'+s.b10+'ş10':''}</td>
-                    <td class="p-4"><span class="px-2 py-1 rounded text-[9px] font-black ${s.method==='Kart'?'bg-blue-500/20 text-blue-400':'bg-green-500/20 text-green-400'}">${s.method.toUpperCase()}</span></td>
-                    <td class="p-4 text-right font-black text-cyan-400 italic">${s.gross.toFixed(1)}</td>
-                </tr>
-            `).join('');
-        }
-
-        function exportHistoryPDF() {
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF();
-            doc.setFontSize(20); doc.setTextColor(0, 210, 255);
-            doc.text("INVER WATER - SATIS RAPORU", 14, 20);
-            doc.setFontSize(10); doc.setTextColor(100);
-            doc.text(`Rapor Tarihi: ${new Date().toLocaleString()}`, 14, 28);
-            
-            const rows = db.sales.slice(-100).reverse().map(s => [
-                new Date(s.date).toLocaleString(),
-                `${s.liters}L / ${s.b5}ş5 / ${s.b10}ş10`,
-                s.method,
-                s.gross.toFixed(2) + " ₴"
-            ]);
-
-            doc.autoTable({ 
-                head: [['Tarih/Saat', 'İçerik (Su/Şişe)', 'Ödeme', 'Tutar']], 
-                body: rows, 
-                startY: 35,
-                theme: 'striped',
-                headStyles: { fillColor: [5, 11, 24] }
-            });
-            doc.save(`Inver_Rapor_${new Date().toISOString().split('T')[0]}.pdf`);
-        }
-
-        // --- AYAR KAYDETME ---
-        function saveGlobalSettings() {
-            db.settings.priceLitre = parseFloat(document.getElementById('setPriceLitre').value);
-            db.settings.costLitre = parseFloat(document.getElementById('setCostLitre').value);
-            db.settings.price5L = parseFloat(document.getElementById('setPrice5L').value);
-            db.settings.cost5L = parseFloat(document.getElementById('setCost5L').value);
-            db.settings.price10L = parseFloat(document.getElementById('setPrice10L').value);
-            db.settings.cost10L = parseFloat(document.getElementById('setCost10L').value);
-            db.settings.bankFee = parseFloat(document.getElementById('setBankFee').value);
-            
-            db.stock.tankWater = parseFloat(document.getElementById('setStockTank').value);
-            db.stock.bottles5L = parseInt(document.getElementById('setStock5L').value);
-            db.stock.bottles10L = parseInt(document.getElementById('setStock10L').value);
-
-            saveCloudData();
-            notify("Ayarlar Buluta Kaydedildi", "success");
-        }
-
-        // --- ARAÇLAR ---
         function showSection(id) {
             document.querySelectorAll('.content-section').forEach(s => s.classList.add('hidden'));
             document.getElementById(id).classList.remove('hidden');
@@ -498,30 +412,14 @@
 
         function quickFill(n) { document.getElementById('saleLiters').value = (parseFloat(document.getElementById('saleLiters').value) || 0) + n; calculateSale(); }
         function adjValue(id, n) { let el = document.getElementById(id); let v = parseInt(el.value) + n; el.value = v < 0 ? 0 : v; calculateSale(); }
-        
-        async function factoryReset() {
-            if(confirm("DİKKAT! Tüm satış geçmişi ve stoklar silinecek. Emin misiniz?")) {
-                db.sales = [];
-                db.stock = { tankWater: 1000, bottles5L: 50, bottles10L: 20 };
-                saveCloudData();
-                location.reload();
-            }
-        }
 
-        function exportJSONBackup() {
-            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(db));
-            const downloadAnchorNode = document.createElement('a');
-            downloadAnchorNode.setAttribute("href", dataStr);
-            downloadAnchorNode.setAttribute("download", "inver_backup.json");
-            downloadAnchorNode.click();
-        }
-
-        // Saat güncelleme
+        // Saat & Tarih
         setInterval(() => {
             document.getElementById('dateDisplay').innerHTML = new Date().toLocaleString('tr-TR', { weekday: 'long', day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit', second: '2-digit' });
         }, 1000);
 
-        loadCloudData();
+        // Başlat
+        loadData();
     </script>
 </body>
 </html>
