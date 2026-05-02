@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>İNVER voda | Cloud Elite v11.4 Business</title>
+    <title>İNVER voda | Cloud Elite v11.5 Business</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -42,7 +42,7 @@
     </header>
 
     <!-- DASHBOARD ÖZET -->
-    <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 px-4 mb-8 max-w-6xl mx-auto">
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 px-4 mb-4 max-w-6xl mx-auto">
         <div class="glass-card p-4 rounded-[1.5rem] border-b-4 border-green-500">
             <p class="text-[9px] uppercase text-slate-400 font-bold mb-1 italic">Kasa (Bugün)</p>
             <h3 id="dash-cash" class="text-xl font-black text-green-400 italic">0 ₴</h3>
@@ -62,6 +62,14 @@
             <p class="text-[9px] uppercase text-slate-400 font-bold mb-1 italic">Boş Şişe 5/10L</p>
             <h3 id="dash-bottles" class="text-xl font-black text-orange-400 italic">0/0</h3>
         </div>
+    </div>
+
+    <!-- GÜN SONU BUTONU -->
+    <div class="px-4 mb-8 max-w-6xl mx-auto">
+        <button onclick="generateEndOfDayPDF()" class="w-full bg-gradient-to-r from-amber-500 to-orange-600 p-4 rounded-2xl font-black text-xs uppercase shadow-lg active:scale-95 italic transition-all flex items-center justify-center gap-3">
+            <i class="fas fa-file-invoice-dollar text-lg"></i>
+            GÜN SONU RAPORUNU AL (09:00 - 20:00)
+        </button>
     </div>
 
     <main class="px-4 main-container">
@@ -435,6 +443,65 @@
                 <tr><td class="p-4">Banka Kesinti</td><td class="p-4">%${db.settings.bankFee}</td><td class="p-4 text-right text-red-400">-${bankFees.toFixed(1)} ₴</td></tr>
                 <tr class="bg-cyan-500/10 font-black"><td class="p-4 text-cyan-400">TOPLAM NET KÂR</td><td class="p-4"></td><td class="p-4 text-right text-cyan-400 text-lg">${netProfit.toFixed(1)} ₴</td></tr>
             `;
+        }
+
+        async function generateEndOfDayPDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            const now = new Date();
+            const todayStr = now.toLocaleDateString('tr-TR');
+
+            // Mesai Saatleri Filtresi (09:00 - 20:00)
+            const workStart = new Date(now.setHours(9,0,0,0));
+            const workEnd = new Date(now.setHours(20,0,0,0));
+
+            const dailySales = db.sales.filter(s => {
+                const sDate = new Date(s.date);
+                return sDate.toLocaleDateString('tr-TR') === todayStr && 
+                       sDate.getHours() >= 9 && sDate.getHours() < 20;
+            });
+
+            const stats = {
+                waterL: dailySales.reduce((a,b)=>a+b.liters, 0),
+                b5: dailySales.reduce((a,b)=>a+b.b5, 0),
+                b10: dailySales.reduce((a,b)=>a+b.b10, 0),
+                nakit: dailySales.filter(s=>s.method==='Nakit').reduce((a,b)=>a+b.gross, 0),
+                kart: dailySales.filter(s=>s.method==='Kart').reduce((a,b)=>a+b.gross, 0),
+                profit: dailySales.reduce((a,b)=>a+b.profit, 0)
+            };
+
+            const bankFee = stats.kart * (db.settings.bankFee / 100);
+            const netKazancl = stats.profit - bankFee;
+
+            // PDF İçerik Oluşturma
+            doc.setFontSize(22);
+            doc.text("INVER WATER - GUN SONU RAPORU", 14, 20);
+            doc.setFontSize(10);
+            doc.text(`Tarih: ${todayStr} | Mesai: 09:00 - 20:00`, 14, 28);
+            doc.line(14, 32, 196, 32);
+
+            const summaryData = [
+                ["Toplam Satilan Su", `${stats.waterL.toFixed(1)} Litre`],
+                ["Satilan 5L Sise", `${stats.b5} Adet`],
+                ["Satilan 10L Sise", `${stats.b10} Adet`],
+                ["", ""],
+                ["Nakit Tahsilat", `${stats.nakit.toFixed(2)} Z`],
+                ["Kart/POS Tahsilat", `${stats.kart.toFixed(2)} Z`],
+                ["Banka Komisyonu", `-${bankFee.toFixed(2)} Z`],
+                ["TOPLAM CIRO", `${(stats.nakit + stats.kart).toFixed(2)} Z`],
+                ["NET GUNLUK KAR", `${netKazancl.toFixed(2)} Z`]
+            ];
+
+            doc.autoTable({
+                startY: 40,
+                head: [['Aciklama', 'Deger']],
+                body: summaryData,
+                theme: 'striped',
+                headStyles: { fillColor: [0, 210, 255] }
+            });
+
+            doc.save(`Inver_GunSonu_${todayStr.replace(/\./g,'-')}.pdf`);
+            notify("Gün Sonu PDF Hazırlandı", "success");
         }
 
         async function exportHistoryPDF() {
