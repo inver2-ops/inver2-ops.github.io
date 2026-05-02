@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>İNVER voda | Cloud Elite v11.5 Business</title>
+    <title>İNVER voda | Cloud Elite v11.6 Business</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -247,16 +247,17 @@
             } catch (err) { console.error("Sync Hatası"); }
         }
 
+        // ANINDA KAYIT: Saniyeler içinde JsonBin'e atar
         async function syncCloud() {
             localStorage.setItem('inver_v11_db', JSON.stringify(db));
+            renderUI();
             try {
-                await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
+                fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
                     method: 'PUT',
                     headers: { 'Content-Type': 'application/json', 'X-Master-Key': API_KEY },
                     body: JSON.stringify(db)
                 });
-                renderUI();
-            } catch (err) { notify("Bağlantı Hatası!", "error"); }
+            } catch (err) { console.error("Bulut kayıt hatası"); }
         }
 
         function fillSettingsFields() {
@@ -313,6 +314,7 @@
                 gross: gross, profit: gross - cost, method: method
             };
 
+            // KRİTİK: Index bazlı ekleme
             db.sales.push(entry);
             db.stock.tankWater -= litre;
             db.stock.bottles5L -= b5;
@@ -320,7 +322,7 @@
 
             saleAudio.play();
             clearSale();
-            syncCloud();
+            syncCloud(); // ANINDA KAYIT ÇALIŞIR
             notify("Satış Tamamlandı", "success");
         }
 
@@ -351,10 +353,10 @@
             const todayStr = new Date().toLocaleDateString();
             const todaySales = db.sales.filter(s => new Date(s.date).toLocaleDateString() === todayStr);
             
-            const cash = todaySales.filter(s => s.method === 'Nakit').reduce((a,b)=>a+b.gross, 0);
+            const cashVal = todaySales.filter(s => s.method === 'Nakit').reduce((a,b)=>a+b.gross, 0);
             const totalLitreToday = todaySales.reduce((a,b)=>a+b.liters, 0);
 
-            document.getElementById('dash-cash').innerText = cash.toFixed(1) + ' ₴';
+            document.getElementById('dash-cash').innerText = cashVal.toFixed(1) + ' ₴';
             document.getElementById('dash-sold-today').innerText = totalLitreToday.toFixed(1) + ' L';
             document.getElementById('dash-tank').innerText = Math.floor(db.stock.tankWater);
             document.getElementById('dash-bottles').innerText = `${db.stock.bottles5L} / ${db.stock.bottles10L}`;
@@ -395,7 +397,9 @@
             const filtered = db.sales.filter(s => new Date(s.date) >= cutoff);
             
             const stats = {
-                waterL: filtered.reduce((a,b)=>a+b.liters, 0),
+                waterTotalL: filtered.reduce((a,b)=>a+parseFloat(b.liters), 0),
+                waterNakitL: filtered.filter(s=>s.method==='Nakit').reduce((a,b)=>a+parseFloat(b.liters), 0),
+                waterPosL: filtered.filter(s=>s.method==='Kart').reduce((a,b)=>a+parseFloat(b.liters), 0),
                 b5: filtered.reduce((a,b)=>a+b.b5, 0),
                 b10: filtered.reduce((a,b)=>a+b.b10, 0),
                 gross: filtered.reduce((a,b)=>a+b.gross, 0),
@@ -437,11 +441,17 @@
             });
 
             document.getElementById('detailedStatsBody').innerHTML = `
-                <tr><td class="p-4">Su Satışı (L)</td><td class="p-4">${stats.waterL.toFixed(1)} Litre</td><td class="p-4 text-right text-white">${(stats.waterL * (db.settings.priceLitre - db.settings.costLitre)).toFixed(1)} ₴</td></tr>
+                <tr class="bg-blue-500/5"><td class="p-4 font-bold">Toplam Satılan L</td><td class="p-4 font-black">${stats.waterTotalL.toFixed(1)} L</td><td class="p-4 text-right"></td></tr>
+                <tr><td class="p-4 pl-8 text-slate-400">- Nakit Satılan L</td><td class="p-4 text-slate-400">${stats.waterNakitL.toFixed(1)} L</td><td class="p-4 text-right"></td></tr>
+                <tr><td class="p-4 pl-8 text-slate-400">- POS Satılan L</td><td class="p-4 text-slate-400">${stats.waterPosL.toFixed(1)} L</td><td class="p-4 text-right"></td></tr>
+                
                 <tr><td class="p-4">Boş 5L Şişe</td><td class="p-4">${stats.b5} Adet</td><td class="p-4 text-right text-white">${(stats.b5 * (db.settings.price5L - db.settings.cost5L)).toFixed(1)} ₴</td></tr>
                 <tr><td class="p-4">Boş 10L Şişe</td><td class="p-4">${stats.b10} Adet</td><td class="p-4 text-right text-white">${(stats.b10 * (db.settings.price10L - db.settings.cost10L)).toFixed(1)} ₴</td></tr>
-                <tr><td class="p-4">Banka Kesinti</td><td class="p-4">%${db.settings.bankFee}</td><td class="p-4 text-right text-red-400">-${bankFees.toFixed(1)} ₴</td></tr>
-                <tr class="bg-cyan-500/10 font-black"><td class="p-4 text-cyan-400">TOPLAM NET KÂR</td><td class="p-4"></td><td class="p-4 text-right text-cyan-400 text-lg">${netProfit.toFixed(1)} ₴</td></tr>
+                
+                <tr class="bg-orange-500/5"><td class="p-4 font-bold">POS Ciro</td><td class="p-4">${stats.posVol.toFixed(1)} ₴</td><td class="p-4 text-right"></td></tr>
+                <tr><td class="p-4 font-bold text-red-400">Banka Kesinti (%${db.settings.bankFee})</td><td class="p-4 text-red-400">-${bankFees.toFixed(1)} ₴</td><td class="p-4 text-right font-black text-green-400">${(stats.posVol - bankFees).toFixed(1)} ₴</td></tr>
+                
+                <tr class="bg-cyan-500/10 font-black"><td class="p-4 text-cyan-400 uppercase">TOPLAM NET KÂR</td><td class="p-4"></td><td class="p-4 text-right text-cyan-400 text-lg">${netProfit.toFixed(1)} ₴</td></tr>
             `;
         }
 
@@ -451,10 +461,6 @@
             const now = new Date();
             const todayStr = now.toLocaleDateString('tr-TR');
 
-            // Mesai Saatleri Filtresi (09:00 - 20:00)
-            const workStart = new Date(now.setHours(9,0,0,0));
-            const workEnd = new Date(now.setHours(20,0,0,0));
-
             const dailySales = db.sales.filter(s => {
                 const sDate = new Date(s.date);
                 return sDate.toLocaleDateString('tr-TR') === todayStr && 
@@ -462,46 +468,41 @@
             });
 
             const stats = {
-                waterL: dailySales.reduce((a,b)=>a+b.liters, 0),
+                totalL: dailySales.reduce((a,b)=>a+parseFloat(b.liters), 0),
+                posL: dailySales.filter(s=>s.method==='Kart').reduce((a,b)=>a+parseFloat(b.liters), 0),
+                nakitL: dailySales.filter(s=>s.method==='Nakit').reduce((a,b)=>a+parseFloat(b.liters), 0),
                 b5: dailySales.reduce((a,b)=>a+b.b5, 0),
                 b10: dailySales.reduce((a,b)=>a+b.b10, 0),
-                nakit: dailySales.filter(s=>s.method==='Nakit').reduce((a,b)=>a+b.gross, 0),
-                kart: dailySales.filter(s=>s.method==='Kart').reduce((a,b)=>a+b.gross, 0),
+                nakitGross: dailySales.filter(s=>s.method==='Nakit').reduce((a,b)=>a+b.gross, 0),
+                posGross: dailySales.filter(s=>s.method==='Kart').reduce((a,b)=>a+b.gross, 0),
                 profit: dailySales.reduce((a,b)=>a+b.profit, 0)
             };
 
-            const bankFee = stats.kart * (db.settings.bankFee / 100);
+            const bankFee = stats.posGross * (db.settings.bankFee / 100);
             const netKazancl = stats.profit - bankFee;
 
-            // PDF İçerik Oluşturma
-            doc.setFontSize(22);
-            doc.text("INVER WATER - GUN SONU RAPORU", 14, 20);
+            doc.setFontSize(20);
+            doc.text("INVER WATER - GUN SONU Z RAPORU", 14, 20);
             doc.setFontSize(10);
             doc.text(`Tarih: ${todayStr} | Mesai: 09:00 - 20:00`, 14, 28);
-            doc.line(14, 32, 196, 32);
-
-            const summaryData = [
-                ["Toplam Satilan Su", `${stats.waterL.toFixed(1)} Litre`],
-                ["Satilan 5L Sise", `${stats.b5} Adet`],
-                ["Satilan 10L Sise", `${stats.b10} Adet`],
-                ["", ""],
-                ["Nakit Tahsilat", `${stats.nakit.toFixed(2)} Z`],
-                ["Kart/POS Tahsilat", `${stats.kart.toFixed(2)} Z`],
+            
+            const body = [
+                ["Toplam Satilan L", `${stats.totalL.toFixed(1)} L`],
+                ["Nakit Satilan L", `${stats.nakitL.toFixed(1)} L`],
+                ["POS Satilan L", `${stats.posL.toFixed(1)} L`],
+                ["Bes Litre Sise", `${stats.b5} Adet`],
+                ["On Litre Sise", `${stats.b10} Adet`],
+                ["---", "---"],
+                ["Nakit Ciro", `${stats.nakitGross.toFixed(2)} Z`],
+                ["POS Ciro (Brut)", `${stats.posGross.toFixed(2)} Z`],
                 ["Banka Komisyonu", `-${bankFee.toFixed(2)} Z`],
-                ["TOPLAM CIRO", `${(stats.nakit + stats.kart).toFixed(2)} Z`],
-                ["NET GUNLUK KAR", `${netKazancl.toFixed(2)} Z`]
+                ["POS Net Gelecek", `${(stats.posGross - bankFee).toFixed(2)} Z`],
+                ["TOPLAM NET KAR", `${netKazancl.toFixed(2)} Z`]
             ];
 
-            doc.autoTable({
-                startY: 40,
-                head: [['Aciklama', 'Deger']],
-                body: summaryData,
-                theme: 'striped',
-                headStyles: { fillColor: [0, 210, 255] }
-            });
-
-            doc.save(`Inver_GunSonu_${todayStr.replace(/\./g,'-')}.pdf`);
-            notify("Gün Sonu PDF Hazırlandı", "success");
+            doc.autoTable({ startY: 35, head: [['Kalem', 'Miktar/Tutar']], body: body, theme: 'grid' });
+            doc.save(`Z-Raporu-${todayStr}.pdf`);
+            notify("Gün Sonu PDF İndirildi", "success");
         }
 
         async function exportHistoryPDF() {
