@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>İNVER вода | Cloud Elite v11.3 Business</title>
+    <title>İNVER вода | Cloud Elite v11.4 Business</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -48,12 +48,15 @@
             <h3 id="dash-cash" class="text-xl font-black text-green-400 italic">0 ₴</h3>
         </div>
         <div class="glass-card p-4 rounded-[1.5rem] border-b-4 border-blue-500">
-            <p class="text-[9px] uppercase text-slate-400 font-bold mb-1 italic">POS (Bugün)</p>
-            <h3 id="dash-pos" class="text-xl font-black text-blue-400 italic">0 ₴</h3>
+            <p class="text-[9px] uppercase text-slate-400 font-bold mb-1 italic">Satılan (Bugün)</p>
+            <h3 id="dash-sold-today" class="text-xl font-black text-blue-400 italic">0 L</h3>
         </div>
         <div class="glass-card p-4 rounded-[1.5rem] border-b-4 border-cyan-500">
             <p class="text-[9px] uppercase text-slate-400 font-bold mb-1 italic">Tank Durumu</p>
-            <h3 id="dash-tank" class="text-xl font-black italic">... L</h3>
+            <div class="flex items-end gap-1">
+                <h3 id="dash-tank" class="text-xl font-black italic">...</h3>
+                <span class="text-[10px] text-cyan-500 mb-1 font-bold">LİTRE</span>
+            </div>
         </div>
         <div class="glass-card p-4 rounded-[1.5rem] border-b-4 border-orange-500">
             <p class="text-[9px] uppercase text-slate-400 font-bold mb-1 italic">Boş Şişe 5/10L</p>
@@ -115,16 +118,16 @@
             </div>
         </section>
 
-        <!-- DASHBOARD (Gelişmiş) -->
+        <!-- DASHBOARD (İstatistik) -->
         <section id="dashboard" class="content-section hidden space-y-4">
             <div class="glass-card p-6 rounded-[30px]">
-                <div class="flex justify-between items-center mb-4">
+                <div class="flex justify-between items-center mb-6">
                     <select id="statPeriod" onchange="renderAnalytics()" class="bg-slate-900 text-[10px] p-2 rounded-xl border border-white/10 outline-none uppercase font-bold text-cyan-400 italic">
                         <option value="1">Bugün</option>
                         <option value="7" selected>Son 7 Gün</option>
                         <option value="30">Son 30 Gün</option>
                     </select>
-                    <div id="statSum" class="text-[11px] font-black text-green-400 italic">Net Kâr: 0 ₴</div>
+                    <div id="statSum" class="text-xs font-black text-green-400 italic px-3 py-1 bg-green-400/10 rounded-full border border-green-400/20">Net Kâr: 0 ₴</div>
                 </div>
                 <div class="h-64"><canvas id="mainChart"></canvas></div>
             </div>
@@ -132,7 +135,7 @@
             <div class="glass-card rounded-[25px] overflow-hidden">
                 <table class="w-full text-[11px] text-left italic">
                     <thead class="bg-white/5 text-slate-500 uppercase font-black">
-                        <tr><th class="p-4">KALEM</th><th class="p-4">BRÜT</th><th class="p-4">MALİYET</th><th class="p-4 text-right font-bold text-cyan-400 italic">NET</th></tr>
+                        <tr><th class="p-4">DETAY</th><th class="p-4">MİKTAR</th><th class="p-4 text-right">NET KAZANÇ</th></tr>
                     </thead>
                     <tbody id="detailedStatsBody" class="divide-y divide-white/5"></tbody>
                 </table>
@@ -146,10 +149,15 @@
                     <input type="date" id="historyDate" onchange="updateHistory()" class="bg-slate-900 text-[10px] p-2 rounded-lg flex-1 outline-none text-white font-bold italic">
                     <button onclick="exportHistoryPDF()" class="bg-red-600 px-4 rounded-lg text-[10px] font-black uppercase active:scale-95 italic">PDF İNDİR</button>
                 </div>
-                <div class="max-h-[500px] overflow-y-auto scrollbar-hide">
+                <div class="max-h-[550px] overflow-y-auto scrollbar-hide">
                     <table class="w-full text-left text-[10px] italic">
-                        <thead class="bg-slate-900 text-slate-500 uppercase font-bold sticky top-0">
-                            <tr><th class="p-3 text-center"><i class="fas fa-trash"></i></th><th class="p-3">SAAT</th><th class="p-3">DETAY</th><th class="p-3 text-right">TUTAR</th></tr>
+                        <thead class="bg-slate-900 text-slate-500 uppercase font-bold sticky top-0 z-10">
+                            <tr>
+                                <th class="p-3 w-10 text-center"><i class="fas fa-trash"></i></th>
+                                <th class="p-3">SAAT</th>
+                                <th class="p-3">DETAY</th>
+                                <th class="p-3 text-right">TUTAR</th>
+                            </tr>
                         </thead>
                         <tbody id="historyTable" class="divide-y divide-white/5 font-medium"></tbody>
                     </table>
@@ -257,18 +265,16 @@
         }
 
         function saveGlobalSettings() {
-            db.settings.priceLitre = parseFloat(document.getElementById('setPriceLitre').value);
-            db.settings.costLitre = parseFloat(document.getElementById('setCostLitre').value);
-            db.settings.price5L = parseFloat(document.getElementById('setPrice5L').value);
-            db.settings.cost5L = parseFloat(document.getElementById('setCost5L').value);
-            db.settings.price10L = parseFloat(document.getElementById('setPrice10L').value);
-            db.settings.cost10L = parseFloat(document.getElementById('setCost10L').value);
-            db.settings.bankFee = parseFloat(document.getElementById('setBankFee').value);
-            
-            db.stock.tankWater = parseFloat(document.getElementById('setStockTank').value);
-            db.stock.bottles5L = parseInt(document.getElementById('setStock5L').value);
-            db.stock.bottles10L = parseInt(document.getElementById('setStock10L').value);
-            
+            db.settings.priceLitre = parseFloat(document.getElementById('setPriceLitre').value) || 0;
+            db.settings.costLitre = parseFloat(document.getElementById('setCostLitre').value) || 0;
+            db.settings.price5L = parseFloat(document.getElementById('setPrice5L').value) || 0;
+            db.settings.cost5L = parseFloat(document.getElementById('setCost5L').value) || 0;
+            db.settings.price10L = parseFloat(document.getElementById('setPrice10L').value) || 0;
+            db.settings.cost10L = parseFloat(document.getElementById('setCost10L').value) || 0;
+            db.settings.bankFee = parseFloat(document.getElementById('setBankFee').value) || 0;
+            db.stock.tankWater = parseFloat(document.getElementById('setStockTank').value) || 0;
+            db.stock.bottles5L = parseInt(document.getElementById('setStock5L').value) || 0;
+            db.stock.bottles10L = parseInt(document.getElementById('setStock10L').value) || 0;
             syncCloud();
             notify("Ayarlar Kaydedildi", "success");
         }
@@ -287,7 +293,7 @@
             const b10 = parseInt(document.getElementById('sale10L').value) || 0;
             const mDate = document.getElementById('manualDate').value;
 
-            if (litre === 0 && b5 === 0 && b10 === 0) return notify("Lütfen miktar girin!", "error");
+            if (litre === 0 && b5 === 0 && b10 === 0) return notify("Miktar girin!", "error");
 
             const gross = (litre * db.settings.priceLitre) + (b5 * db.settings.price5L) + (b10 * db.settings.price10L);
             const cost = (litre * db.settings.costLitre) + (b5 * db.settings.cost5L) + (b10 * db.settings.cost10L);
@@ -307,7 +313,7 @@
             saleAudio.play();
             clearSale();
             syncCloud();
-            notify("Satış Başarılı!", "success");
+            notify("Satış Tamamlandı", "success");
         }
 
         function clearSale() {
@@ -319,7 +325,7 @@
         }
 
         function deleteSale(id) {
-            if(!confirm("Bu işlem stokları geri yükleyecektir. Onaylıyor musunuz?")) return;
+            if(!confirm("Bu satışı siliyorsunuz. Stoklar iade edilecek. Onay?")) return;
             const index = db.sales.findIndex(s => s.id === id);
             if(index > -1) {
                 const s = db.sales[index];
@@ -329,82 +335,106 @@
                 db.sales.splice(index, 1);
                 syncCloud();
                 updateHistory();
-                notify("Satış Silindi", "success");
+                notify("Satış Geri Alındı", "success");
             }
         }
 
         function renderUI() {
-            const today = new Date().toLocaleDateString();
-            const todaySales = db.sales.filter(s => new Date(s.date).toLocaleDateString() === today);
+            const todayStr = new Date().toLocaleDateString();
+            const todaySales = db.sales.filter(s => new Date(s.date).toLocaleDateString() === todayStr);
+            
             const cash = todaySales.filter(s => s.method === 'Nakit').reduce((a,b)=>a+b.gross, 0);
-            const pos = todaySales.filter(s => s.method === 'Kart').reduce((a,b)=>a+b.gross, 0);
+            const totalLitreToday = todaySales.reduce((a,b)=>a+b.liters, 0);
 
             document.getElementById('dash-cash').innerText = cash.toFixed(1) + ' ₴';
-            document.getElementById('dash-pos').innerText = pos.toFixed(1) + ' ₴';
-            document.getElementById('dash-tank').innerText = Math.floor(db.stock.tankWater) + ' L';
+            document.getElementById('dash-sold-today').innerText = totalLitreToday.toFixed(1) + ' L';
+            document.getElementById('dash-tank').innerText = Math.floor(db.stock.tankWater);
             document.getElementById('dash-bottles').innerText = `${db.stock.bottles5L} / ${db.stock.bottles10L}`;
         }
 
         function updateHistory() {
-            const hDate = document.getElementById('historyDate').value;
-            const filterDate = hDate ? new Date(hDate).toLocaleDateString() : new Date().toLocaleDateString();
-            const filtered = db.sales.filter(s => new Date(s.date).toLocaleDateString() === filterDate).reverse();
+            const hDateInput = document.getElementById('historyDate').value;
+            const targetDate = hDateInput ? new Date(hDateInput).toLocaleDateString() : new Date().toLocaleDateString();
+            
+            const filtered = db.sales
+                .filter(s => new Date(s.date).toLocaleDateString() === targetDate)
+                .sort((a,b) => b.id - a.id);
             
             let html = '';
             filtered.forEach(s => {
                 const time = new Date(s.date).toLocaleTimeString('tr-TR', {hour:'2-digit', minute:'2-digit'});
-                let detay = `${s.liters}L Su`;
-                if(s.b5 > 0) detay += ` + ${s.b5}x5L`;
-                if(s.b10 > 0) detay += ` + ${s.b10}x10L`;
+                let details = [];
+                if(s.liters > 0) details.push(`${s.liters}L Su`);
+                if(s.b5 > 0) details.push(`${s.b5}x5L Şişe`);
+                if(s.b10 > 0) details.push(`${s.b10}x10L Şişe`);
                 
                 html += `
                     <tr>
-                        <td class="p-3 text-center"><button onclick="deleteSale(${s.id})" class="text-red-500/50 hover:text-red-500 transition"><i class="fas fa-times-circle"></i></button></td>
+                        <td class="p-3 text-center"><button onclick="deleteSale(${s.id})" class="text-red-500/30 hover:text-red-500"><i class="fas fa-times-circle text-lg"></i></button></td>
                         <td class="p-3 font-bold text-slate-300">${time}</td>
-                        <td class="p-3 text-slate-400">${detay} <br> <span class="text-[8px] text-cyan-500 uppercase">${s.method}</span></td>
+                        <td class="p-3 text-slate-400 leading-tight">${details.join('<br>')} <br> <span class="text-[7px] text-cyan-500 font-bold uppercase">${s.method}</span></td>
                         <td class="p-3 text-right font-black text-white">${s.gross.toFixed(1)} ₴</td>
                     </tr>`;
             });
-            document.getElementById('historyTable').innerHTML = html || '<tr><td colspan="4" class="p-10 text-center opacity-30 italic text-white">Bu tarihte kayıt yok.</td></tr>';
+            document.getElementById('historyTable').innerHTML = html || '<tr><td colspan="4" class="p-10 text-center opacity-30 italic text-white">Bu tarihte kayıt bulunamadı.</td></tr>';
         }
 
         function renderAnalytics() {
             const period = parseInt(document.getElementById('statPeriod').value);
-            const now = new Date();
             const cutoff = new Date();
-            cutoff.setDate(now.getDate() - period);
+            cutoff.setDate(cutoff.getDate() - period);
             
             const filtered = db.sales.filter(s => new Date(s.date) >= cutoff);
-            const totalGross = filtered.reduce((a,b)=>a+b.gross, 0);
-            const totalProfit = filtered.reduce((a,b)=>a+b.profit, 0);
-            const posVolume = filtered.filter(s => s.method === 'Kart').reduce((a,b)=>a+b.gross, 0);
-            const bankFeeTotal = posVolume * (db.settings.bankFee / 100);
+            
+            const stats = {
+                waterL: filtered.reduce((a,b)=>a+b.liters, 0),
+                b5: filtered.reduce((a,b)=>a+b.b5, 0),
+                b10: filtered.reduce((a,b)=>a+b.b10, 0),
+                gross: filtered.reduce((a,b)=>a+b.gross, 0),
+                profit: filtered.reduce((a,b)=>a+b.profit, 0),
+                posVol: filtered.filter(s => s.method === 'Kart').reduce((a,b)=>a+b.gross, 0)
+            };
 
-            document.getElementById('statSum').innerText = `Net Kâr: ${(totalProfit - bankFeeTotal).toFixed(1)} ₴`;
+            const bankFees = stats.posVol * (db.settings.bankFee / 100);
+            const netProfit = stats.profit - bankFees;
 
+            document.getElementById('statSum').innerText = `Net Kâr: ${netProfit.toFixed(1)} ₴`;
+
+            // Chart Güncelleme (Son 15 işlem veya gün bazlı basitleştirilmiş görünüm)
             const ctx = document.getElementById('mainChart').getContext('2d');
             if(myChart) myChart.destroy();
             
+            const chartData = filtered.slice(-10);
             myChart = new Chart(ctx, {
                 type: 'line',
                 data: {
-                    labels: filtered.slice(-15).map(s => new Date(s.date).toLocaleDateString('tr-TR', {day:'2-digit', month:'2-digit'})),
+                    labels: chartData.map(s => new Date(s.date).toLocaleTimeString('tr-TR', {hour:'2-digit', minute:'2-digit'})),
                     datasets: [{
-                        label: 'Kazanç',
-                        data: filtered.slice(-15).map(s => s.gross),
+                        label: 'Satış',
+                        data: chartData.map(s => s.gross),
                         borderColor: '#00d2ff',
                         backgroundColor: 'rgba(0, 210, 255, 0.1)',
                         fill: true,
-                        tension: 0.4
+                        tension: 0.4,
+                        borderWidth: 3,
+                        pointRadius: 4,
+                        pointBackgroundColor: '#00d2ff'
                     }]
                 },
-                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+                options: { 
+                    responsive: true, 
+                    maintainAspectRatio: false, 
+                    scales: { y: { grid: { color: 'rgba(255,255,255,0.05)' } }, x: { grid: { display: false } } },
+                    plugins: { legend: { display: false } } 
+                }
             });
 
             document.getElementById('detailedStatsBody').innerHTML = `
-                <tr><td class="p-4">Toplam Satış (L)</td><td class="p-4">${filtered.reduce((a,b)=>a+b.liters, 0)}L</td><td class="p-4 text-red-400">-</td><td class="p-4 text-right font-bold text-green-400">${totalGross.toFixed(1)} ₴</td></tr>
-                <tr><td class="p-4">Banka Kesinti</td><td class="p-4">%${db.settings.bankFee}</td><td class="p-4 text-red-400">-${bankFeeTotal.toFixed(1)}</td><td class="p-4 text-right font-bold text-white">POS</td></tr>
-                <tr class="bg-cyan-500/10"><td class="p-4 font-bold">NET SONUÇ</td><td class="p-4">-</td><td class="p-4">-</td><td class="p-4 text-right font-black text-cyan-400">${(totalProfit - bankFeeTotal).toFixed(1)} ₴</td></tr>
+                <tr><td class="p-4">Su Satışı</td><td class="p-4">${stats.waterL.toFixed(1)} L</td><td class="p-4 text-right text-white">${(stats.waterL * (db.settings.priceLitre - db.settings.costLitre)).toFixed(1)} ₴</td></tr>
+                <tr><td class="p-4">5L Şişe</td><td class="p-4">${stats.b5} Adet</td><td class="p-4 text-right text-white">${(stats.b5 * (db.settings.price5L - db.settings.cost5L)).toFixed(1)} ₴</td></tr>
+                <tr><td class="p-4">10L Şişe</td><td class="p-4">${stats.b10} Adet</td><td class="p-4 text-right text-white">${(stats.b10 * (db.settings.price10L - db.settings.cost10L)).toFixed(1)} ₴</td></tr>
+                <tr><td class="p-4">Banka Kesinti</td><td class="p-4">%${db.settings.bankFee}</td><td class="p-4 text-right text-red-400">-${bankFees.toFixed(1)} ₴</td></tr>
+                <tr class="bg-cyan-500/10 font-black"><td class="p-4 text-cyan-400">TOPLAM NET</td><td class="p-4"></td><td class="p-4 text-right text-cyan-400 text-lg">${netProfit.toFixed(1)} ₴</td></tr>
             `;
         }
 
@@ -412,32 +442,19 @@
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF();
             const hDate = document.getElementById('historyDate').value || new Date().toISOString().split('T')[0];
-            
-            doc.setFontSize(18);
             doc.text(`INVER WATER - SATIS RAPORU (${hDate})`, 14, 20);
-            
-            const rows = db.sales
-                .filter(s => new Date(s.date).toLocaleDateString() === new Date(hDate).toLocaleDateString())
-                .map(s => [
-                    new Date(s.date).toLocaleTimeString('tr-TR', {hour:'2-digit', minute:'2-digit'}),
-                    `${s.liters}L + ${s.b5}x5L + ${s.b10}x10L`,
-                    s.method,
-                    s.gross.toFixed(2) + " ₴"
-                ]);
-
-            doc.autoTable({
-                startY: 30,
-                head: [['Saat', 'Detay', 'Odeme', 'Tutar']],
-                body: rows,
-            });
-
+            const rows = db.sales.filter(s => new Date(s.date).toLocaleDateString() === new Date(hDate).toLocaleDateString()).map(s => [
+                new Date(s.date).toLocaleTimeString('tr-TR', {hour:'2-digit', minute:'2-digit'}),
+                `${s.liters}L + ${s.b5}x5 + ${s.b10}x10`, s.method, s.gross.toFixed(2) + " ₴"
+            ]);
+            doc.autoTable({ startY: 30, head: [['Saat', 'Detay', 'Odeme', 'Tutar']], body: rows });
             doc.save(`inver-rapor-${hDate}.pdf`);
         }
 
         function showSection(id) {
             document.querySelectorAll('.content-section').forEach(s => s.classList.add('hidden'));
             document.getElementById(id).classList.remove('hidden');
-            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active-nav'));
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active-nav', 'text-white'));
             event.currentTarget.classList.add('active-nav');
             if(id === 'dashboard') renderAnalytics();
             if(id === 'history') updateHistory();
@@ -454,7 +471,7 @@
 
         function quickFill(n) { document.getElementById('saleLiters').value = (parseFloat(document.getElementById('saleLiters').value) || 0) + n; calculateSale(); }
         function adjValue(id, n) { let el = document.getElementById(id); let v = parseInt(el.value) + n; el.value = v < 0 ? 0 : v; calculateSale(); }
-        function resetSystem() { if(confirm('TÜM VERİLER SİLİNECEK! Emin misin?')){ db.sales=[]; db.stock={tankWater:0, bottles5L:0, bottles10L:0}; syncCloud(); } }
+        function resetSystem() { if(confirm('TÜM VERİLER SİLİNECEK!')){ db.sales=[]; db.stock={tankWater:0, bottles5L:0, bottles10L:0}; syncCloud(); } }
 
         setInterval(() => {
             document.getElementById('dateDisplay').innerHTML = new Date().toLocaleString('tr-TR', { weekday: 'long', day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit', second: '2-digit' });
