@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>İNVER вода | Cloud Elite v7</title>
+    <title>İNVER вода | Cloud Elite v7.5 PRO</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap');
@@ -16,39 +17,41 @@
             background: radial-gradient(circle at top right, #1e293b, #050b18);
             color: #e2e8f0; min-height: 100vh; margin: 0; overflow-x: hidden;
         }
-        .glass-card {
-            background: rgba(15, 23, 42, 0.65); backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        .active-nav {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            box-shadow: 0 0 20px rgba(0, 210, 255, 0.5); color: white !important;
-        }
+        .glass-card { background: rgba(15, 23, 42, 0.65); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .active-nav { background: linear-gradient(135deg, var(--primary), var(--secondary)); box-shadow: 0 0 20px rgba(0, 210, 255, 0.5); color: white !important; }
         .glow-text { text-shadow: 0 0 15px rgba(0, 210, 255, 0.6); }
         input::-webkit-outer-spin-button, input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+        .content-section { animation: fadeIn 0.4s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         @media (min-width: 768px) { .main-container { max-width: 1000px; margin: 0 auto; } }
     </style>
 </head>
 <body class="pb-28">
 
-    <div id="cloudStatus" class="fixed top-2 right-4 text-[10px] font-bold uppercase tracking-widest z-[101]">
+    <!-- Üst Durum Çubuğu -->
+    <div class="fixed top-0 inset-x-0 h-1 z-[100] flex">
+        <div id="syncProgress" class="h-full bg-cyan-500 transition-all duration-500 w-0"></div>
+    </div>
+
+    <div id="cloudStatus" class="fixed top-4 right-4 text-[10px] font-bold uppercase tracking-widest z-[101] glass-card px-3 py-1 rounded-full">
         <i class="fas fa-circle text-gray-500 mr-1"></i> Sync Offline
     </div>
 
-    <div id="toast" class="fixed top-6 left-1/2 -translate-x-1/2 z-[100] transition-all duration-500 opacity-0 pointer-events-none">
+    <div id="toast" class="fixed top-12 left-1/2 -translate-x-1/2 z-[100] transition-all duration-500 opacity-0 pointer-events-none">
         <div id="toastContent" class="px-6 py-3 rounded-full font-bold shadow-2xl flex items-center gap-2 text-sm"></div>
     </div>
 
     <header class="p-6 flex flex-col items-center">
-        <div class="flex gap-4 mb-4 text-xl">
+        <div class="flex gap-4 mb-4 text-xl bg-white/5 p-2 rounded-2xl border border-white/10">
             <span title="Turkish">🇹🇷</span><span title="Ukrainian">🇺🇦</span><span title="English">🇺🇸</span><span title="Russian">🇷🇺</span>
         </div>
         <h1 class="text-4xl font-extrabold tracking-tighter glow-text uppercase italic">İNVER <span class="text-cyan-400 font-light">вода</span></h1>
         <div id="dateDisplay" class="text-slate-400 text-[10px] mt-2 uppercase tracking-[0.2em] font-bold"></div>
     </header>
 
+    <!-- ÖZET PANELİ -->
     <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 px-4 mb-8 max-w-6xl mx-auto">
-        <div class="glass-card p-5 rounded-[2rem] border-b-4 border-cyan-500">
+        <div class="glass-card p-5 rounded-[2rem] border-b-4 border-cyan-500 relative overflow-hidden">
             <p class="text-[10px] uppercase text-slate-400 font-bold mb-1">Depo (Litre)</p>
             <h3 id="dash-tank" class="text-2xl font-black italic">... L</h3>
             <div class="w-full bg-slate-800 h-1.5 rounded-full mt-3 overflow-hidden">
@@ -60,7 +63,7 @@
             <h3 id="dash-profit" class="text-2xl font-black text-green-400 italic">0 ₴</h3>
         </div>
         <div class="glass-card p-5 rounded-[2rem] border-b-4 border-orange-500">
-            <p class="text-[10px] uppercase text-slate-400 font-bold mb-1">Şişe (5L/10L)</p>
+            <p class="text-[10px] uppercase text-slate-400 font-bold mb-1">Boş Şişe (5/10)</p>
             <h3 id="dash-bottles" class="text-2xl font-black text-orange-400 italic">0/0</h3>
         </div>
         <div class="glass-card p-5 rounded-[2rem] border-b-4 border-blue-500">
@@ -70,40 +73,46 @@
     </div>
 
     <main class="px-4 main-container">
+        <!-- SATIŞ EKRANI -->
         <section id="sales" class="content-section">
-            <div class="glass-card p-8 rounded-[40px] border border-white/5">
+            <div class="glass-card p-8 rounded-[40px]">
                 <div class="grid grid-cols-3 gap-3 mb-6">
-                    <button onclick="quickFill(5)" class="bg-slate-800/60 p-4 rounded-2xl text-sm font-black hover:bg-cyan-500/20 active:scale-90 transition">+5L</button>
-                    <button onclick="quickFill(10)" class="bg-slate-800/60 p-4 rounded-2xl text-sm font-black hover:bg-cyan-500/20 active:scale-90 transition">+10L</button>
-                    <button onclick="quickFill(19)" class="bg-slate-800/60 p-4 rounded-2xl text-sm font-black hover:bg-cyan-500/20 active:scale-90 transition">+19L</button>
+                    <button onclick="quickFill(5)" class="bg-slate-800/60 p-4 rounded-2xl text-sm font-black hover:bg-cyan-500/20 active:scale-90 transition border border-white/5">+5L</button>
+                    <button onclick="quickFill(10)" class="bg-slate-800/60 p-4 rounded-2xl text-sm font-black hover:bg-cyan-500/20 active:scale-90 transition border border-white/5">+10L</button>
+                    <button onclick="quickFill(19)" class="bg-slate-800/60 p-4 rounded-2xl text-sm font-black hover:bg-cyan-500/20 active:scale-90 transition border border-white/5">+19L</button>
                 </div>
+
                 <div class="space-y-6">
-                    <div class="relative">
-                        <input type="number" id="saleLiters" oninput="calculateSale()" class="w-full bg-slate-900/80 p-6 rounded-3xl border-2 border-slate-800 text-5xl font-black focus:border-cyan-500 outline-none text-center glow-text" placeholder="0">
+                    <div class="relative group">
+                        <input type="number" id="saleLiters" oninput="calculateSale()" class="w-full bg-slate-900/80 p-6 rounded-3xl border-2 border-slate-800 text-5xl font-black focus:border-cyan-500 outline-none text-center glow-text transition-all" placeholder="0">
                         <span class="absolute right-8 top-1/2 -translate-y-1/2 text-slate-600 font-black text-2xl">L</span>
                     </div>
+
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div class="bg-slate-900/40 p-4 rounded-3xl flex justify-between items-center border border-white/5">
                             <span class="text-xs text-slate-400 font-bold uppercase ml-2">5L Şişe Satış</span>
                             <div class="flex items-center gap-4">
-                                <button onclick="adjBottle('sale5L', -1)" class="text-red-500 text-2xl"><i class="fas fa-minus-circle"></i></button>
+                                <button onclick="adjBottle('sale5L', -1)" class="text-red-500 text-2xl active:scale-75"><i class="fas fa-minus-circle"></i></button>
                                 <input type="number" id="sale5L" oninput="calculateSale()" class="bg-transparent w-10 text-center font-black text-2xl" value="0">
-                                <button onclick="adjBottle('sale5L', 1)" class="text-green-500 text-2xl"><i class="fas fa-plus-circle"></i></button>
+                                <button onclick="adjBottle('sale5L', 1)" class="text-green-500 text-2xl active:scale-75"><i class="fas fa-plus-circle"></i></button>
                             </div>
                         </div>
                         <div class="bg-slate-900/40 p-4 rounded-3xl flex justify-between items-center border border-white/5">
                             <span class="text-xs text-slate-400 font-bold uppercase ml-2">10L Şişe Satış</span>
                             <div class="flex items-center gap-4">
-                                <button onclick="adjBottle('sale10L', -1)" class="text-red-500 text-2xl"><i class="fas fa-minus-circle"></i></button>
+                                <button onclick="adjBottle('sale10L', -1)" class="text-red-500 text-2xl active:scale-75"><i class="fas fa-minus-circle"></i></button>
                                 <input type="number" id="sale10L" oninput="calculateSale()" class="bg-transparent w-10 text-center font-black text-2xl" value="0">
-                                <button onclick="adjBottle('sale10L', 1)" class="text-green-500 text-2xl"><i class="fas fa-plus-circle"></i></button>
+                                <button onclick="adjBottle('sale10L', 1)" class="text-green-500 text-2xl active:scale-75"><i class="fas fa-plus-circle"></i></button>
                             </div>
                         </div>
                     </div>
+
                     <div class="p-6 bg-cyan-500/10 rounded-[30px] border border-cyan-500/30 text-center">
+                        <div id="priceWarning" class="text-[9px] text-red-400 font-bold mb-1 hidden uppercase">STOK YETERSİZ!</div>
                         <p class="text-[10px] text-cyan-300 uppercase tracking-widest font-black mb-1">Net Ödeme Tutarı</p>
                         <h3 id="totalPriceDisplay" class="text-5xl font-black glow-text">0.00 ₴</h3>
                     </div>
+
                     <div class="grid grid-cols-2 gap-4">
                         <button onclick="completeSale('Nakit')" class="bg-green-600 hover:bg-green-500 py-5 rounded-2xl font-black shadow-lg active:scale-95 uppercase text-xs">NAKİT</button>
                         <button onclick="completeSale('Kart')" class="bg-blue-600 hover:bg-blue-500 py-5 rounded-2xl font-black shadow-lg active:scale-95 uppercase text-xs">KART (-1.3%)</button>
@@ -112,24 +121,37 @@
             </div>
         </section>
 
+        <!-- DASHBOARD -->
         <section id="dashboard" class="content-section hidden space-y-6">
             <div class="glass-card p-6 rounded-[35px]">
-                <h2 class="font-bold text-xs uppercase tracking-widest mb-6 italic">Haftalık Analiz</h2>
+                <h2 class="font-bold text-xs uppercase tracking-widest mb-6 italic text-cyan-400">7 Günlük Litre Grafiği</h2>
                 <div class="h-64"><canvas id="mainChart"></canvas></div>
             </div>
-            <div id="statCards" class="grid grid-cols-2 md:grid-cols-4 gap-4"></div>
+            <div class="grid grid-cols-2 gap-4">
+                <div class="glass-card p-5 rounded-3xl">
+                    <p class="text-[9px] text-slate-500 uppercase font-black">Bu Ay Toplam Litre</p>
+                    <h4 id="stat-month-liters" class="text-xl font-black">0 L</h4>
+                </div>
+                <div class="glass-card p-5 rounded-3xl">
+                    <p class="text-[9px] text-slate-500 uppercase font-black">Ortalama Satış</p>
+                    <h4 id="stat-avg-sale" class="text-xl font-black">0 ₴</h4>
+                </div>
+            </div>
         </section>
 
+        <!-- GEÇMİŞ -->
         <section id="history" class="content-section hidden">
             <div class="glass-card rounded-[35px] overflow-hidden">
                 <div class="p-6 border-b border-white/5 flex justify-between items-center bg-white/5">
                     <h2 class="font-bold uppercase text-xs italic tracking-tighter">İşlem Kayıtları</h2>
-                    <button onclick="downloadPDF()" class="bg-red-500 text-white text-[10px] px-4 py-2 rounded-full font-bold">PDF RAPOR</button>
+                    <button onclick="generatePDFReport()" class="bg-red-500 hover:bg-red-400 text-white text-[10px] px-4 py-2 rounded-full font-bold transition-all shadow-lg active:scale-90">
+                        <i class="fas fa-file-pdf mr-1"></i> PDF RAPOR AL
+                    </button>
                 </div>
                 <div class="overflow-x-auto max-h-[500px]">
                     <table class="w-full text-left">
                         <thead class="bg-slate-900 text-slate-500 text-[10px] uppercase font-black">
-                            <tr><th class="p-4">Saat</th><th class="p-4">Detay</th><th class="p-4 text-center">Kâr</th><th class="p-4 text-right">Tutar</th></tr>
+                            <tr><th class="p-4">Tarih/Saat</th><th class="p-4">Detay</th><th class="p-4 text-center">Kâr</th><th class="p-4 text-right">Tutar</th></tr>
                         </thead>
                         <tbody id="historyTable" class="text-xs divide-y divide-white/5"></tbody>
                     </table>
@@ -137,35 +159,66 @@
             </div>
         </section>
 
-        <section id="settings" class="content-section hidden">
+        <!-- AYARLAR & STOK -->
+        <section id="settings" class="content-section hidden space-y-6">
             <div class="glass-card p-8 rounded-[40px] space-y-8">
                 <div>
-                    <h2 class="font-black text-orange-400 uppercase text-xs mb-6 tracking-widest italic">Bulut Stok Yönetimi</h2>
+                    <h2 class="font-black text-orange-400 uppercase text-xs mb-6 tracking-widest italic flex items-center">
+                        <i class="fas fa-warehouse mr-2"></i> Stok & Envanter Yönetimi
+                    </h2>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <div class="bg-slate-900/60 p-4 rounded-2xl border border-white/5">
-                            <label class="text-[9px] text-slate-500 uppercase font-black">Ana Tank (L)</label>
+                            <label class="text-[9px] text-slate-500 uppercase font-black">Mevcut Su (Litre)</label>
                             <input type="number" id="editTankWater" class="bg-transparent text-xl font-black w-full outline-none text-white mt-1">
                         </div>
                         <div class="bg-slate-900/60 p-4 rounded-2xl border border-white/5">
-                            <label class="text-[9px] text-slate-500 uppercase font-black">5L Boş Şişe</label>
+                            <label class="text-[9px] text-slate-500 uppercase font-black">5L Boş Şişe Adedi</label>
                             <input type="number" id="editBottles5L" class="bg-transparent text-xl font-black w-full outline-none text-white mt-1">
                         </div>
                         <div class="bg-slate-900/60 p-4 rounded-2xl border border-white/5">
-                            <label class="text-[9px] text-slate-500 uppercase font-black">10L Boş Şişe</label>
+                            <label class="text-[9px] text-slate-500 uppercase font-black">10L Boş Şişe Adedi</label>
                             <input type="number" id="editBottles10L" class="bg-transparent text-xl font-black w-full outline-none text-white mt-1">
                         </div>
                     </div>
                 </div>
-                <button onclick="saveGlobalSettings()" class="w-full bg-cyan-600 py-4 rounded-2xl font-black shadow-xl active:scale-95 transition-all text-xs uppercase tracking-widest">Verileri Buluta Senkronize Et</button>
+
+                <div>
+                    <h2 class="font-black text-cyan-400 uppercase text-xs mb-6 tracking-widest italic flex items-center">
+                        <i class="fas fa-tags mr-2"></i> Fiyatlandırma & Maliyet (₴)
+                    </h2>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <div class="bg-slate-900/40 p-3 rounded-xl border border-white/5">
+                            <label class="text-[8px] text-slate-500 uppercase">Litre Satış</label>
+                            <input type="number" id="priceLitre" class="bg-transparent font-bold w-full text-sm outline-none">
+                        </div>
+                        <div class="bg-slate-900/40 p-3 rounded-xl border border-white/5">
+                            <label class="text-[8px] text-slate-500 uppercase">Litre Maliyet</label>
+                            <input type="number" id="costLitre" class="bg-transparent font-bold w-full text-sm outline-none">
+                        </div>
+                        <div class="bg-slate-900/40 p-3 rounded-xl border border-white/5">
+                            <label class="text-[8px] text-slate-500 uppercase">5L Şişe Satış</label>
+                            <input type="number" id="price5L" class="bg-transparent font-bold w-full text-sm outline-none">
+                        </div>
+                        <div class="bg-slate-900/40 p-3 rounded-xl border border-white/5">
+                            <label class="text-[8px] text-slate-500 uppercase">10L Şişe Satış</label>
+                            <input type="number" id="price10L" class="bg-transparent font-bold w-full text-sm outline-none">
+                        </div>
+                    </div>
+                </div>
+
+                <button onclick="saveGlobalSettings()" class="w-full bg-cyan-600 hover:bg-cyan-500 py-4 rounded-2xl font-black shadow-xl active:scale-95 transition-all text-xs uppercase tracking-widest">
+                    <i class="fas fa-cloud-upload-alt mr-2"></i> Ayarları Buluta Kaydet
+                </button>
             </div>
         </section>
     </main>
 
+    <!-- NAVİGASYON -->
     <nav class="fixed bottom-6 left-1/2 -translate-x-1/2 w-[92%] max-w-sm glass-card rounded-[2.5rem] p-2 flex justify-around items-center z-50 border border-white/10 shadow-2xl">
-        <button onclick="showSection('sales')" class="nav-btn active-nav w-14 h-14 rounded-full flex items-center justify-center"><i class="fas fa-tint"></i></button>
-        <button onclick="showSection('dashboard')" class="nav-btn w-14 h-14 rounded-full flex items-center justify-center text-slate-500"><i class="fas fa-chart-line"></i></button>
-        <button onclick="showSection('history')" class="nav-btn w-14 h-14 rounded-full flex items-center justify-center text-slate-500"><i class="fas fa-history"></i></button>
-        <button onclick="showSection('settings')" class="nav-btn w-14 h-14 rounded-full flex items-center justify-center text-slate-500"><i class="fas fa-cog"></i></button>
+        <button onclick="showSection('sales')" class="nav-btn active-nav w-14 h-14 rounded-full flex items-center justify-center transition-all"><i class="fas fa-tint"></i></button>
+        <button onclick="showSection('dashboard')" class="nav-btn w-14 h-14 rounded-full flex items-center justify-center text-slate-500 transition-all"><i class="fas fa-chart-pie"></i></button>
+        <button onclick="showSection('history')" class="nav-btn w-14 h-14 rounded-full flex items-center justify-center text-slate-500 transition-all"><i class="fas fa-list-ul"></i></button>
+        <button onclick="showSection('settings')" class="nav-btn w-14 h-14 rounded-full flex items-center justify-center text-slate-500 transition-all"><i class="fas fa-sliders-h"></i></button>
     </nav>
 
     <audio id="cashSound" src="https://assets.mixkit.co/active_storage/sfx/2017/2017-preview.mp3"></audio>
@@ -189,12 +242,14 @@
                 const data = await res.json();
                 if(data.record) {
                     db = data.record;
+                    // Eğer eski DB'de yeni ayarlar yoksa varsayılanları ekle
+                    if(!db.settings.costLitre) db.settings.costLitre = 1.5;
                     renderUI();
                     updateStatus('online');
                 }
             } catch (err) {
                 updateStatus('offline');
-                const local = localStorage.getItem('inver_backup');
+                const local = localStorage.getItem('inver_v7_backup');
                 if(local) db = JSON.parse(local);
                 renderUI();
             }
@@ -202,7 +257,7 @@
 
         async function saveCloudData() {
             updateStatus('saving');
-            localStorage.setItem('inver_backup', JSON.stringify(db));
+            localStorage.setItem('inver_v7_backup', JSON.stringify(db));
             try {
                 await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
                     method: 'PUT',
@@ -212,28 +267,38 @@
                 updateStatus('online');
             } catch (err) {
                 updateStatus('offline');
-                notify("Hata: Buluta kaydedilemedi", "error");
+                notify("Buluta Kaydedilemedi! (İnternet?)", "error");
             }
             renderUI();
         }
 
         function updateStatus(state) {
             const el = document.getElementById('cloudStatus');
+            const bar = document.getElementById('syncProgress');
             const map = {
-                online: '<i class="fas fa-circle text-green-500 mr-1"></i> Sync Online',
-                saving: '<i class="fas fa-sync fa-spin text-cyan-500 mr-1"></i> Saving...',
-                loading: '<i class="fas fa-cloud-download-alt text-blue-500 mr-1"></i> Loading...',
-                offline: '<i class="fas fa-exclamation-triangle text-red-500 mr-1"></i> Sync Offline'
+                online: { h: '<i class="fas fa-circle text-green-500 mr-1"></i> Sync Online', w: '0%' },
+                saving: { h: '<i class="fas fa-sync fa-spin text-cyan-500 mr-1"></i> Saving...', w: '100%' },
+                loading: { h: '<i class="fas fa-cloud-download-alt text-blue-500 mr-1"></i> Loading...', w: '50%' },
+                offline: { h: '<i class="fas fa-exclamation-triangle text-red-500 mr-1"></i> Offline', w: '0%' }
             };
-            el.innerHTML = map[state];
+            el.innerHTML = map[state].h;
+            bar.style.width = map[state].w;
         }
 
         function calculateSale() {
             const l = parseFloat(document.getElementById('saleLiters').value) || 0;
             const b5 = parseInt(document.getElementById('sale5L').value) || 0;
             const b10 = parseInt(document.getElementById('sale10L').value) || 0;
+            
             const total = (l * db.settings.priceLitre) + (b5 * db.settings.price5L) + (b10 * db.settings.price10L);
             document.getElementById('totalPriceDisplay').innerText = total.toFixed(2) + ' ₴';
+
+            const warn = document.getElementById('priceWarning');
+            if(l > db.stock.tankWater || b5 > db.stock.bottles5L || b10 > db.stock.bottles10L) {
+                warn.classList.remove('hidden');
+            } else {
+                warn.classList.add('hidden');
+            }
         }
 
         function quickFill(n) {
@@ -255,7 +320,8 @@
             const b10 = parseInt(document.getElementById('sale10L').value) || 0;
 
             if(l + b5 + b10 === 0) return;
-            if(db.stock.tankWater < l) return notify("Yetersiz su!", "error");
+            if(db.stock.tankWater < l) return notify("Depoda yeterli su yok!", "error");
+            if(db.stock.bottles5L < b5 || db.stock.bottles10L < b10) return notify("Yetersiz boş şişe!", "error");
 
             const gross = (l * db.settings.priceLitre) + (b5 * db.settings.price5L) + (b10 * db.settings.price10L);
             const comm = method === 'Kart' ? (gross * 0.013) : 0;
@@ -272,33 +338,50 @@
             db.stock.bottles10L -= b10;
 
             document.getElementById('cashSound').play();
+            resetInputs();
+            saveCloudData();
+            notify("Satış Başarıyla Kaydedildi");
+        }
+
+        function resetInputs() {
             document.getElementById('saleLiters').value = '';
             document.getElementById('sale5L').value = 0;
             document.getElementById('sale10L').value = 0;
             calculateSale();
-            saveCloudData();
-            notify("İşlem Tamamlandı");
         }
 
         function renderUI() {
+            // Dashboard özetleri
             document.getElementById('dash-tank').innerText = Math.floor(db.stock.tankWater) + ' L';
             document.getElementById('dash-bottles').innerText = `${db.stock.bottles5L}/${db.stock.bottles10L}`;
-            document.getElementById('tankBar').style.width = (db.stock.tankWater / db.settings.tankMax * 100) + '%';
+            document.getElementById('tankBar').style.width = Math.min(100, (db.stock.tankWater / db.settings.tankMax * 100)) + '%';
+
             const today = new Date().toLocaleDateString();
             const todaySales = db.sales.filter(s => new Date(s.date).toLocaleDateString() === today);
             document.getElementById('dash-profit').innerText = todaySales.reduce((a,b)=>a+b.profit,0).toFixed(1) + ' ₴';
             document.getElementById('dash-total').innerText = db.sales.reduce((a,b)=>a+b.net,0).toFixed(0) + ' ₴';
+
+            // Ayarlar formu
             document.getElementById('editTankWater').value = Math.floor(db.stock.tankWater);
             document.getElementById('editBottles5L').value = db.stock.bottles5L;
             document.getElementById('editBottles10L').value = db.stock.bottles10L;
+            document.getElementById('priceLitre').value = db.settings.priceLitre;
+            document.getElementById('costLitre').value = db.settings.costLitre;
+            document.getElementById('price5L').value = db.settings.price5L;
+            document.getElementById('price10L').value = db.settings.price10L;
         }
 
         function saveGlobalSettings() {
             db.stock.tankWater = parseFloat(document.getElementById('editTankWater').value);
             db.stock.bottles5L = parseInt(document.getElementById('editBottles5L').value);
             db.stock.bottles10L = parseInt(document.getElementById('editBottles10L').value);
+            db.settings.priceLitre = parseFloat(document.getElementById('priceLitre').value);
+            db.settings.costLitre = parseFloat(document.getElementById('costLitre').value);
+            db.settings.price5L = parseFloat(document.getElementById('price5L').value);
+            db.settings.price10L = parseFloat(document.getElementById('price10L').value);
+            
             saveCloudData();
-            notify("Bulut Stoğu Güncellendi");
+            notify("Sistem Ayarları Güncellendi");
         }
 
         function showSection(id) {
@@ -306,53 +389,132 @@
             document.getElementById(id).classList.remove('hidden');
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active-nav'));
             event.currentTarget.classList.add('active-nav');
-            if(id === 'dashboard') renderChart();
+            
+            if(id === 'dashboard') { renderChart(); updateAdvancedStats(); }
             if(id === 'history') updateHistory();
+        }
+
+        function updateAdvancedStats() {
+            const now = new Date();
+            const thisMonthSales = db.sales.filter(s => {
+                const sd = new Date(s.date);
+                return sd.getMonth() === now.getMonth() && sd.getFullYear() === now.getFullYear();
+            });
+            document.getElementById('stat-month-liters').innerText = thisMonthSales.reduce((a,b)=>a+b.liters, 0).toFixed(0) + ' L';
+            
+            const avg = db.sales.length > 0 ? (db.sales.reduce((a,b)=>a+b.net, 0) / db.sales.length) : 0;
+            document.getElementById('stat-avg-sale').innerText = avg.toFixed(1) + ' ₴';
         }
 
         function updateHistory() {
             const html = db.sales.slice().reverse().map(s => `
-                <tr class="hover:bg-white/5">
-                    <td class="p-4 text-slate-500">${new Date(s.date).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}</td>
-                    <td class="p-4">${s.liters}L ${s.b5>0 ? '+'+s.b5+'x5' : ''}</td>
+                <tr class="hover:bg-white/5 transition-colors">
+                    <td class="p-4 text-slate-500 font-medium">
+                        ${new Date(s.date).toLocaleDateString('tr-TR', {day:'2-digit', month:'2-digit'})} 
+                        <span class="block text-[9px] opacity-50">${new Date(s.date).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}</span>
+                    </td>
+                    <td class="p-4">
+                        <span class="font-bold text-slate-200">${s.liters}L</span>
+                        ${s.b5>0 ? '<span class="text-[9px] bg-orange-500/20 text-orange-400 px-1 rounded ml-1">'+s.b5+'x5L</span>' : ''}
+                        ${s.b10>0 ? '<span class="text-[9px] bg-blue-500/20 text-blue-400 px-1 rounded ml-1">'+s.b10+'x10L</span>' : ''}
+                    </td>
                     <td class="p-4 text-center text-green-400 font-bold">${s.profit.toFixed(1)}</td>
-                    <td class="p-4 text-right font-black ${s.method==='Kart'?'text-blue-400':'text-cyan-400'}">${s.net.toFixed(1)}</td>
+                    <td class="p-4 text-right">
+                        <span class="font-black ${s.method==='Kart'?'text-blue-400':'text-cyan-400'}">${s.net.toFixed(1)}</span>
+                        <span class="block text-[8px] opacity-40 uppercase">${s.method}</span>
+                    </td>
                 </tr>
             `).join('');
-            document.getElementById('historyTable').innerHTML = html || '<tr><td colspan="4" class="p-10 text-center italic opacity-30">Veri yok</td></tr>';
+            document.getElementById('historyTable').innerHTML = html || '<tr><td colspan="4" class="p-10 text-center italic opacity-30 italic">Henüz işlem yapılmadı...</td></tr>';
+        }
+
+        function generatePDFReport() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            
+            doc.setFontSize(18);
+            doc.text("İNVER WATER - SATIŞ RAPORU", 14, 20);
+            doc.setFontSize(10);
+            doc.text(`Rapor Tarihi: ${new Date().toLocaleString()}`, 14, 28);
+
+            const tableData = db.sales.slice().reverse().map(s => [
+                new Date(s.date).toLocaleString(),
+                `${s.liters} L`,
+                `${s.b5} / ${s.b10}`,
+                s.method,
+                `${s.net.toFixed(2)} TL`
+            ]);
+
+            doc.autoTable({
+                head: [['Tarih', 'Su (L)', 'Şişe (5/10)', 'Ödeme', 'Tutar']],
+                body: tableData,
+                startY: 35,
+                theme: 'striped'
+            });
+
+            doc.save(`Inver_Rapor_${new Date().toLocaleDateString()}.pdf`);
+            notify("PDF Raporu İndirildi");
         }
 
         function notify(msg, type='success') {
             const toast = document.getElementById('toast');
-            document.getElementById('toastContent').className = `px-6 py-3 rounded-full font-bold ${type==='success'?'bg-cyan-500':'bg-red-500'} text-white`;
+            document.getElementById('toastContent').className = `px-6 py-3 rounded-full font-bold ${type==='success'?'bg-cyan-500':'bg-red-500'} text-white shadow-lg border border-white/20`;
             document.getElementById('toastContent').innerText = msg;
-            toast.style.opacity = '1';
-            setTimeout(()=> toast.style.opacity = '0', 2000);
+            toast.style.opacity = '1'; toast.style.transform = 'translateX(-50%) translateY(0)';
+            setTimeout(()=> { toast.style.opacity = '0'; toast.style.transform = 'translateX(-50%) translateY(-20px)'; }, 2500);
         }
 
         let chart;
         function renderChart() {
             const ctx = document.getElementById('mainChart').getContext('2d');
             if(chart) chart.destroy();
+            
             const labels = []; const data = [];
             for(let i=6; i>=0; i--) {
                 const d = new Date(); d.setDate(d.getDate()-i);
-                labels.push(d.toLocaleDateString().slice(0,5));
-                data.push(db.sales.filter(s => new Date(s.date).toLocaleDateString() === d.toLocaleDateString()).reduce((a,b)=>a+b.liters, 0));
+                labels.push(d.toLocaleDateString('tr-TR', {weekday: 'short'}));
+                const dayTotal = db.sales
+                    .filter(s => new Date(s.date).toLocaleDateString() === d.toLocaleDateString())
+                    .reduce((a,b)=>a+b.liters, 0);
+                data.push(dayTotal);
             }
+
             chart = new Chart(ctx, {
                 type: 'line',
-                data: { labels, datasets: [{ data, borderColor: '#00d2ff', backgroundColor: 'rgba(0, 210, 255, 0.1)', fill: true, tension: 0.4 }] },
-                options: { plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, grid: { color: 'rgba(255,255,255,0.05)' } } } }
+                data: {
+                    labels,
+                    datasets: [{
+                        label: 'Litre',
+                        data,
+                        borderColor: '#00d2ff',
+                        backgroundColor: 'rgba(0, 210, 255, 0.1)',
+                        borderWidth: 4,
+                        fill: true,
+                        tension: 0.4,
+                        pointRadius: 5,
+                        pointBackgroundColor: '#00d2ff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: { beginAtZero: true, grid: { color: 'rgba(255,255,255,0.05)' }, border: {display: false} },
+                        x: { grid: { display: false }, border: {display: false} }
+                    }
+                }
             });
         }
 
+        // Saat güncelleme
         setInterval(() => {
             document.getElementById('dateDisplay').innerHTML = new Date().toLocaleString('tr-TR', { 
-                weekday: 'long', day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit'
+                weekday: 'long', day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit', second: '2-digit'
             });
         }, 1000);
 
+        // Başlangıç
         loadCloudData();
     </script>
 </body>
