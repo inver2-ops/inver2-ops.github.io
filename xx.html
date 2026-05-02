@@ -26,16 +26,11 @@
         }
         .glow-text { text-shadow: 0 0 15px rgba(0, 210, 255, 0.6); }
         input::-webkit-outer-spin-button, input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
-        
-        /* Mobile/PC Optimization */
-        @media (min-width: 768px) {
-            .main-container { max-width: 1000px; margin: 0 auto; }
-        }
+        @media (min-width: 768px) { .main-container { max-width: 1000px; margin: 0 auto; } }
     </style>
 </head>
 <body class="pb-28">
 
-    <!-- Cloud Status Indicator -->
     <div id="cloudStatus" class="fixed top-2 right-4 text-[10px] font-bold uppercase tracking-widest z-[101]">
         <i class="fas fa-circle text-gray-500 mr-1"></i> Sync Offline
     </div>
@@ -45,7 +40,6 @@
     </div>
 
     <header class="p-6 flex flex-col items-center">
-        <!-- Bayrak İkonları UI/UX -->
         <div class="flex gap-4 mb-4 text-xl">
             <span title="Turkish">🇹🇷</span><span title="Ukrainian">🇺🇦</span><span title="English">🇺🇸</span><span title="Russian">🇷🇺</span>
         </div>
@@ -53,7 +47,6 @@
         <div id="dateDisplay" class="text-slate-400 text-[10px] mt-2 uppercase tracking-[0.2em] font-bold"></div>
     </header>
 
-    <!-- ÜST ÖZET PANELİ -->
     <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 px-4 mb-8 max-w-6xl mx-auto">
         <div class="glass-card p-5 rounded-[2rem] border-b-4 border-cyan-500">
             <p class="text-[10px] uppercase text-slate-400 font-bold mb-1">Depo (Litre)</p>
@@ -77,7 +70,6 @@
     </div>
 
     <main class="px-4 main-container">
-        <!-- SATIŞ EKRANI -->
         <section id="sales" class="content-section">
             <div class="glass-card p-8 rounded-[40px] border border-white/5">
                 <div class="grid grid-cols-3 gap-3 mb-6">
@@ -85,13 +77,11 @@
                     <button onclick="quickFill(10)" class="bg-slate-800/60 p-4 rounded-2xl text-sm font-black hover:bg-cyan-500/20 active:scale-90 transition">+10L</button>
                     <button onclick="quickFill(19)" class="bg-slate-800/60 p-4 rounded-2xl text-sm font-black hover:bg-cyan-500/20 active:scale-90 transition">+19L</button>
                 </div>
-
                 <div class="space-y-6">
                     <div class="relative">
                         <input type="number" id="saleLiters" oninput="calculateSale()" class="w-full bg-slate-900/80 p-6 rounded-3xl border-2 border-slate-800 text-5xl font-black focus:border-cyan-500 outline-none text-center glow-text" placeholder="0">
                         <span class="absolute right-8 top-1/2 -translate-y-1/2 text-slate-600 font-black text-2xl">L</span>
                     </div>
-
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div class="bg-slate-900/40 p-4 rounded-3xl flex justify-between items-center border border-white/5">
                             <span class="text-xs text-slate-400 font-bold uppercase ml-2">5L Şişe Satış</span>
@@ -110,12 +100,10 @@
                             </div>
                         </div>
                     </div>
-
                     <div class="p-6 bg-cyan-500/10 rounded-[30px] border border-cyan-500/30 text-center">
                         <p class="text-[10px] text-cyan-300 uppercase tracking-widest font-black mb-1">Net Ödeme Tutarı</p>
                         <h3 id="totalPriceDisplay" class="text-5xl font-black glow-text">0.00 ₴</h3>
                     </div>
-
                     <div class="grid grid-cols-2 gap-4">
                         <button onclick="completeSale('Nakit')" class="bg-green-600 hover:bg-green-500 py-5 rounded-2xl font-black shadow-lg active:scale-95 uppercase text-xs">NAKİT</button>
                         <button onclick="completeSale('Kart')" class="bg-blue-600 hover:bg-blue-500 py-5 rounded-2xl font-black shadow-lg active:scale-95 uppercase text-xs">KART (-1.3%)</button>
@@ -124,7 +112,6 @@
             </div>
         </section>
 
-        <!-- DASHBOARD -->
         <section id="dashboard" class="content-section hidden space-y-6">
             <div class="glass-card p-6 rounded-[35px]">
                 <h2 class="font-bold text-xs uppercase tracking-widest mb-6 italic">Haftalık Analiz</h2>
@@ -133,7 +120,6 @@
             <div id="statCards" class="grid grid-cols-2 md:grid-cols-4 gap-4"></div>
         </section>
 
-        <!-- GEÇMİŞ -->
         <section id="history" class="content-section hidden">
             <div class="glass-card rounded-[35px] overflow-hidden">
                 <div class="p-6 border-b border-white/5 flex justify-between items-center bg-white/5">
@@ -143,12 +129,7 @@
                 <div class="overflow-x-auto max-h-[500px]">
                     <table class="w-full text-left">
                         <thead class="bg-slate-900 text-slate-500 text-[10px] uppercase font-black">
-                            <tr>
-                                <th class="p-4">Saat</th>
-                                <th class="p-4">Detay</th>
-                                <th class="p-4 text-center">Kâr</th>
-                                <th class="p-4 text-right">Tutar</th>
-                            </tr>
+                            <tr><th class="p-4">Saat</th><th class="p-4">Detay</th><th class="p-4 text-center">Kâr</th><th class="p-4 text-right">Tutar</th></tr>
                         </thead>
                         <tbody id="historyTable" class="text-xs divide-y divide-white/5"></tbody>
                     </table>
@@ -156,7 +137,6 @@
             </div>
         </section>
 
-        <!-- AYARLAR -->
         <section id="settings" class="content-section hidden">
             <div class="glass-card p-8 rounded-[40px] space-y-8">
                 <div>
@@ -181,7 +161,6 @@
         </section>
     </main>
 
-    <!-- ALT NAVİGASYON -->
     <nav class="fixed bottom-6 left-1/2 -translate-x-1/2 w-[92%] max-w-sm glass-card rounded-[2.5rem] p-2 flex justify-around items-center z-50 border border-white/10 shadow-2xl">
         <button onclick="showSection('sales')" class="nav-btn active-nav w-14 h-14 rounded-full flex items-center justify-center"><i class="fas fa-tint"></i></button>
         <button onclick="showSection('dashboard')" class="nav-btn w-14 h-14 rounded-full flex items-center justify-center text-slate-500"><i class="fas fa-chart-line"></i></button>
@@ -193,7 +172,7 @@
 
     <script>
         const API_KEY = '$2a$10$QA58wc50wyQ3g8E9oqDNK./CTiaqIk0kjStY.wLOo4mUG9uZ7sQju';
-        const BIN_ID = 'BURAYA_BIN_ID_YAZIN'; // jsonbin.io'dan aldığın ID
+        const BIN_ID = '69f5cd6baaba882197617526'; 
 
         let db = {
             settings: { priceLitre: 5, costLitre: 1.5, price5L: 20, cost5L: 12.0, price10L: 35, cost10L: 18.0, tankMax: 2000 },
@@ -305,12 +284,10 @@
             document.getElementById('dash-tank').innerText = Math.floor(db.stock.tankWater) + ' L';
             document.getElementById('dash-bottles').innerText = `${db.stock.bottles5L}/${db.stock.bottles10L}`;
             document.getElementById('tankBar').style.width = (db.stock.tankWater / db.settings.tankMax * 100) + '%';
-
             const today = new Date().toLocaleDateString();
             const todaySales = db.sales.filter(s => new Date(s.date).toLocaleDateString() === today);
             document.getElementById('dash-profit').innerText = todaySales.reduce((a,b)=>a+b.profit,0).toFixed(1) + ' ₴';
             document.getElementById('dash-total').innerText = db.sales.reduce((a,b)=>a+b.net,0).toFixed(0) + ' ₴';
-
             document.getElementById('editTankWater').value = Math.floor(db.stock.tankWater);
             document.getElementById('editBottles5L').value = db.stock.bottles5L;
             document.getElementById('editBottles10L').value = db.stock.bottles10L;
