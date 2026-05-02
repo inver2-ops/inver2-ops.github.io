@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>İNVER вода | Cloud Elite v11.4 Business</title>
+    <title>İNVER voda | Cloud Elite v11.4 Business</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -135,7 +135,7 @@
             <div class="glass-card rounded-[25px] overflow-hidden">
                 <table class="w-full text-[11px] text-left italic">
                     <thead class="bg-white/5 text-slate-500 uppercase font-black">
-                        <tr><th class="p-4">DETAY</th><th class="p-4">MİKTAR</th><th class="p-4 text-right">NET KAZANÇ</th></tr>
+                        <tr><th class="p-4">DETAY</th><th class="p-4">TOPLAM MİKTAR</th><th class="p-4 text-right">NET KAZANÇ</th></tr>
                     </thead>
                     <tbody id="detailedStatsBody" class="divide-y divide-white/5"></tbody>
                 </table>
@@ -400,7 +400,6 @@
 
             document.getElementById('statSum').innerText = `Net Kâr: ${netProfit.toFixed(1)} ₴`;
 
-            // Chart Güncelleme (Son 15 işlem veya gün bazlı basitleştirilmiş görünüm)
             const ctx = document.getElementById('mainChart').getContext('2d');
             if(myChart) myChart.destroy();
             
@@ -430,11 +429,11 @@
             });
 
             document.getElementById('detailedStatsBody').innerHTML = `
-                <tr><td class="p-4">Su Satışı</td><td class="p-4">${stats.waterL.toFixed(1)} L</td><td class="p-4 text-right text-white">${(stats.waterL * (db.settings.priceLitre - db.settings.costLitre)).toFixed(1)} ₴</td></tr>
-                <tr><td class="p-4">5L Şişe</td><td class="p-4">${stats.b5} Adet</td><td class="p-4 text-right text-white">${(stats.b5 * (db.settings.price5L - db.settings.cost5L)).toFixed(1)} ₴</td></tr>
-                <tr><td class="p-4">10L Şişe</td><td class="p-4">${stats.b10} Adet</td><td class="p-4 text-right text-white">${(stats.b10 * (db.settings.price10L - db.settings.cost10L)).toFixed(1)} ₴</td></tr>
+                <tr><td class="p-4">Su Satışı (L)</td><td class="p-4">${stats.waterL.toFixed(1)} Litre</td><td class="p-4 text-right text-white">${(stats.waterL * (db.settings.priceLitre - db.settings.costLitre)).toFixed(1)} ₴</td></tr>
+                <tr><td class="p-4">Boş 5L Şişe</td><td class="p-4">${stats.b5} Adet</td><td class="p-4 text-right text-white">${(stats.b5 * (db.settings.price5L - db.settings.cost5L)).toFixed(1)} ₴</td></tr>
+                <tr><td class="p-4">Boş 10L Şişe</td><td class="p-4">${stats.b10} Adet</td><td class="p-4 text-right text-white">${(stats.b10 * (db.settings.price10L - db.settings.cost10L)).toFixed(1)} ₴</td></tr>
                 <tr><td class="p-4">Banka Kesinti</td><td class="p-4">%${db.settings.bankFee}</td><td class="p-4 text-right text-red-400">-${bankFees.toFixed(1)} ₴</td></tr>
-                <tr class="bg-cyan-500/10 font-black"><td class="p-4 text-cyan-400">TOPLAM NET</td><td class="p-4"></td><td class="p-4 text-right text-cyan-400 text-lg">${netProfit.toFixed(1)} ₴</td></tr>
+                <tr class="bg-cyan-500/10 font-black"><td class="p-4 text-cyan-400">TOPLAM NET KÂR</td><td class="p-4"></td><td class="p-4 text-right text-cyan-400 text-lg">${netProfit.toFixed(1)} ₴</td></tr>
             `;
         }
 
